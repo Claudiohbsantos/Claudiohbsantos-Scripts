@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="2a03b4b8a1de68ee0ac47a7ffdd34e1ccde1da2a" name="Claudiohbsantos Scripts">
+<index version="1" commit="cd46ad25f624feb3b9e29f90add6599244fa8b22" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Pro Tools Tab to Next Transient.lua" type="script" desc="CS_Pro Tools Tab to Next Transient">
       <metadata>
@@ -16,6 +16,10 @@
       <version name="1.0" author="Claudiohbsantos" time="2017-03-26T03:18:55Z">
         <changelog><![CDATA[+ Initial release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c0d8e409ffc6a8ab81effca4e263c342061fc400/Lua/Editing/CS_Pro%20Tools%20Tab%20to%20Next%20Transient.lua</source>
+      </version>
+      <version name="1.1" author="Claudiohbsantos" time="2017-03-26T03:26:41Z">
+        <changelog><![CDATA[- slight optimization]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/cd46ad25f624feb3b9e29f90add6599244fa8b22/Lua/Editing/CS_Pro%20Tools%20Tab%20to%20Next%20Transient.lua</source>
       </version>
     </reapack>
   </category>
