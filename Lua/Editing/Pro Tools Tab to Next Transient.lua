@@ -1,6 +1,7 @@
 -- @description Pro Tools Tab to Next Transient
 -- @version 1.0
 -- @author Claudiohbsantos
+-- @link http://claudiohbsantos.com
 -- @date 2017 03 25
 -- @about
 --   # Pro Tools Tab to Next Transient
