@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="e2f3fdecd33104ece63cab930501d8a8a777bbc1" name="Claudiohbsantos Scripts">
+<index version="1" commit="54b695f89d2e39c3b5ae779f01b79f37454ca550" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="Pro Tools Tab to Next Transient.lua" type="script" desc="Pro Tools Tab to Next Transient">
       <metadata>
@@ -11,6 +11,7 @@
 {\pard \ql \f0 \sa180 \li0 \fi0 Tab to Next Transient action mimicking the behaviour of the {\b Pro Tools DAW} action, which jumps to the next clip once the end of the current one is reached.\par}
 }
 ]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
       </metadata>
       <version name="1.0" author="Claudiohbsantos" time="2017-03-26T00:13:27Z">
         <changelog><![CDATA[+ Initial release]]></changelog>
@@ -18,4 +19,18 @@
       </version>
     </reapack>
   </category>
+  <metadata>
+    <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Claudiohbsantos reascripts\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Claudiohbsantos scripts for {\field{\*\fldinst{HYPERLINK "http://reaper.fm"}}{\fldrslt{\ul
+Reaper, by Cockos
+}}}
+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This repository contains all of my scripts that are available to the community. Please let me know if you have any problems with any of them and I'll try my best to help you out\par}
+}
+]]></description>
+  </metadata>
 </index>
