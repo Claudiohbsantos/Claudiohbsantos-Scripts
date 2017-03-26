@@ -1,0 +1,10 @@
+-- @description CS_Pro Tools Tab to Transient
+-- @version 1.0
+-- @author Claudiohbsantos
+-- @link http://claudiohbsantos.com
+-- @date 2017 03 26
+-- @about
+--   # CS_Pro Tools Tab to Transient
+--   Set of actions that mimick the tab to transient from Pro Tools, which jumps to the next/previous file once the edge of the clip is reached.
+-- @changelog
+--   - Initial Release
