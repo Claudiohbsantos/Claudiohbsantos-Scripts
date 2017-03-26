@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="cd46ad25f624feb3b9e29f90add6599244fa8b22" name="Claudiohbsantos Scripts">
+<index version="1" commit="bfab24058fd12fe597a1bb1fda1b5eb81573d5d9" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Pro Tools Tab to Next Transient.lua" type="script" desc="CS_Pro Tools Tab to Next Transient">
       <metadata>
@@ -20,6 +20,23 @@
       <version name="1.1" author="Claudiohbsantos" time="2017-03-26T03:26:41Z">
         <changelog><![CDATA[- slight optimization]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/cd46ad25f624feb3b9e29f90add6599244fa8b22/Lua/Editing/CS_Pro%20Tools%20Tab%20to%20Next%20Transient.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Pro Tools Tab to Previous Transient.lua" type="script" desc="CS_Pro Tools Tab to Previous Transient">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Pro Tools Tab to Previous Transient\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Tab to transient that mimicks Pro Tools behaviour of jumping to previous clip once edge of clip is reached\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-03-26T05:14:08Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bfab24058fd12fe597a1bb1fda1b5eb81573d5d9/Lua/Editing/CS_Pro%20Tools%20Tab%20to%20Previous%20Transient.lua</source>
       </version>
     </reapack>
   </category>
