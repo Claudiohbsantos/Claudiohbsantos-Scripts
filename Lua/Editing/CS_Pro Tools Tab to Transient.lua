@@ -8,7 +8,7 @@
 --   Set of actions that mimick the tab to transient from Pro Tools, which jumps to the next/previous file once the edge of the clip is reached.
 -- @metapackage
 -- @provide
---    CS_Pro Tools Tab to Next Transient.lua
---    CS_Pro Tools Tab to Previous Transient.lua
+--    Lua/Editing/CS_Pro Tools Tab to Next Transient.lua
+--    Lua/Editing/CS_Pro Tools Tab to Previous Transient.lua
 -- @changelog
 --   - Initial Release
