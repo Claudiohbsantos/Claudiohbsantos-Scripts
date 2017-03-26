@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="54b695f89d2e39c3b5ae779f01b79f37454ca550" name="Claudiohbsantos Scripts">
+<index version="1" commit="c0d8e409ffc6a8ab81effca4e263c342061fc400" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
-    <reapack name="Pro Tools Tab to Next Transient.lua" type="script" desc="Pro Tools Tab to Next Transient">
+    <reapack name="CS_Pro Tools Tab to Next Transient.lua" type="script" desc="Pro Tools Tab to Next Transient">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
@@ -13,9 +13,9 @@
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
       </metadata>
-      <version name="1.0" author="Claudiohbsantos" time="2017-03-26T00:13:27Z">
+      <version name="1.0" author="Claudiohbsantos" time="2017-03-26T03:18:55Z">
         <changelog><![CDATA[+ Initial release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/e2f3fdecd33104ece63cab930501d8a8a777bbc1/Lua/Editing/Pro%20Tools%20Tab%20to%20Next%20Transient.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c0d8e409ffc6a8ab81effca4e263c342061fc400/Lua/Editing/CS_Pro%20Tools%20Tab%20to%20Next%20Transient.lua</source>
       </version>
     </reapack>
   </category>
