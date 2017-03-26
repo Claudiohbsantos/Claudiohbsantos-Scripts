@@ -1,4 +1,4 @@
--- @description Pro Tools Tab to Next Transient
+-- @description CS_Pro Tools Tab to Next Transient
 -- @version 1.0
 -- @author Claudiohbsantos
 -- @link http://claudiohbsantos.com
