@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="0ee8eaf999d8e44c6aa389018391d6fbd4ae7ffa" name="o-amend">
+<index version="1" commit="1e91d67fb06457474053fe653cf3588c5e613e41" name="o-amend">
   <category name="Lua/Editing">
     <reapack name="CS_Pro Tools Tab to Transient.lua" type="script" desc="CS_Pro Tools Tab to Transient">
       <metadata>
@@ -15,7 +15,8 @@
       </metadata>
       <version name="1.0" author="Claudiohbsantos" time="2017-03-26T05:40:13Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0ee8eaf999d8e44c6aa389018391d6fbd4ae7ffa/Lua/Editing/CS_Pro%20Tools%20Tab%20to%20Transient.lua</source>
+        <source file="CS_Pro Tools Tab to Next Transient.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1e91d67fb06457474053fe653cf3588c5e613e41/Lua/Editing/CS_Pro%20Tools%20Tab%20to%20Next%20Transient.lua</source>
+        <source file="CS_Pro Tools Tab to Previous Transient.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1e91d67fb06457474053fe653cf3588c5e613e41/Lua/Editing/CS_Pro%20Tools%20Tab%20to%20Previous%20Transient.lua</source>
       </version>
     </reapack>
   </category>
