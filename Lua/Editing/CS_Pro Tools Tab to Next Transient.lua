@@ -1,5 +1,5 @@
 -- @description CS_Pro Tools Tab to Next Transient
--- @version 1.0
+-- @version 1.1
 -- @author Claudiohbsantos
 -- @link http://claudiohbsantos.com
 -- @date 2017 03 25
@@ -7,12 +7,12 @@
 --   # Pro Tools Tab to Next Transient
 --   Tab to Next Transient action mimicking the behaviour of the **Pro Tools DAW** action, which jumps to the next clip once the end of the current one is reached.
 -- @changelog
---   + Initial release
+--   - slight optimization
 
 reaper.Undo_BeginBlock()
 reaper.PreventUIRefresh(1)
 
-numberOfSelItems = reaper.CountSelectedMediaItems(0)
+local numberOfSelItems = reaper.CountSelectedMediaItems(0)
 if numberOfSelItems ~= 0 then
 	if numberOfSelItems == 1 then
 		itemPosition = reaper.GetMediaItemInfo_Value(reaper.GetSelectedMediaItem(0,0), "D_POSITION")
