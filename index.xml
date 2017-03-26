@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="c0d8e409ffc6a8ab81effca4e263c342061fc400" name="Claudiohbsantos Scripts">
+<index version="1" commit="2a03b4b8a1de68ee0ac47a7ffdd34e1ccde1da2a" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
-    <reapack name="CS_Pro Tools Tab to Next Transient.lua" type="script" desc="Pro Tools Tab to Next Transient">
+    <reapack name="CS_Pro Tools Tab to Next Transient.lua" type="script" desc="CS_Pro Tools Tab to Next Transient">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
