@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="048a8ff237c26c9942bbd559a077db44565b1a10" name="o-amend">
+<index version="1" commit="21c74d235930306354fa9e43f254801d04e749f6" name="o-amend">
   <category name="Lua/Editing">
+    <reapack name="CS_Edit Bottom Item to Match Edits in selected items on top track.lua" type="script" desc="CS_Edit Bottom Item to Match Edits in selected items on top track">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Edit Bottom Item to Match Edits in selected items on top track\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This script mirrors the cuts and fades on items on the top track onto a long item below them. Very useufl to crate quick layering of atmos and pads once you've edited one of the layers.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Instructions:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Select items on 2 tracks (tracks don't need to be contiguous).\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Make sure there is only a single item selected on the bottom track\sa180\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-03-27T17:54:00Z">
+        <changelog><![CDATA[--  Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/21c74d235930306354fa9e43f254801d04e749f6/Lua/Editing/CS_Edit%20Bottom%20Item%20to%20Match%20Edits%20in%20selected%20items%20on%20top%20track.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Extend Item to Full Length.lua" type="script" desc="CS_Extend Item to Full Length">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Extend Item to Full Length\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Extends selected items to it's full length in place.\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="2.0" author="Claudiohbsantos" time="2017-03-27T17:54:00Z">
+        <changelog><![CDATA[- fixed bug when item is in beginning of timeline]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/21c74d235930306354fa9e43f254801d04e749f6/Lua/Editing/CS_Extend%20Item%20to%20Full%20Length.lua</source>
+      </version>
+    </reapack>
     <reapack name="CS_Implode two monos into stereo.lua" type="script" desc="CS_Implode two monos into stereo">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
@@ -20,6 +57,40 @@
         <changelog><![CDATA[-- Prevents take envelope from being glued
 -- Prevents neighboring clips from having their fades altered]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/048a8ff237c26c9942bbd559a077db44565b1a10/Lua/Editing/CS_Implode%20two%20monos%20into%20stereo.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Nudge Cursor or Item left by grid division based on Item Selection.lua" type="script" desc="CS_Nudge Cursor or Item left by grid division based on Item Selection">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Nudge Cursor or Item left by grid division based on Item Selection\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If there is at least 1 item selected, the script nudges the items left by grid division. Otherwise it nudges the edit cursor left by same ammount\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-03-27T17:54:00Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/21c74d235930306354fa9e43f254801d04e749f6/Lua/Editing/CS_Nudge%20Cursor%20or%20Item%20left%20by%20grid%20division%20based%20on%20Item%20Selection.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Nudge Cursor or Item right by grid division based on Item Selection.lua" type="script" desc="CS_Nudge Cursor or Item right by grid division based on Item Selection">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Nudge Cursor or Item right by grid division based on Item Selection\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 If there is at least 1 item selected, the script nudges the items right by grid division. Otherwise it nudges the edit cursor right by same ammount\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-03-27T17:54:00Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/21c74d235930306354fa9e43f254801d04e749f6/Lua/Editing/CS_Nudge%20Cursor%20or%20Item%20right%20by%20grid%20division%20based%20on%20Item%20Selection.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Pro Tools Tab to Next Transient.lua" type="script" desc="CS_Pro Tools Tab to Next Transient">
