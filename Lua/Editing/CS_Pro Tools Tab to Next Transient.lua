@@ -1,4 +1,3 @@
--- @noindex
 -- @description CS_Pro Tools Tab to Next Transient
 -- @version 1.1
 -- @author Claudiohbsantos
