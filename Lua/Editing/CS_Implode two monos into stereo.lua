@@ -9,8 +9,6 @@
 --   * keeps handles on both clips
 --   * prevents take envelope from being glue to file
 --   * keeps fades intact
---
---   ![test gif](https://raw.githubusercontent.com/Claudiohbsantos/Claudiohbsantos-Scripts/master/Licecaps/testGif.gif "test gif")
 -- @changelog
 --   -- Prevents take envelope from being glued
 --   -- Prevents neighboring clips from having their fades altered
