@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="b66a898fe7f950750e45ad018f52149f98cafd58" name="o-amend">
+<index version="1" commit="f9539ac0f4ffd6a067ebdf0bfc28ae163a10301c" name="o-amend">
   <category name="Lua/Editing">
     <reapack name="CS_Implode two monos into stereo.lua" type="script" desc="CS_Implode two monos into stereo">
       <metadata>
@@ -12,6 +12,7 @@
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab keeps handles on both clips\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab prevents take envelope from being glue to file\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab keeps fades intact\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\cf1 [image: https://raw.githubusercontent.com/Claudiohbsantos/Claudiohbsantos-Scripts/master/Licecaps/testGif.gif]\cf0}\par}
 }
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
@@ -19,7 +20,7 @@
       <version name="1.3" author="Claudiohbsantos" time="2017-03-27T16:55:48Z">
         <changelog><![CDATA[-- Prevents take envelope from being glued
 -- Prevents neighboring clips from having their fades altered]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b66a898fe7f950750e45ad018f52149f98cafd58/Lua/Editing/CS_Implode%20two%20monos%20into%20stereo.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/f9539ac0f4ffd6a067ebdf0bfc28ae163a10301c/Lua/Editing/CS_Implode%20two%20monos%20into%20stereo.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Pro Tools Tab to Next Transient.lua" type="script" desc="CS_Pro Tools Tab to Next Transient">
