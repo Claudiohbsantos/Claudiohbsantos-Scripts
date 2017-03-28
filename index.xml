@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="21c74d235930306354fa9e43f254801d04e749f6" name="Claudiohbsantos Scripts">
+<index version="1" commit="c4316dcae28321d801d45912c6c1caf38b3e81c1" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
+    <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Copy Track Volume Envelope to Selected Takes and reset track envelope\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This script copies the volume envelope from the item track and pastes it onto the selected take volume envelope, overwriting it if it already exists. The Track volume envelope in the section is reset to 0.\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-03-28T06:06:24Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Copy%20Track%20Volume%20Envelope%20to%20Selected%20Takes%20and%20reset%20track%20envelope.lua</source>
+      </version>
+    </reapack>
     <reapack name="CS_Edit Bottom Item to Match Edits in selected items on top track.lua" type="script" desc="CS_Edit Bottom Item to Match Edits in selected items on top track">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
@@ -19,6 +36,23 @@
       <version name="1.0" author="Claudiohbsantos" time="2017-03-27T17:54:00Z">
         <changelog><![CDATA[--  Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/21c74d235930306354fa9e43f254801d04e749f6/Lua/Editing/CS_Edit%20Bottom%20Item%20to%20Match%20Edits%20in%20selected%20items%20on%20top%20track.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Extend edges in both directions fading from time selection.lua" type="script" desc="CS_Extend edges in both directions fading from time selection">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Extend edges in both directions fading from time selection\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Extends both clip edges, creating fades if there is a time selection within the clip\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-03-28T06:06:24Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Extend%20edges%20in%20both%20directions%20fading%20from%20time%20selection.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Extend Item to Full Length.lua" type="script" desc="CS_Extend Item to Full Length">
@@ -57,6 +91,23 @@
         <changelog><![CDATA[-- Prevents take envelope from being glued
 -- Prevents neighboring clips from having their fades altered]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/048a8ff237c26c9942bbd559a077db44565b1a10/Lua/Editing/CS_Implode%20two%20monos%20into%20stereo.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Label REV if it has been reversed.lua" type="script" desc="CS_Label REV if it has been reversed">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Label REV if it has been reversed\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Labels a take name with the suffix {\b REV} if it has been reversed. Removes the label if it is unreversed.\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-03-28T06:06:24Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Label%20REV%20if%20it%20has%20been%20reversed.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Nudge Cursor or Item left by grid division based on Item Selection.lua" type="script" desc="CS_Nudge Cursor or Item left by grid division based on Item Selection">
@@ -125,6 +176,65 @@
       <version name="1.0" author="Claudiohbsantos" time="2017-03-27T16:34:25Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/84b0bc424d9cb197d30cb67156180bed58952bf1/Lua/Editing/CS_Pro%20Tools%20Tab%20to%20Previous%20Transient.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Remove Selected area of Item and select right portion.lua" type="script" desc="CS_Remove Selected area of Item and select right portion">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Remove Selected area of Item and select right portion\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Removes area within time selection of selected item and selects right portion of remaining clip Specially useful in custom actions, such as paired with Snap to Previous Clip to create an action that removes selected area and closes gap without moving the whole track.\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-03-28T06:06:24Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Remove%20Selected%20area%20of%20Item%20and%20select%20right%20portion.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Shrink edges in both directions fading from time selection.lua" type="script" desc="CS_Shrink edges in both directions fading from time selection">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Shrink edges in both directions fading from time selection\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Shrinks both clip edges, creating fades if there is a time selection within the clip\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-03-28T06:06:24Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Shrink%20edges%20in%20both%20directions%20fading%20from%20time%20selection.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips on different tracks).lua" type="script" desc="CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips on different tracks)">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If a single item is selected:\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If edit cursor is closer to start of item : {\b Fade In}\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If edit cursor is closer to end of item : {\b Fade Out}\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If there is a time selection over item : {\b Fade In/Out in Time selection}\sa180\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If Two items on same track are selected:\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If they overlap and there is no time selection: {\b Create crossfade on overlap}\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If they overlap and there is a time selection that includes the overlap: {\b Expand items and crossfade on time selection}\par}
+{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If they don't overlap and there is a time selection enveloping their gap/split point: {\b Expand items and crossfade on time selection}\sa180\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If two or three items are selected on different tracks and they overlap in time : {\b Create fades on time overlap}\sa180\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="2.0" author="Claudiohbsantos" time="2017-03-28T06:06:24Z">
+        <changelog><![CDATA[- added non-overlapping conditions]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Smart%20Fade%20(Fade%20depending%20on%20time%20selection,%20edit%20cursor%20position%20and%20overlap%20between%20clips%20on%20different%20tracks).lua</source>
       </version>
     </reapack>
   </category>
