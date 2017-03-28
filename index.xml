@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="c4316dcae28321d801d45912c6c1caf38b3e81c1" name="Claudiohbsantos Scripts">
+<index version="1" commit="2e67de4d84a772361aeecbcf6a956a93b262e0a6" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -235,6 +235,10 @@
       <version name="2.0" author="Claudiohbsantos" time="2017-03-28T06:06:24Z">
         <changelog><![CDATA[- added non-overlapping conditions]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Smart%20Fade%20(Fade%20depending%20on%20time%20selection,%20edit%20cursor%20position%20and%20overlap%20between%20clips%20on%20different%20tracks).lua</source>
+      </version>
+      <version name="2.1" author="Claudiohbsantos" time="2017-03-28T06:32:11Z">
+        <changelog><![CDATA[- added support for non-overlapping conditions on 2 items on different tracks]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2e67de4d84a772361aeecbcf6a956a93b262e0a6/Lua/Editing/CS_Smart%20Fade%20(Fade%20depending%20on%20time%20selection,%20edit%20cursor%20position%20and%20overlap%20between%20clips%20on%20different%20tracks).lua</source>
       </version>
     </reapack>
   </category>
