@@ -1,5 +1,5 @@
 -- @description CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips on different tracks)
--- @version 2.0
+-- @version 2.1
 -- @author Claudiohbsantos
 -- @link http://claudiohbsantos.com
 -- @date 2017 03 28
@@ -15,7 +15,7 @@
 --     - If they don't overlap and there is a time selection enveloping their gap/split point: **Expand items and crossfade on time selection**
 --   - If two or three items are selected on different tracks and they overlap in time : **Create fades on time overlap**
 -- @changelog
---   - added non-overlapping conditions
+--   - added support for non-overlapping conditions on 2 items on different tracks
 
 function saveTimeSelection()
 	timeSelStart,timeSelEnd = reaper.GetSet_LoopTimeRange2(0,false,false,0,0,false)
@@ -47,25 +47,58 @@ if nSelectedItems == 2 then
 	local item2End = reaper.GetMediaItemInfo_Value(item2,"D_LENGTH") + item2Start
 
 	if item1Track ~= item2Track then 
+		if timeSelStart ~= timeSelEnd then
+			if item1Start < timeSelStart and item1End > timeSelStart and item1End < timeSelEnd
+				and  item2Start > timeSelStart and item2Start < timeSelEnd and item2End > timeSelEnd then
 
-		if item1Start < item2Start and item1End < item2End then
-			reaper.GetSet_LoopTimeRange2(0,true,false,item2Start,item1End,false)
-			reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-		end
+				local item2newOffset = item2Start - timeSelStart
+					reaper.SetMediaItemPosition(item2,timeSelStart,false)
+					reaper.SetMediaItemLength(item2,item2End-item2Start+item2newOffset,false)
+					for i=0,reaper.CountTakes(item2)-1,1 do
+						local take = reaper.GetTake(item2,i)
+						local currentOffset = reaper.GetMediaItemTakeInfo_Value(take,"D_STARTOFFS")
+						reaper.SetMediaItemTakeInfo_Value(take,"D_STARTOFFS",currentOffset-item2newOffset)
+					end
 
-		if item1Start < item2Start and item1End > item2End then
-			reaper.GetSet_LoopTimeRange2(0,true,false,item2Start,item2End,false)
-			reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-		end
+				reaper.SetMediaItemLength(item1,timeSelEnd-item1Start,false)
+				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
+			end
 
-		if item2Start < item1Start and item2End < item1End then
-			reaper.GetSet_LoopTimeRange2(0,true,false,item1Start,item2End,false)
-			reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-		end
+			if item2Start < timeSelStart and item2End > timeSelStart and item2End < timeSelEnd 
+				and item1Start > timeSelStart and item1Start < timeSelEnd and item1End > timeSelEnd then
 
-		if item2Start < item1Start and item2End > item1End then
-			reaper.GetSet_LoopTimeRange2(0,true,false,item1Start,item1End,false)
-			reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
+				local item1newOffset = item1Start - timeSelStart
+					reaper.SetMediaItemPosition(item1,timeSelStart,false)
+					reaper.SetMediaItemLength(item1,item1End-item1Start+item1newOffset,false)
+					for i=0,reaper.CountTakes(item1)-1,1 do
+						local take = reaper.GetTake(item1,i)
+						local currentOffset = reaper.GetMediaItemTakeInfo_Value(take,"D_STARTOFFS")
+						reaper.SetMediaItemTakeInfo_Value(take,"D_STARTOFFS",currentOffset-item1newOffset)
+					end
+
+				reaper.SetMediaItemLength(item2,timeSelEnd-item2Start,false)
+				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
+			end
+		else
+			if item1Start < item2Start and item1End < item2End then
+				reaper.GetSet_LoopTimeRange2(0,true,false,item2Start,item1End,false)
+				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
+			end
+
+			if item1Start < item2Start and item1End > item2End then
+				reaper.GetSet_LoopTimeRange2(0,true,false,item2Start,item2End,false)
+				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
+			end
+
+			if item2Start < item1Start and item2End < item1End then
+				reaper.GetSet_LoopTimeRange2(0,true,false,item1Start,item2End,false)
+				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
+			end
+
+			if item2Start < item1Start and item2End > item1End then
+				reaper.GetSet_LoopTimeRange2(0,true,false,item1Start,item1End,false)
+				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
+			end
 		end
 	else
 		if timeSelStart ~= timeSelEnd then
