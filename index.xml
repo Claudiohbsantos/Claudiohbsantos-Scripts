@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="21c74d235930306354fa9e43f254801d04e749f6" name="o-amend">
+<index version="1" commit="21c74d235930306354fa9e43f254801d04e749f6" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Edit Bottom Item to Match Edits in selected items on top track.lua" type="script" desc="CS_Edit Bottom Item to Match Edits in selected items on top track">
       <metadata>
