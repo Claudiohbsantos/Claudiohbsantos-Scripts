@@ -1,5 +1,5 @@
 -- @description CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips on different tracks)
--- @version 2.1
+-- @version 2.2beta
 -- @author Claudiohbsantos
 -- @link http://claudiohbsantos.com
 -- @date 2017 03 28
@@ -15,90 +15,226 @@
 --     - If they don't overlap and there is a time selection enveloping their gap/split point: **Expand items and crossfade on time selection**
 --   - If two or three items are selected on different tracks and they overlap in time : **Create fades on time overlap**
 -- @changelog
---   - added support for non-overlapping conditions on 2 items on different tracks
+--   - optimized all conditionals
+--   - added support for 3+ items
+--   - prevent locking option from stopping changes
 
-function saveTimeSelection()
-	timeSelStart,timeSelEnd = reaper.GetSet_LoopTimeRange2(0,false,false,0,0,false)
+function msg(x)
+	reaper.ShowConsoleMsg(tostring(x).."\n")
 end
 
-function restoreTimeSelection()
-	reaper.GetSet_LoopTimeRange2(0,true,true,timeSelStart,timeSelEnd,false)
+function msgBox(msg)
+	reaper.ShowMessageBox(msg,"Title",0)
 end
 
-reaper.Undo_BeginBlock()
+function saveOriginalState()
+	local originalState = {}
 
-reaper.PreventUIRefresh(1)
+	originalState.editCur = reaper.GetCursorPositionEx(0)
+	originalState.timeSelStart,originalState.timeSelEnd = reaper.GetSet_LoopTimeRange2(0,false,true,0,0,false)
 
-local nSelectedItems = reaper.CountSelectedMediaItems(0)
+	originalState.selTracks = {}
+	for i=1,reaper.CountSelectedTracks2(0,true),1 do
+		originalState.selTracks[#originalState.selTracks+1] = reaper.GetSelectedTrack2(0,i-1,true)
+	end
 
-if nSelectedItems == 2 then
-	saveTimeSelection()
+	originalState.selItems = {}
+	for i=1, reaper.CountSelectedMediaItems(0),1 do
+		originalState.selItems[i] = reaper.GetSelectedMediaItem(0,i-1)
+	end
 
+	originalState.lockWasEnabled = reaper.GetToggleCommandStateEx(0,1135) -- toggle lock
+	reaper.Main_OnCommand(40570,0) -- disable locking
+
+	originalState.autoFadeWasEnabled = reaper.GetToggleCommandStateEx(0,40041) -- if auto-crossfade is enabled
+	reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_XFDOFF"),0) -- turn off auto-crssfade
+
+	return originalState
+end
+
+function restoreOriginalState(originalState)
+	reaper.SetEditCurPos2(0,originalState.editCur,false,false)
+
+	reaper.GetSet_LoopTimeRange2(0,true,true,originalState.timeSelStart,originalState.timeSelEnd,false)
+
+	reaper.Main_OnCommand(40297,0) -- unselect all tracks
+	for i=1, #originalState.selTracks,1 do
+		reaper.SetTrackSelected(originalState.selTracks[i],true)
+	end
+
+	reaper.SelectAllMediaItems(0,false)
+	for i=1,#originalState.selItems,1 do
+		reaper.SetMediaItemSelected(originalState.selItems[i],true)
+	end
+
+	if originalState.lockWasEnabled == 1 then reaper.Main_OnCommand(40569,0) end -- set locking
+	if originalState.autoFadeWasEnabled == 1 then reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_XFDON"),0) end-- toggle auto-crossfade
+end
+
+function saveSelectedItems()
+	local nSelectedItems = reaper.CountSelectedMediaItems(0)
+	local selItems = {}
+	for i=1, nSelectedItems,1 do
+		selItems[i] = reaper.GetSelectedMediaItem(0,i-1)
+	end
+
+	return selItems
+end	
+
+function restoreSelectedItems(originalSelItemsList)
+	reaper.SelectAllMediaItems(0,false)
+	for i=1,#originalSelItemsList,1 do
+		reaper.SetMediaItemSelected(originalSelItemsList[i],true)
+	end
+end
+
+function getItemStartAndEnd(item)
+	local startPos = reaper.GetMediaItemInfo_Value(item,"D_POSITION")
+	local endPos = reaper.GetMediaItemInfo_Value(item,"D_LENGTH") + startPos
+	return startPos,endPos
+end
+
+function fadeToMouse(startPos,endPos)
+	local mousePos = reaper.BR_GetMouseCursorContext_Position()
+	if (mousePos - startPos) < (endPos - mousePos) then -- is mouse is before middle of item
+		reaper.SetEditCurPos2(0,mousePos,false,false)
+		reaper.Main_OnCommand(40509,0) -- fade in
+	end
+
+	if (mousePos - startPos) >= (endPos - mousePos) then -- is mouse is before middle of item
+		reaper.SetEditCurPos2(0,mousePos,false,false)
+		reaper.Main_OnCommand(40510,0) -- fade out
+	end
+end
+
+function extendItemToFillTimeSelection(item,timeSelStart,timeSelEnd)
+	local itemStart,itemEnd = getItemStartAndEnd(item)
+	local originalSelItemsList = saveSelectedItems()
+
+	reaper.SelectAllMediaItems(0,false)
+	reaper.SetMediaItemSelected(item,true)
+
+	if timeSelStart < itemStart and timeSelEnd > itemStart and timeSelEnd < itemEnd then
+		reaper.SetEditCurPos2(0,timeSelStart,false,false)
+		reaper.Main_OnCommand(41305,0) -- trim left edge of item to edit cursor
+	end
+
+	if timeSelStart > itemStart and timeSelEnd > itemEnd and timeSelStart < itemEnd then
+		reaper.SetEditCurPos2(0,timeSelEnd,false,false)
+		reaper.Main_OnCommand(41311,0) -- trim right of item to edit cursor
+	end
+
+	if timeSelStart < itemStart and timeSelEnd > itemEnd then
+		reaper.SetEditCurPos2(0,timeSelStart,false,false)
+		reaper.Main_OnCommand(41305,0) -- trim left edge of item to edit cursor
+		reaper.SetEditCurPos2(0,timeSelEnd,false,false)
+		reaper.Main_OnCommand(41311,0) -- trim right of item to edit cursor
+	end
+
+
+	restoreSelectedItems(originalSelItemsList)
+end
+
+function saveSelectedItemsTracks(originalState)
+	local originalState = originalState or {}
+
+	if not originalState.selItems then
+		originalState.selItems = {}
+		for i=1, reaper.CountSelectedMediaItems(0),1 do
+			originalState.selItems[i] = reaper.GetSelectedMediaItem(0,i-1)
+		end
+	end
+
+	originalState.selItemsTracks = {}
+	for i=1,#originalState.selItems,1 do
+		originalState.selItemsTracks[i] = reaper.GetMediaItem_Track(originalState.selItems[i])
+	end
+
+	return originalState
+end
+
+function restoreSelectedItemsTracks(originalState)
+	for i=1,#originalState.selItems,1 do
+		reaper.MoveMediaItemToTrack(originalState.selItems[i], originalState.selItemsTracks[i])
+	end
+end
+
+function getEdgesOf2ItemsInOrder(item1,item2)
+	local item1Start,item1End = getItemStartAndEnd(item1)
+	local item2Start,item2End = getItemStartAndEnd(item2)
+	local earlyItemStart,earlyItemEnd,lateItemStart,lateItemEnd
+
+	if item1Start < item2Start then 
+		earlyItemStart = item1Start
+		earlyItemEnd = item1End
+		lateItemStart = item2Start
+		lateItemEnd = item2End
+	else
+		earlyItemStart = item2Start
+		earlyItemEnd = item2End
+		lateItemStart = item1Start
+		lateItemEnd = item1End
+	end
+	return earlyItemStart,earlyItemEnd,lateItemStart,lateItemEnd
+end
+
+function noItemsSelected()
+	local retval,segment,details = reaper.BR_GetMouseCursorContext()
+	if details == "item" then
+		local item = reaper.BR_GetMouseCursorContext_Item()
+		reaper.SetMediaItemSelected(item,true)
+			itemsSelected1()	
+	end
+end
+
+
+function itemsSelected1()
+	local item = reaper.GetSelectedMediaItem(0,0)
+	local startPos,endPos = getItemStartAndEnd(item)
+
+	if timeSelStart ~= timeSelEnd then 
+		if timeSelEnd < startPos or timeSelStart > endPos or (timeSelStart < startPos and timeSelEnd > endPos) then -- time selection doesn't overlap with item
+			fadeToMouse(startPos,endPos)
+		else
+			reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- fade time selection
+		end
+	else
+		fadeToMouse(startPos,endPos)
+	end
+end
+
+function fadeOverlapofSelectedItems()
+	saveSelectedItemsTracks(originalState)
+	reaper.Main_OnCommand(40644,0) -- implode items across tracks into items on one track
+	reaper.Main_OnCommand(41059,0) -- crossfade any overlapping items
+	restoreSelectedItemsTracks(originalState)
+end
+
+function itemsSelected2()
 	local item1 = reaper.GetSelectedMediaItem(0,0)
 	local item2 = reaper.GetSelectedMediaItem(0,1)
-
+	local item1Start,item1End = getItemStartAndEnd(item1)
+	local item2Start,item2End = getItemStartAndEnd(item2)
 	local item1Track = reaper.GetMediaItem_Track(item1)
 	local item2Track = reaper.GetMediaItem_Track(item2)
 
-	local item1Start = reaper.GetMediaItemInfo_Value(item1,"D_POSITION")
-	local item2Start = reaper.GetMediaItemInfo_Value(item2,"D_POSITION")
-
-	local item1End = reaper.GetMediaItemInfo_Value(item1,"D_LENGTH") + item1Start
-	local item2End = reaper.GetMediaItemInfo_Value(item2,"D_LENGTH") + item2Start
-
-	if item1Track ~= item2Track then 
+	if item1Track ~= item2Track then -- if on different tracks
 		if timeSelStart ~= timeSelEnd then
-			if item1Start < timeSelStart and item1End > timeSelStart and item1End < timeSelEnd
-				and  item2Start > timeSelStart and item2Start < timeSelEnd and item2End > timeSelEnd then
+			local earlyItemStart,earlyItemEnd,lateItemStart,lateItemEnd = getEdgesOf2ItemsInOrder(item1,item2)
 
-				local item2newOffset = item2Start - timeSelStart
-					reaper.SetMediaItemPosition(item2,timeSelStart,false)
-					reaper.SetMediaItemLength(item2,item2End-item2Start+item2newOffset,false)
-					for i=0,reaper.CountTakes(item2)-1,1 do
-						local take = reaper.GetTake(item2,i)
-						local currentOffset = reaper.GetMediaItemTakeInfo_Value(take,"D_STARTOFFS")
-						reaper.SetMediaItemTakeInfo_Value(take,"D_STARTOFFS",currentOffset-item2newOffset)
-					end
+			if timeSelStart > earlyItemStart and timeSelEnd > earlyItemEnd and timeSelStart < lateItemStart and timeSelEnd > lateItemStart and timeSelEnd < lateItemEnd then
+				extendItemToFillTimeSelection(item1,timeSelStart,timeSelEnd)
+				extendItemToFillTimeSelection(item2,timeSelStart,timeSelEnd)
+				reaper.Main_OnCommand(40020,0) -- remove time selection
+				local item1Start,item1End = getItemStartAndEnd(item1)
+				local item2Start,item2End = getItemStartAndEnd(item2)
 
-				reaper.SetMediaItemLength(item1,timeSelEnd-item1Start,false)
-				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-			end
-
-			if item2Start < timeSelStart and item2End > timeSelStart and item2End < timeSelEnd 
-				and item1Start > timeSelStart and item1Start < timeSelEnd and item1End > timeSelEnd then
-
-				local item1newOffset = item1Start - timeSelStart
-					reaper.SetMediaItemPosition(item1,timeSelStart,false)
-					reaper.SetMediaItemLength(item1,item1End-item1Start+item1newOffset,false)
-					for i=0,reaper.CountTakes(item1)-1,1 do
-						local take = reaper.GetTake(item1,i)
-						local currentOffset = reaper.GetMediaItemTakeInfo_Value(take,"D_STARTOFFS")
-						reaper.SetMediaItemTakeInfo_Value(take,"D_STARTOFFS",currentOffset-item1newOffset)
-					end
-
-				reaper.SetMediaItemLength(item2,timeSelEnd-item2Start,false)
-				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-			end
+				fadeOverlapofSelectedItems()
+			else
+				fadeOverlapofSelectedItems()
+			end	
 		else
-			if item1Start < item2Start and item1End < item2End then
-				reaper.GetSet_LoopTimeRange2(0,true,false,item2Start,item1End,false)
-				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-			end
-
-			if item1Start < item2Start and item1End > item2End then
-				reaper.GetSet_LoopTimeRange2(0,true,false,item2Start,item2End,false)
-				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-			end
-
-			if item2Start < item1Start and item2End < item1End then
-				reaper.GetSet_LoopTimeRange2(0,true,false,item1Start,item2End,false)
-				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-			end
-
-			if item2Start < item1Start and item2End > item1End then
-				reaper.GetSet_LoopTimeRange2(0,true,false,item1Start,item1End,false)
-				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-			end
+			fadeOverlapofSelectedItems()
 		end
 	else
 		if timeSelStart ~= timeSelEnd then
@@ -109,86 +245,117 @@ if nSelectedItems == 2 then
 					reaper.Main_OnCommand(41059,0) -- crossfade any overlapping items
 				end
 			else
-				if timeSelStart > item1Start and timeSelStart < item1End and timeSelEnd > item2Start and timeSelEnd < item2End then
-					local item2newOffset = item2Start - timeSelStart
-					reaper.SetMediaItemPosition(item2,timeSelStart,false)
-					reaper.SetMediaItemLength(item2,item2End-item2Start+item2newOffset,false)
-					for i=0,reaper.CountTakes(item2)-1,1 do
-						local take = reaper.GetTake(item2,i)
-						local currentOffset = reaper.GetMediaItemTakeInfo_Value(take,"D_STARTOFFS")
-						reaper.SetMediaItemTakeInfo_Value(take,"D_STARTOFFS",currentOffset-item2newOffset)
-					end
-
-					reaper.SetMediaItemLength(item1,timeSelEnd-item1Start,false)
+				if timeSelStart > item1Start and timeSelStart < item1End and timeSelEnd > item2Start and timeSelEnd < item2End then -- if time selection contained by items
+					extendItemToFillTimeSelection(item1,timeSelStart,timeSelEnd)
+					extendItemToFillTimeSelection(item2,timeSelStart,timeSelEnd)
 					reaper.Main_OnCommand(41059,0) -- crossfade any overlapping items
 				end
-			end	
+			end 
 		else
 			reaper.Main_OnCommand(41059,0) -- crossfade any overlapping items
 		end
 	end
+end
 
-	restoreTimeSelection()
-else
-	if nSelectedItems == 3 then
-		saveTimeSelection()
+function itemsSelected3()
+	local item1 = reaper.GetSelectedMediaItem(0,0)
+	local item2 = reaper.GetSelectedMediaItem(0,1)
+	local item3 = reaper.GetSelectedMediaItem(0,2)
+	local item1Start,item1End = getItemStartAndEnd(item1)
+	local item2Start,item2End = getItemStartAndEnd(item2)
+	local item3Start,item3End = getItemStartAndEnd(item3)
 
-		local item1 = reaper.GetSelectedMediaItem(0,0)
-		local item2 = reaper.GetSelectedMediaItem(0,1)
-		local item3 = reaper.GetSelectedMediaItem(0,2)
-
-		local item1Track = reaper.GetMediaItem_Track(item1)
-		local item2Track = reaper.GetMediaItem_Track(item2)
-		local item3Track = reaper.GetMediaItem_Track(item3)
-
-		if (item1Track ~= item2Track and item1Track ~= item3Track) or
-			(item3Track ~= item1Track and item3Track ~= item2Track) then  
-			
-			local item1Start = reaper.GetMediaItemInfo_Value(item1,"D_POSITION")
-			local item2Start = reaper.GetMediaItemInfo_Value(item2,"D_POSITION")
-			local item3Start = reaper.GetMediaItemInfo_Value(item3,"D_POSITION")
-
-			local item1End = reaper.GetMediaItemInfo_Value(item1,"D_LENGTH") + item1Start
-			local item2End = reaper.GetMediaItemInfo_Value(item2,"D_LENGTH") + item2Start
-			local item3End = reaper.GetMediaItemInfo_Value(item3,"D_LENGTH") + item3Start
-
-
-			if item1Start > item2Start and item2End < item1End and item3Start > item1Start and item3End > item1End and item2End < item3Start then
-				reaper.SelectAllMediaItems(0,false)
-				reaper.SetMediaItemSelected(item1,true)
-				reaper.SetMediaItemSelected(item2,true)
-				reaper.GetSet_LoopTimeRange2(0,true,false,item1Start,item2End,false)
-				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-
-				reaper.SelectAllMediaItems(0,false)
-				reaper.SetMediaItemSelected(item1,true)
-				reaper.SetMediaItemSelected(item3,true)
-				reaper.GetSet_LoopTimeRange2(0,true,false,item3Start,item1End,false)
-				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-			end
-
-			if item1Start < item3Start and item1End > item3Start and item2Start > item1End and item2Start < item3End and item2End > item3End then
-				reaper.SelectAllMediaItems(0,false)
-				reaper.SetMediaItemSelected(item1,true)
-				reaper.SetMediaItemSelected(item3,true)
-				reaper.GetSet_LoopTimeRange2(0,true,false,item3Start,item1End,false)
-				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-
-				reaper.SelectAllMediaItems(0,false)
-				reaper.SetMediaItemSelected(item2,true)
-				reaper.SetMediaItemSelected(item3,true)
-				reaper.GetSet_LoopTimeRange2(0,true,false,item2Start,item3End,false)
-				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
-			end			
-
+	if timeSelStart ~= timeSelEnd then
+		if timeSelStart > item1Start and timeSelStart < item1End and timeSelStart < item3Start and timeSelEnd > item3End and timeSelEnd > item2Start and timeSelEnd < item2End and item1End < item2Start then
+			extendItemToFillTimeSelection(item3,timeSelStart,timeSelEnd)
 		end
 
-		restoreTimeSelection()
+		if timeSelStart > item2Start and timeSelStart < item2End and timeSelStart < item1Start and timeSelEnd > item1End and timeSelEnd > item3Start and timeSelEnd < item3End and item2End < item3Start then
+			extendItemToFillTimeSelection(item1,timeSelStart,timeSelEnd)
+		end
+		fadeOverlapofSelectedItems()
 	else
-		reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- sws smart fade
+		fadeOverlapofSelectedItems()	
+	end		
+
+end
+
+function setFadeShapeOfSelectedItems(shape)
+
+	if shape == 1 then 
+		reaper.Main_OnCommand(41528,0) -- set crossfade to shape 1
+		reaper.Main_OnCommand(41514,0) -- set fade in to shape 1
+		reaper.Main_OnCommand(41521,0) -- set fade out to shape 1
+	end
+
+	if shape == 2 then 
+		reaper.Main_OnCommand(41529,0) -- set crossfade to shape 2
+		reaper.Main_OnCommand(41515,0) -- set fade in to shape 2
+		reaper.Main_OnCommand(41522,0) -- set fade out to shape 2
+	end
+
+	if shape == 3 then 
+		reaper.Main_OnCommand(41530,0) -- set crossfade to shape 3
+		reaper.Main_OnCommand(41516,0) -- set fade in to shape 3
+		reaper.Main_OnCommand(41523,0) -- set fade out to shape 3
+	end
+
+	if shape == 4 then 
+		reaper.Main_OnCommand(41531,0) -- set crossfade to shape 4
+		reaper.Main_OnCommand(41517,0) -- set fade in to shape 4
+		reaper.Main_OnCommand(41524,0) -- set fade out to shape 4
+	end
+
+	if shape == 5 then 
+		reaper.Main_OnCommand(41532,0) -- set crossfade to shape 5
+		reaper.Main_OnCommand(41518,0) -- set fade in to shape 5
+		reaper.Main_OnCommand(41525,0) -- set fade out to shape 5
+	end
+
+	if shape == 6 then 
+		reaper.Main_OnCommand(41533,0) -- set crossfade to shape 6
+		reaper.Main_OnCommand(41519,0) -- set fade in to shape 6
+		reaper.Main_OnCommand(41536,0) -- set fade out to shape 6
+	end
+
+	if shape == 7 then 
+		reaper.Main_OnCommand(41838,0) -- set crossfade to shape 7
+		reaper.Main_OnCommand(41836,0) -- set fade in to shape 7
+		reaper.Main_OnCommand(41837,0) -- set fade out to shape 7
 	end
 end
 
+reaper.Undo_BeginBlock()
+reaper.PreventUIRefresh(1)
+originalState = saveOriginalState()
+
+
+local nSelectedItems = reaper.CountSelectedMediaItems(0)
+timeSelStart,timeSelEnd = reaper.GetSet_LoopTimeRange2(0,false,false,0,0,false)
+
+if nSelectedItems == 0 then
+	noItemsSelected()
+end
+
+if nSelectedItems == 1 then
+	itemsSelected1()
+end
+
+if nSelectedItems == 2 then
+	itemsSelected2()
+end
+
+if nSelectedItems == 3 then
+	itemsSelected3()
+end
+
+if nSelectedItems > 3 then
+	fadeOverlapofSelectedItems()
+end
+
+
+setFadeShapeOfSelectedItems(2)
+restoreOriginalState(originalState)
+
 reaper.PreventUIRefresh(-1)
 reaper.Undo_EndBlock("Smart Fade", 0)
-
