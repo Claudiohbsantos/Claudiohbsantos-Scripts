@@ -1,5 +1,5 @@
 -- @description CS_Smart Fade
--- @version 2.5
+-- @version 2.6beta
 -- @author Claudiohbsantos
 -- @link http://claudiohbsantos.com
 -- @date 2017 03 28
@@ -329,79 +329,100 @@ function timeSelectionIsStartOfItems(item1Start,item1End,item2Start,item2End,ite
 end
 
 function timeSelectionisContainedByAllItems(item)
-	if timeSelStart ~= timeSelEnd then
-		local isContained = true
-		for i=1,#item,1 do
-			if not (timeSelStart > item[i].start and timeSelEnd < item[i].limit) then
-				isContained = false
-			end
+	local isContained = false
+	for i=1,#item,1 do
+		if timeSelStart > item[i].start and timeSelEnd < item[i].limit then
+			isContained = true
 		end
-	
-		if isContained then
-			return true
-		else
-			return false
-		end
-	end	
+	end
+
+	if isContained then
+		return true
+	else
+		return false
+	end
 end 
 
 function timeSelectionIsAtEndOfAllItems(item)
-	if timeSelStart ~= timeSelEnd then
-		local isEnd = true
-		for i=1,#item,1 do
-			if not (timeSelStart > item[i].start and timeSelEnd > item[i].limit) then
-				isEnd = false
-			end
+	local isEnd = false
+	for i=1,#item,1 do
+		if timeSelStart > item[i].start and timeSelStart < item[i].limit and timeSelEnd > item[i].limit then
+			isEnd = true
 		end
-	
-		if isEnd then
-			return true
-		else
-			return false
-		end
+	end
+
+	if isEnd then
+		return true
+	else
+		return false
 	end
 end
 
 function  timeSelectionIsAtBeginningOfAllItems(item) 
-	if timeSelStart ~= timeSelEnd then
-		local isStart = true
-		for i=1,#item,1 do
-			if not (timeSelStart < item[i].start and timeSelEnd < item[i].limit) then
-				isStart = false
-			end
+	local isStart = false
+	for i=1,#item,1 do
+		if timeSelStart < item[i].start and timeSelEnd < item[i].limit and timeSelEnd > item[i].start then
+			isStart = true
 		end
-	
-			if isStart then
-				return true
-			else
-				return false
-		end
+	end
+
+		if isStart then
+			return true
+		else
+			return false
 	end
 end
 
 
 function manyItemsSelected(nSelectedItems)
 	local item = {}
+	local itemUnderMouse
+	if mouseDetails == "item" then
+		itemUnderMouse = reaper.BR_ItemAtMouseCursor()
+	end
+
 	for i=1,nSelectedItems,1 do
 		item[i] = {} 
 		item[i].item = reaper.GetSelectedMediaItem(0,i-1)
+		if itemUnderMouse and item[i].item == itemUnderMouse then
+			item.underMouse = item[i].item
+		end
 		item[i].start,item[i].limit = getItemStartAndEnd(item[i].item)
-	end
-
-	if timeSelectionisContainedByAllItems(item) then
-		reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
-	else 
-		if timeSelectionIsAtEndOfAllItems(item) then
-			reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
-		else
-			if timeSelectionIsAtBeginningOfAllItems(item) then
-				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
-			else
-				fadeOverlapofSelectedItems()
-			end
+		if not item.firstEdge or item[i].start < item.firstEdge then
+			item.firstEdge = item[i].start
+			item.first = i
+		end
+		if not item.lastEdge or item[i].limit > item.lastEdge then
+			item.lastEdge = item[i].limit
+			item.last = i
 		end
 	end
 
+	if timeSelStart ~= timeSelEnd then
+		if timeSelectionisContainedByAllItems(item) then
+			reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
+		else 
+			if timeSelectionIsAtEndOfAllItems(item) then
+				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
+			else
+				if timeSelectionIsAtBeginningOfAllItems(item) then
+					reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
+				else
+					if item.underMouse then
+						fadeToMouse(item.firstEdge,item.lastEdge)
+					else
+						fadeOverlapofSelectedItems()
+					end
+				end
+			end
+		end
+	else	
+		if item.underMouse then
+			fadeToMouse(item.firstEdge,item.lastEdge)
+		else
+			fadeOverlapofSelectedItems()
+		end
+	end
 
 end
 

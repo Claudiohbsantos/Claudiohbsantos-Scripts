@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="3c7e5c453f1caf1093a3211aafb8ef50facb9efc" name="Claudiohbsantos Scripts">
+<index version="1" commit="4530462b6ecc1d180706ea2f4c223eb6c270c496" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -229,7 +229,7 @@
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Shrink%20edges%20in%20both%20directions%20fading%20from%20time%20selection.lua</source>
       </version>
     </reapack>
-    <reapack name="CS_Smart Fade.lua" type="script" desc="CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips on different tracks)">
+    <reapack name="CS_Smart Fade.lua" type="script" desc="CS_Smart Fade">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
