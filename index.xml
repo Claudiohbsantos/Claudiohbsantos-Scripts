@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="81bb4b11c63798a4eb2e40e1abf2086ad47eb14b" name="Claudiohbsantos Scripts">
+<index version="1" commit="017ed0060c0dfb6372b8c73e9bc26ff1589f82a3" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -227,41 +227,6 @@
       <version name="1.0" author="Claudiohbsantos" time="2017-03-28T06:06:24Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Shrink%20edges%20in%20both%20directions%20fading%20from%20time%20selection.lua</source>
-      </version>
-    </reapack>
-    <reapack name="CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips on different tracks).lua" type="script" desc="CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips on different tracks)">
-      <metadata>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
-{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-\widowctrl\hyphauto
-
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips)\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If a single item is selected:\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If edit cursor is closer to start of item : {\b Fade In}\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If edit cursor is closer to end of item : {\b Fade Out}\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If there is a time selection over item : {\b Fade In/Out in Time selection}\sa180\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If Two items on same track are selected:\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If they overlap and there is no time selection: {\b Create crossfade on overlap}\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If they overlap and there is a time selection that includes the overlap: {\b Expand items and crossfade on time selection}\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If they don't overlap and there is a time selection enveloping their gap/split point: {\b Expand items and crossfade on time selection}\sa180\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If two or three items are selected on different tracks and they overlap in time : {\b Create fades on time overlap}\sa180\par}
-}
-]]></description>
-        <link rel="website">http://claudiohbsantos.com</link>
-      </metadata>
-      <version name="2.0" author="Claudiohbsantos" time="2017-03-28T06:06:24Z">
-        <changelog><![CDATA[- added non-overlapping conditions]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Smart%20Fade%20(Fade%20depending%20on%20time%20selection,%20edit%20cursor%20position%20and%20overlap%20between%20clips%20on%20different%20tracks).lua</source>
-      </version>
-      <version name="2.1" author="Claudiohbsantos" time="2017-03-28T06:32:11Z">
-        <changelog><![CDATA[- added support for non-overlapping conditions on 2 items on different tracks]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2e67de4d84a772361aeecbcf6a956a93b262e0a6/Lua/Editing/CS_Smart%20Fade%20(Fade%20depending%20on%20time%20selection,%20edit%20cursor%20position%20and%20overlap%20between%20clips%20on%20different%20tracks).lua</source>
-      </version>
-      <version name="2.2beta" author="Claudiohbsantos" time="2017-03-29T07:16:04Z">
-        <changelog><![CDATA[- optimized all conditionals
-- added support for 3+ items
-- prevent locking option from stopping changes]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/81bb4b11c63798a4eb2e40e1abf2086ad47eb14b/Lua/Editing/CS_Smart%20Fade%20(Fade%20depending%20on%20time%20selection,%20edit%20cursor%20position%20and%20overlap%20between%20clips%20on%20different%20tracks).lua</source>
       </version>
     </reapack>
   </category>
