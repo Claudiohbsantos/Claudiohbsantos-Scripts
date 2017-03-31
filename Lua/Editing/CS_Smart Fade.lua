@@ -1,4 +1,4 @@
--- @description CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips on different tracks)
+-- @description CS_Smart Fade
 -- @version 2.5
 -- @author Claudiohbsantos
 -- @link http://claudiohbsantos.com
@@ -280,16 +280,7 @@ function itemsSelected2()
 				end	
 			end	
 		else
-			if mouseDetails == "item" then
-				local itemUnderMouse = reaper.BR_ItemAtMouseCursor()
-					if itemUnderMouse == item1 or itemUnderMouse == item2 then
-						fadeToMouse(earlyItemStart,lateItemEnd)
-					else
-						fadeOverlapofSelectedItems()
-					end
-			else
-				fadeOverlapofSelectedItems()
-			end
+			fadeOverlapofSelectedItems()
 		end
 	else
 		if timeSelStart ~= timeSelEnd then
@@ -441,7 +432,16 @@ function itemsSelected3()
 			reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
 		end
 	else
-		fadeOverlapofSelectedItems()	
+		if mouseDetails == "item" then
+			local itemUnderMouse = reaper.BR_ItemAtMouseCursor()
+				if itemUnderMouse == item1 or itemUnderMouse == item2 or itemUnderMouse == item3 then
+					fadeToMouse(earlyItemStart,lateItemEnd)
+				else
+					fadeOverlapofSelectedItems()
+				end
+		else
+			fadeOverlapofSelectedItems()
+		end
 	end		
 
 end
