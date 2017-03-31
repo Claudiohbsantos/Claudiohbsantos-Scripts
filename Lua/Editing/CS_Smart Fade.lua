@@ -1,10 +1,10 @@
 -- @description CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips on different tracks)
--- @version 2.3beta
+-- @version 2.4
 -- @author Claudiohbsantos
 -- @link http://claudiohbsantos.com
 -- @date 2017 03 28
 -- @about
---   # CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips)
+--   # CS_Smart Fade (Fade depending on time selection, mouse position and overlap between clips)
 --   - If a single item is selected:
 --     - If edit cursor is closer to start of item : **Fade In**
 --     - If edit cursor is closer to end of item : **Fade Out**
@@ -15,7 +15,7 @@
 --     - If they don't overlap and there is a time selection enveloping their gap/split point: **Expand items and crossfade on time selection**
 --   - If two or three items are selected on different tracks and they overlap in time : **Create fades on time overlap**
 -- @changelog
---   - Fixed conditional for case os 2 items on same track with containing time selection
+--   - Addresses all sensible combinations of items (Yeah, sure... all I could think of at least)
 
 function msg(x)
 	reaper.ShowConsoleMsg(tostring(x).."\n")
@@ -207,7 +207,7 @@ function fadeOverlapofSelectedItems()
 	restoreSelectedItemsTracks(originalState)
 end
 
-function timeSelectionIsContainedByItems(timeSelStart,earlyItemStart,lateItemStart,timeSelEnd,earlyItemEnd,lateItemEnd)
+function timeSelectioFocusesOnIntersection(timeSelStart,earlyItemStart,lateItemStart,timeSelEnd,earlyItemEnd,lateItemEnd)
 	if timeSelStart > earlyItemStart and timeSelEnd > earlyItemEnd and timeSelStart < lateItemStart and timeSelEnd > lateItemStart and timeSelEnd < lateItemEnd then
 		return true
 	else
@@ -231,6 +231,14 @@ function timeSelectionCoversStartsOfItems(timeSelStart,earlyItemStart,lateItemSt
 	end
 end
 
+function timeSelectionisContainedByBothItems(timeSelStart,earlyItemStart,lateItemStart,timeSelEnd,earlyItemEnd,lateItemEnd)
+	if timeSelStart > earlyItemStart and timeSelStart > lateItemStart and timeSelEnd < earlyItemEnd and timeSelEnd < lateItemEnd then
+		return true
+	else
+		return false
+	end
+end
+
 function itemsSelected2()
 	local item1 = reaper.GetSelectedMediaItem(0,0)
 	local item2 = reaper.GetSelectedMediaItem(0,1)
@@ -242,30 +250,34 @@ function itemsSelected2()
 	if item1Track ~= item2Track then -- if on different tracks
 		local earlyItemStart,earlyItemEnd,lateItemStart,lateItemEnd = getEdgesOf2ItemsInOrder(item1,item2)
 		if timeSelStart ~= timeSelEnd then
-			if timeSelectionIsContainedByItems(timeSelStart,earlyItemStart,lateItemStart,timeSelEnd,earlyItemEnd,lateItemEnd) then
+			if timeSelectioFocusesOnIntersection(timeSelStart,earlyItemStart,lateItemStart,timeSelEnd,earlyItemEnd,lateItemEnd) then
 				extendItemToFillTimeSelection(item1,timeSelStart,timeSelEnd)
 				extendItemToFillTimeSelection(item2,timeSelStart,timeSelEnd)
 				reaper.Main_OnCommand(40020,0) -- remove time selection
 				fadeOverlapofSelectedItems()
 			else
-				if timeSelectionCoversEndsOfItems(timeSelStart,earlyItemStart,lateItemStart,timeSelEnd,earlyItemEnd,lateItemEnd) then
+				if timeSelectionisContainedByBothItems(timeSelStart,earlyItemStart,lateItemStart,timeSelEnd,earlyItemEnd,lateItemEnd) then
 					reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
-				else
-					if timeSelectionCoversStartsOfItems(timeSelStart,earlyItemStart,lateItemStart,timeSelEnd,earlyItemEnd,lateItemEnd) then
+				else	
+					if timeSelectionCoversEndsOfItems(timeSelStart,earlyItemStart,lateItemStart,timeSelEnd,earlyItemEnd,lateItemEnd) then
 						reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
 					else
-						if mouseDetails == "item" then
-							local itemUnderMouse = reaper.BR_ItemAtMouseCursor()
-								if itemUnderMouse == item1 or itemUnderMouse == item2 then
-									fadeToMouse(earlyItemStart,lateItemEnd)
-								else
-									fadeOverlapofSelectedItems()
-								end
+						if timeSelectionCoversStartsOfItems(timeSelStart,earlyItemStart,lateItemStart,timeSelEnd,earlyItemEnd,lateItemEnd) then
+							reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
 						else
-							fadeOverlapofSelectedItems()
+							if mouseDetails == "item" then
+								local itemUnderMouse = reaper.BR_ItemAtMouseCursor()
+									if itemUnderMouse == item1 or itemUnderMouse == item2 then
+										fadeToMouse(earlyItemStart,lateItemEnd)
+									else
+										fadeOverlapofSelectedItems()
+									end
+							else
+								fadeOverlapofSelectedItems()
+							end
 						end
 					end
-				end
+				end	
 			end	
 		else
 			if mouseDetails == "item" then
@@ -300,6 +312,108 @@ function itemsSelected2()
 	end
 end
 
+function timeSelectionisContainedByThreeItems(item1Start,item1End,item2Start,item2End,item3Start,item3End)
+	if timeSelStart > item1Start and timeSelStart > item2Start and timeSelStart > item3Start and timeSelEnd < item1End and timeSelEnd < item2End and timeSelEnd < item3End  then
+		return true
+	else
+		return false
+	end
+end
+
+function timeSelectionIsEndOfItems(item1Start,item1End,item2Start,item2End,item3Start,item3End)
+	if timeSelStart > item1Start and timeSelStart > item2Start and timeSelStart > item3Start and timeSelEnd > item1End and timeSelEnd > item2End and timeSelEnd > item3End  then
+		return true
+	else
+		return false
+	end
+end
+
+function timeSelectionIsStartOfItems(item1Start,item1End,item2Start,item2End,item3Start,item3End)
+	if timeSelStart < item1Start and timeSelStart < item2Start and timeSelStart < item3Start and timeSelEnd < item1End and timeSelEnd < item2End and timeSelEnd < item3End  then
+		return true
+	else
+		return false
+	end
+
+end
+
+function timeSelectionisContainedByAllItems(item)
+	if timeSelStart ~= timeSelEnd then
+		local isContained = true
+		for i=1,#item,1 do
+			if not (timeSelStart > item[i].start and timeSelEnd < item[i].limit) then
+				isContained = false
+			end
+		end
+	
+		if isContained then
+			return true
+		else
+			return false
+		end
+	end	
+end 
+
+function timeSelectionIsAtEndOfAllItems(item)
+	if timeSelStart ~= timeSelEnd then
+		local isEnd = true
+		for i=1,#item,1 do
+			if not (timeSelStart > item[i].start and timeSelEnd > item[i].limit) then
+				isEnd = false
+			end
+		end
+	
+		if isEnd then
+			return true
+		else
+			return false
+		end
+	end
+end
+
+function  timeSelectionIsAtBeginningOfAllItems(item) 
+	if timeSelStart ~= timeSelEnd then
+		local isStart = true
+		for i=1,#item,1 do
+			if not (timeSelStart < item[i].start and timeSelEnd < item[i].limit) then
+				isStart = false
+			end
+		end
+	
+			if isStart then
+				return true
+			else
+				return false
+		end
+	end
+end
+
+
+function manyItemsSelected(nSelectedItems)
+	local item = {}
+	for i=1,nSelectedItems,1 do
+		item[i] = {} 
+		item[i].item = reaper.GetSelectedMediaItem(0,i-1)
+		item[i].start,item[i].limit = getItemStartAndEnd(item[i].item)
+	end
+
+	if timeSelectionisContainedByAllItems(item) then
+		reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
+	else 
+		if timeSelectionIsAtEndOfAllItems(item) then
+			reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
+		else
+			if timeSelectionIsAtBeginningOfAllItems(item) then
+				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
+			else
+				fadeOverlapofSelectedItems()
+			end
+		end
+	end
+
+
+end
+
 function itemsSelected3()
 	local item1 = reaper.GetSelectedMediaItem(0,0)
 	local item2 = reaper.GetSelectedMediaItem(0,1)
@@ -312,12 +426,20 @@ function itemsSelected3()
 	if timeSelStart ~= timeSelEnd then
 		if timeSelStart > item1Start and timeSelStart < item1End and timeSelStart < item3Start and timeSelEnd > item3End and timeSelEnd > item2Start and timeSelEnd < item2End and item1End < item2Start then
 			extendItemToFillTimeSelection(item3,timeSelStart,timeSelEnd)
+			fadeOverlapofSelectedItems()
 		end
 
 		if timeSelStart > item2Start and timeSelStart < item2End and timeSelStart < item1Start and timeSelEnd > item1End and timeSelEnd > item3Start and timeSelEnd < item3End and item2End < item3Start then
 			extendItemToFillTimeSelection(item1,timeSelStart,timeSelEnd)
+			fadeOverlapofSelectedItems()
 		end
-		fadeOverlapofSelectedItems()
+
+		if timeSelectionisContainedByThreeItems(item1Start,item1End,item2Start,item2End,item3Start,item3End) or
+			timeSelectionIsEndOfItems(item1Start,item1End,item2Start,item2End,item3Start,item3End) or
+			timeSelectionIsStartOfItems(item1Start,item1End,item2Start,item2End,item3Start,item3End)
+			then
+			reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
+		end
 	else
 		fadeOverlapofSelectedItems()	
 	end		
@@ -395,11 +517,11 @@ if nSelectedItems == 3 then
 end
 
 if nSelectedItems > 3 then
-	fadeOverlapofSelectedItems()
+	manyItemsSelected(nSelectedItems)
 end
 
 
-setFadeShapeOfSelectedItems(2)
+setFadeShapeOfSelectedItems(0)
 restoreOriginalState(originalState)
 
 reaper.PreventUIRefresh(-1)
