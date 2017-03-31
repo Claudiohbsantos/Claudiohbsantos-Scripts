@@ -1,5 +1,5 @@
 -- @description CS_Smart Fade (Fade depending on time selection, edit cursor position and overlap between clips on different tracks)
--- @version 2.4
+-- @version 2.5
 -- @author Claudiohbsantos
 -- @link http://claudiohbsantos.com
 -- @date 2017 03 28
