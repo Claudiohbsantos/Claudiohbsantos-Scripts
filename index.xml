@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="c80ac66c1ba62bf8be6f9c1a31dbe5e75aa2a63d" name="Claudiohbsantos Scripts">
+<index version="1" commit="91b4ff33f6d805dd49674a49bde9fd441c109a67" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -236,15 +236,6 @@
 \widowctrl\hyphauto
 
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Smart Fade (Fade depending on time selection, mouse position and overlap between clips)\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If a single item is selected:\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If edit cursor is closer to start of item : {\b Fade In}\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If edit cursor is closer to end of item : {\b Fade Out}\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If there is a time selection over item : {\b Fade In/Out in Time selection}\sa180\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If Two items on same track are selected:\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If they overlap and there is no time selection: {\b Create crossfade on overlap}\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If they overlap and there is a time selection that includes the overlap: {\b Expand items and crossfade on time selection}\par}
-{\pard \ql \f0 \sa0 \li720 \fi-360 \endash \tx360\tab If they don't overlap and there is a time selection enveloping their gap/split point: {\b Expand items and crossfade on time selection}\sa180\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If two or three items are selected on different tracks and they overlap in time : {\b Create fades on time overlap}\sa180\par}
 }
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
@@ -260,6 +251,9 @@
       <version name="2.6" author="Claudiohbsantos" time="2017-03-31T07:46:26Z">
         <changelog><![CDATA[- Extensive Code Optimizations]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c80ac66c1ba62bf8be6f9c1a31dbe5e75aa2a63d/Lua/Editing/CS_Smart%20Fade.lua</source>
+      </version>
+      <version name="2.7" author="Claudiohbsantos" time="2017-04-01T19:22:18Z">
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/91b4ff33f6d805dd49674a49bde9fd441c109a67/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
     </reapack>
   </category>
