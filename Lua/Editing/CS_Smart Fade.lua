@@ -1,6 +1,6 @@
 --[[
 @description CS_Smart Fade
-@version 2.7
+@version 2.8
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 03 28
@@ -8,7 +8,7 @@
   # CS_Smart Fade (Fade depending on time selection, mouse position and overlap between clips)
   
 @changelog
-  - Fixed behavior when time selection doesnt overlap items
+  - Fixed layering mouse and time selection conditions so for 3+ items it only fades at mouse or time selection if all items are affected
 --]]
 function msg(x)
 	reaper.ShowConsoleMsg(tostring(x).."\n")
@@ -85,16 +85,28 @@ function getItemStartAndEnd(item)
 	return startPos,endPos
 end
 
-function fadeToMouse(startPos,endPos)
+function fadeToMouse(item)
 	local mousePos = reaper.BR_GetMouseCursorContext_Position()
-	if (mousePos - startPos) < (endPos - mousePos) then -- is mouse is before middle of item
-		reaper.SetEditCurPos2(0,mousePos,false,false)
-		reaper.Main_OnCommand(40509,0) -- fade in
+	local onTopOfAllItems = true
+	for i=1,#item,1 do
+		if mousePos < item[i].start or mousePos > item[i].limit then
+			onTopOfAllItems = false
+			break
+		end
 	end
 
-	if (mousePos - startPos) >= (endPos - mousePos) then -- is mouse is before middle of item
-		reaper.SetEditCurPos2(0,mousePos,false,false)
-		reaper.Main_OnCommand(40510,0) -- fade out
+	if onTopOfAllItems then
+		if (mousePos - item.firstEdge) < (item.lastEdge - mousePos) then -- is mouse is before middle of item
+			reaper.SetEditCurPos2(0,mousePos,false,false)
+			reaper.Main_OnCommand(40509,0) -- fade in
+		end
+	
+			if (mousePos - item.firstEdge) >= (item.lastEdge - mousePos) then -- is mouse is before middle of item
+				reaper.SetEditCurPos2(0,mousePos,false,false)
+				reaper.Main_OnCommand(40510,0) -- fade out
+		end
+	else
+		fadeOverlapofSelectedItems()	
 	end
 end
 
@@ -290,8 +302,8 @@ function fadeSelectedItems(nSelectedItems)
 
 				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
 			else
-				if (timeSelectionContainsAllItems(item) or timeSelectionDoesntOverlapItems(item)) and item.underMouse then
-					fadeToMouse(item.firstEdge,item.lastEdge)
+				if item.underMouse and (timeSelectionContainsAllItems(item) or timeSelectionDoesntOverlapItems(item)) then
+					fadeToMouse(item)
 				else
 					fadeOverlapofSelectedItems()
 				end
@@ -299,7 +311,7 @@ function fadeSelectedItems(nSelectedItems)
 		end
 	else	
 		if item.underMouse then
-			fadeToMouse(item.firstEdge,item.lastEdge)
+			fadeToMouse(item)
 		else
 			fadeOverlapofSelectedItems()
 		end
