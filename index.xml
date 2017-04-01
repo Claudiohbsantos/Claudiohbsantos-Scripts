@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="bdaced012a30b713faf33a58abc3860dbda5311c" name="Claudiohbsantos Scripts">
+<index version="1" commit="310dab2cde150581add3762f81c2a7090e0a68a9" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -235,7 +235,7 @@
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Smart Fade (Fade depending on time selection, mouse position and overlap between clips)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Smart Fade\par}
 }
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
@@ -256,7 +256,7 @@
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/91b4ff33f6d805dd49674a49bde9fd441c109a67/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
       <version name="2.8" author="Claudiohbsantos" time="2017-04-01T22:55:59Z">
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bdaced012a30b713faf33a58abc3860dbda5311c/Lua/Editing/CS_Smart%20Fade.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/310dab2cde150581add3762f81c2a7090e0a68a9/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
     </reapack>
   </category>
