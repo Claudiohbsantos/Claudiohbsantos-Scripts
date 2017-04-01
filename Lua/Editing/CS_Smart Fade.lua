@@ -1,22 +1,15 @@
--- @description CS_Smart Fade
--- @version 2.6
--- @author Claudiohbsantos
--- @link http://claudiohbsantos.com
--- @date 2017 03 28
--- @about
---   # CS_Smart Fade (Fade depending on time selection, mouse position and overlap between clips)
---   - If a single item is selected:
---     - If edit cursor is closer to start of item : **Fade In**
---     - If edit cursor is closer to end of item : **Fade Out**
---     - If there is a time selection over item : **Fade In/Out in Time selection**
---   - If Two items on same track are selected:
---     - If they overlap and there is no time selection: **Create crossfade on overlap**
---     - If they overlap and there is a time selection that includes the overlap: **Expand items and crossfade on time selection**
---     - If they don't overlap and there is a time selection enveloping their gap/split point: **Expand items and crossfade on time selection**
---   - If two or three items are selected on different tracks and they overlap in time : **Create fades on time overlap**
--- @changelog
---   - Extensive Code Optimizations
-
+--[[
+@description CS_Smart Fade
+@version 2.7
+@author Claudiohbsantos
+@link http://claudiohbsantos.com
+@date 2017 03 28
+@about
+  # CS_Smart Fade (Fade depending on time selection, mouse position and overlap between clips)
+  
+@changelog
+  - Fixed behavior when time selection doesnt overlap items
+--]]
 function msg(x)
 	reaper.ShowConsoleMsg(tostring(x).."\n")
 end
@@ -212,6 +205,22 @@ function  timeSelectionIsAtBeginningOfAllItems(item)
 	end
 end
 
+function timeSelectionContainsAllItems(item)
+	 if timeSelStart <= item.firstEdge and timeSelEnd >= item.lastEdge then 
+	 	return true
+	 else
+	 	return false
+	 end
+end
+
+function timeSelectionDoesntOverlapItems(item)
+	 if timeSelStart > item.lastEdge or timeSelEnd < item.firstEdge then 
+	 	return true
+	 else
+	 	return false
+	 end
+end
+
 function checkSpecialCases(item)
 	if #item == 2 then
 		if timeSelStart > item[item.first].start and timeSelEnd > item[item.first].limit and timeSelStart < item[item.last].start and timeSelEnd > item[item.last].start and timeSelEnd < item[item.last].limit then
@@ -281,7 +290,11 @@ function fadeSelectedItems(nSelectedItems)
 
 				reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_AWFADESEL"),0) -- SWS fade
 			else
-				fadeOverlapofSelectedItems()
+				if (timeSelectionContainsAllItems(item) or timeSelectionDoesntOverlapItems(item)) and item.underMouse then
+					fadeToMouse(item.firstEdge,item.lastEdge)
+				else
+					fadeOverlapofSelectedItems()
+				end
 			end
 		end
 	else	
