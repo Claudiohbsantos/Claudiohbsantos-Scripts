@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="ce5d241c5fece1eb986ae20def70159254efa008" name="Claudiohbsantos Scripts">
+<index version="1" commit="8dfe5bf25f8173273c016b3193babaf8b5cf4ef3" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -256,7 +256,8 @@
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/91b4ff33f6d805dd49674a49bde9fd441c109a67/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
       <version name="2.8" author="Claudiohbsantos" time="2017-04-01T22:55:59Z">
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/ce5d241c5fece1eb986ae20def70159254efa008/Lua/Editing/CS_Smart%20Fade.lua</source>
+        <changelog><![CDATA[- Fixed layering mouse and time selection conditions so for 3+ items it only fades at mouse or time selection if all items are affected]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/8dfe5bf25f8173273c016b3193babaf8b5cf4ef3/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
     </reapack>
   </category>
