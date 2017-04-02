@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="9eecd6bb6b412eaca4072b0dc46a1370009fc33c" name="Claudiohbsantos Scripts">
+<index version="1" commit="ca06bed8cfb4885dddd64ed6ed5c96a7f19256d3" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -305,6 +305,28 @@ Multiple Selected
       <version name="2.8" author="Claudiohbsantos" time="2017-04-01T22:55:59Z">
         <changelog><![CDATA[--  Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/9eecd6bb6b412eaca4072b0dc46a1370009fc33c/Lua/Editing/CS_Smart%20Fade.lua</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Lua/Playback">
+    <reapack name="CS_SoloXOR_Across_Projects.lua" type="script" desc="CS_SoloXOR_Across_Projects">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_SoloXOR_Across_Projects\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This script performs a simple Solo X Or on the selected track. If any other tracks are soloed, they will be unsoloed so the selected track(s) is the only one playing. If background projects are playing they will also be muted. If more than one track is selected and they have diferent solo states, all selected tracks will follow the First track change. {\field{\*\fldinst{HYPERLINK "https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SoloXOR_Across_Projects.gif"}}{\fldrslt{\ul
+SoloXORExample
+}}}
+\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-04-02T05:30:46Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/ca06bed8cfb4885dddd64ed6ed5c96a7f19256d3/Lua/Playback/CS_SoloXOR_Across_Projects.lua</source>
       </version>
     </reapack>
   </category>
