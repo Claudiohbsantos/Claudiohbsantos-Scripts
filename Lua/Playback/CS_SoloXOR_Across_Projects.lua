@@ -10,8 +10,7 @@
   [SoloXORExample](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SoloXOR_Across_Projects.gif)
 @changelog
   - Initial Release
-@screenshot
-  Example Gif https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SoloXOR_Across_Projects.gif  
+@screenshot Example Gif https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SoloXOR_Across_Projects.gif  
 --]]
 
 function msg(msg)
