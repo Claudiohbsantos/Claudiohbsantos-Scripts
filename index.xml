@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="475080a3170db98eece784e0a24debb4841daeca" name="Claudiohbsantos Scripts">
+<index version="1" commit="f0fa7f47d7948b34e3774f8d2e49c1f6c111b4cc" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -327,7 +327,7 @@ SoloXORExample
       </metadata>
       <version name="1.0" author="Claudiohbsantos" time="2017-04-02T05:30:46Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/475080a3170db98eece784e0a24debb4841daeca/Lua/Playback/CS_SoloXOR_Across_Projects.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/f0fa7f47d7948b34e3774f8d2e49c1f6c111b4cc/Lua/Playback/CS_SoloXOR_Across_Projects.lua</source>
       </version>
     </reapack>
   </category>
