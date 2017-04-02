@@ -4,56 +4,56 @@
 -- @link http://claudiohbsantos.com
 -- @date 2017 03 28
 -- @about
---	# CS_Smart Fade 
---	
---	**No Items Selected**
---	When there are no items selected, the fade is applied to the Item under the Mouse, at the mouse position. If the Mouse is closer to the end of the item, a **Fade Out** is applied. If the Mouse is closer to the beginning of the item, a **Fade In** is applied. 
---	[No Items Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_noitems.gif)
---	
---	**One Item Selected**
---	When a single item is selected, the script behaves as follows (in order of highest priority to lowest):
---	* If there is a time selection covering part of the item, applies **SWS Fade in/out/In and out** depending on what part the time selection covers
---	* If there is no time selection or it doesn't overlap the item, **Fade in or out to mouse position**. Note that in this case the mouse doesn't have to be on top of the selected item.
---	
---	[1 Item Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_Single%20Item.gif)
---	
---	**Two Items Selected**
---	When two items are selected, the script behaves as follows (in order of highest priority to lowest):
---	*  If time selection overlaps beginning or end of both, **Fade in** or **Fade Out**
---	*  If time selection overlaps the joint or gap between both items, **Extend Items to fill time selection and Fade**
---	*  If time selection doesn't overlap both items and mouse is not on top of items, **Fade overlap of items**
---	*  If time selection doesn't overlap both items and mouse is on top of items, **Fadein / fadeout** 
---	
---	*Mouse On Top*
---	[2 Items With Mouse](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_2%20items%20No%20mouse.gif)
---	
---	*No Mouse On Top*
---	[2 Items without Mouse](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_2%20items%20mouse%20on%20top%20difference.gif)
---	
---	*Comparing difference between mouse on top and not on top*
---	[2 Items Comparison](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_2%20items%20mouse%20on%20top%20difference.gif)
---	**Three Items Selected**
---	When three Items are selected, the script behaves as follows (in order of highest priority to lowest)
---	* If time selection is as big or bigger than center item, and is contained by outer items, **Extend center item to fill time selection and fade overlaps**
---	* If time selection covers beginning or end of **all** items, **Fade in or Out to Time Selection**
---	* If mouse is on top of item and  it's position coincides with **all** selected items, **Fade in or Out to Mouse Position**
---	* If all else is false, **fade overlaps between items**
---	
---	
---	[3 Items Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_3%20items.gif)
---	
---	**Four or More Items Selected**
---	When there are four or more items selected, the script behaves as follows (in order of highest priority to lowest)
---	* If time selection covers beginning or end of **all** items, **Fade in or Out to Time Selection**
---	* If mouse is on top of item and  it's position coincides with **all** selected items, **Fade in or Out to Mouse Position**
---	* If all else is false, **fade overlaps between items**
---	
---	[4+ Items Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_Layers.gif)
---	[Multiple Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_Multiple%20Items.gif)
---	
+--   # CS_Smart Fade 
+--   
+--   **No Items Selected**
+--   When there are no items selected, the fade is applied to the Item under the Mouse, at the mouse position. If the Mouse is closer to the end of the item, a **Fade Out** is applied. If the Mouse is closer to the beginning of the item, a **Fade In** is applied. 
+--   [No Items Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_noitems.gif)
+--   
+--   **One Item Selected**
+--   When a single item is selected, the script behaves as follows (in order of highest priority to lowest):
+--   * If there is a time selection covering part of the item, applies **SWS Fade in/out/In and out** depending on what part the time selection covers
+--   * If there is no time selection or it doesn't overlap the item, **Fade in or out to mouse position**. Note that in this case the mouse doesn't have to be on top of the selected item.
+--   
+--   [1 Item Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_Single%20Item.gif)
+--   
+--   **Two Items Selected**
+--   When two items are selected, the script behaves as follows (in order of highest priority to lowest):
+--   *  If time selection overlaps beginning or end of both, **Fade in** or **Fade Out**
+--   *  If time selection overlaps the joint or gap between both items, **Extend Items to fill time selection and Fade**
+--   *  If time selection doesn't overlap both items and mouse is not on top of items, **Fade overlap of items**
+--   *  If time selection doesn't overlap both items and mouse is on top of items, **Fadein / fadeout** 
+--   
+--   *Mouse On Top*
+--   [2 Items With Mouse](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_2%20items%20No%20mouse.gif)
+--   
+--   *No Mouse On Top*
+--   [2 Items without Mouse](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_2%20items%20mouse%20on%20top%20difference.gif)
+--   
+--   *Comparing difference between mouse on top and not on top*
+--   [2 Items Comparison](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_2%20items%20mouse%20on%20top%20difference.gif)
+--   **Three Items Selected**
+--   When three Items are selected, the script behaves as follows (in order of highest priority to lowest)
+--   * If time selection is as big or bigger than center item, and is contained by outer items, **Extend center item to fill time selection and fade overlaps**
+--   * If time selection covers beginning or end of **all** items, **Fade in or Out to Time Selection**
+--   * If mouse is on top of item and  it's position coincides with **all** selected items, **Fade in or Out to Mouse Position**
+--   * If all else is false, **fade overlaps between items**
+--   
+--   
+--   [3 Items Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_3%20items.gif)
+--   
+--   **Four or More Items Selected**
+--   When there are four or more items selected, the script behaves as follows (in order of highest priority to lowest)
+--   * If time selection covers beginning or end of **all** items, **Fade in or Out to Time Selection**
+--   * If mouse is on top of item and  it's position coincides with **all** selected items, **Fade in or Out to Mouse Position**
+--   * If all else is false, **fade overlaps between items**
+--   
+--   [4+ Items Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_Layers.gif)
+--   [Multiple Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_Multiple%20Items.gif)
+--   
 -- @changelog
---	- Fixed layering mouse and time selection conditions so for 3+ items it only fades at mouse or time selection if all items are affected
---	- Added About
+--   - Fixed layering mouse and time selection conditions so for 3+ items it only fades at mouse or time selection if all items are affected
+--   - Added About
 
 function msg(x)
 	reaper.ShowConsoleMsg(tostring(x).."\n")
