@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="846b4bbf919397f99fc4186078dc211e6e05206c" name="Claudiohbsantos Scripts">
+<index version="1" commit="9ac9b84c39f1b27e9faad746c2145476e8409822" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -236,6 +236,53 @@
 \widowctrl\hyphauto
 
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Smart Fade\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b No Items Selected} When there are no items selected, the fade is applied to the Item under the Mouse, at the mouse position. If the Mouse is closer to the end of the item, a {\b Fade Out} is applied. If the Mouse is closer to the beginning of the item, a {\b Fade In} is applied. {\field{\*\fldinst{HYPERLINK "https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_noitems.gif"}}{\fldrslt{\ul
+No Items Selected
+}}}
+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b One Item Selected} When a single item is selected, the script behaves as follows (in order of highest priority to lowest):\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If there is a time selection covering part of the item, applies {\b SWS Fade in/out/In and out} depending on what part the time selection covers\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If there is no time selection or it doesn't overlap the item, {\b Fade in or out to mouse position}. Note that in this case the mouse doesn't have to be on top of the selected item.\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\field{\*\fldinst{HYPERLINK "https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_Single%20Item.gif"}}{\fldrslt{\ul
+1 Item Selected
+}}}
+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Two Items Selected} When two items are selected, the script behaves as follows (in order of highest priority to lowest):\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If time selection overlaps beginning or end of both, {\b Fade in} or {\b Fade Out}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If time selection overlaps the joint or gap between both items, {\b Extend Items to fill time selection and Fade}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If time selection doesn't overlap both items and mouse is not on top of items, {\b Fade overlap of items}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If time selection doesn't overlap both items and mouse is on top of items, {\b Fadein / fadeout}\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\i Mouse On Top} {\field{\*\fldinst{HYPERLINK "https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_2%20items%20No%20mouse.gif"}}{\fldrslt{\ul
+2 Items With Mouse
+}}}
+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\i No Mouse On Top} {\field{\*\fldinst{HYPERLINK "https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_2%20items%20mouse%20on%20top%20difference.gif"}}{\fldrslt{\ul
+2 Items without Mouse
+}}}
+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\i Comparing difference between mouse on top and not on top} {\field{\*\fldinst{HYPERLINK "https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_2%20items%20mouse%20on%20top%20difference.gif"}}{\fldrslt{\ul
+2 Items Comparison
+}}}
+ {\b Three Items Selected} When three Items are selected, the script behaves as follows (in order of highest priority to lowest)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If time selection is as big or bigger than center item, and is contained by outer items, {\b Extend center item to fill time selection and fade overlaps}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If time selection covers beginning or end of {\b all} items, {\b Fade in or Out to Time Selection}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If mouse is on top of item and it's position coincides with {\b all} selected items, {\b Fade in or Out to Mouse Position}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If all else is false, {\b fade overlaps between items}\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\field{\*\fldinst{HYPERLINK "https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_3%20items.gif"}}{\fldrslt{\ul
+3 Items Selected
+}}}
+\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\b Four or More Items Selected} When there are four or more items selected, the script behaves as follows (in order of highest priority to lowest)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If time selection covers beginning or end of {\b all} items, {\b Fade in or Out to Time Selection}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If mouse is on top of item and it's position coincides with {\b all} selected items, {\b Fade in or Out to Mouse Position}\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If all else is false, {\b fade overlaps between items}\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 {\field{\*\fldinst{HYPERLINK "https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_Layers.gif"}}{\fldrslt{\ul
+4+ Items Selected
+}}}
+ {\field{\*\fldinst{HYPERLINK "https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_Multiple%20Items.gif"}}{\fldrslt{\ul
+Multiple Selected
+}}}
+\par}
 }
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
@@ -256,8 +303,9 @@
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/91b4ff33f6d805dd49674a49bde9fd441c109a67/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
       <version name="2.8" author="Claudiohbsantos" time="2017-04-01T22:55:59Z">
-        <changelog><![CDATA[- Fixed layering mouse and time selection conditions so for 3+ items it only fades at mouse or time selection if all items are affected]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/846b4bbf919397f99fc4186078dc211e6e05206c/Lua/Editing/CS_Smart%20Fade.lua</source>
+        <changelog><![CDATA[- Fixed layering mouse and time selection conditions so for 3+ items it only fades at mouse or time selection if all items are affected
+- Added About]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/9ac9b84c39f1b27e9faad746c2145476e8409822/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
     </reapack>
   </category>
