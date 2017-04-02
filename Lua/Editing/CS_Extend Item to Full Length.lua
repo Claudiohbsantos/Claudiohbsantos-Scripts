@@ -1,5 +1,5 @@
 -- @description CS_Extend Item to Full Length
--- @version 2.0
+-- @version 2.1
 -- @author Claudiohbsantos
 -- @link http://claudiohbsantos.com
 -- @date 2017 03 27
@@ -7,7 +7,7 @@
 --   # CS_Extend Item to Full Length
 --   Extends selected items to it's full length in place.
 -- @changelog
---   - fixed bug when item is in beginning of timeline
+--   - Script now keeps item selected after extending
 
 reaper.Undo_BeginBlock()
 reaper.PreventUIRefresh(1)
@@ -47,6 +47,10 @@ for i=1,tot_items,1 do
 
 		reaper.Main_OnCommand(40612,0) -- extend to full length
 		reaper.SelectAllMediaItems(0,0)
+end
+
+for i=1,#items,1 do
+	reaper.SetMediaItemSelected(items[i],true)
 end
 
 reaper.PreventUIRefresh(-1)
