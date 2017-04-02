@@ -52,8 +52,7 @@
 --   [Multiple Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_Multiple%20Items.gif)
 --   
 -- @changelog
---   - Fixed layering mouse and time selection conditions so for 3+ items it only fades at mouse or time selection if all items are affected
---   - Added About
+--   --  Initial Release
 
 function msg(x)
 	reaper.ShowConsoleMsg(tostring(x).."\n")
