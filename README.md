@@ -9,7 +9,9 @@ Url to import into Reapack:
 
 ## How to Install this repository into Reapack?
 
-In order to download any of the scripts in this repository and have access to the updates, you need to install the [Reapack Extension](https://reapack.com/). Once installed, go to `Extensions > Reapack > Import a repository...` and paste the following URL:
+In order to download any of the scripts in this repository and have access to the updates, you need to install the [Reapack Extension](https://reapack.com/). Once installed, go to `Extensions > Reapack > Import a repository...`
+and paste the following URL:
+
 `https://raw.githubusercontent.com/Claudiohbsantos/Claudiohbsantos-Scripts/master/index.xml`
 
 ![Import Repo](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/Reapack_ImportRepo.png)
