@@ -1,5 +1,5 @@
 -- @description CS_Smart Fade
--- @version 2.8
+-- @version 3.0
 -- @author Claudiohbsantos
 -- @link http://claudiohbsantos.com
 -- @date 2017 03 28
@@ -52,7 +52,7 @@
 --   [Multiple Selected](https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/blob/master/Licecaps/CS_SmartFade_Multiple%20Items.gif)
 --   
 -- @changelog
---   --  Initial Release
+--   --  Cleaned Up Code and Removed Dead Functions
 
 function msg(x)
 	reaper.ShowConsoleMsg(tostring(x).."\n")
@@ -363,51 +363,6 @@ function fadeSelectedItems(nSelectedItems)
 
 end
 
-function setFadeShapeOfSelectedItems(shape)
-
-	if shape == 1 then 
-		reaper.Main_OnCommand(41528,0) -- set crossfade to shape 1
-		reaper.Main_OnCommand(41514,0) -- set fade in to shape 1
-		reaper.Main_OnCommand(41521,0) -- set fade out to shape 1
-	end
-
-	if shape == 2 then 
-		reaper.Main_OnCommand(41529,0) -- set crossfade to shape 2
-		reaper.Main_OnCommand(41515,0) -- set fade in to shape 2
-		reaper.Main_OnCommand(41522,0) -- set fade out to shape 2
-	end
-
-	if shape == 3 then 
-		reaper.Main_OnCommand(41530,0) -- set crossfade to shape 3
-		reaper.Main_OnCommand(41516,0) -- set fade in to shape 3
-		reaper.Main_OnCommand(41523,0) -- set fade out to shape 3
-	end
-
-	if shape == 4 then 
-		reaper.Main_OnCommand(41531,0) -- set crossfade to shape 4
-		reaper.Main_OnCommand(41517,0) -- set fade in to shape 4
-		reaper.Main_OnCommand(41524,0) -- set fade out to shape 4
-	end
-
-	if shape == 5 then 
-		reaper.Main_OnCommand(41532,0) -- set crossfade to shape 5
-		reaper.Main_OnCommand(41518,0) -- set fade in to shape 5
-		reaper.Main_OnCommand(41525,0) -- set fade out to shape 5
-	end
-
-	if shape == 6 then 
-		reaper.Main_OnCommand(41533,0) -- set crossfade to shape 6
-		reaper.Main_OnCommand(41519,0) -- set fade in to shape 6
-		reaper.Main_OnCommand(41536,0) -- set fade out to shape 6
-	end
-
-	if shape == 7 then 
-		reaper.Main_OnCommand(41838,0) -- set crossfade to shape 7
-		reaper.Main_OnCommand(41836,0) -- set fade in to shape 7
-		reaper.Main_OnCommand(41837,0) -- set fade out to shape 7
-	end
-end
-
 reaper.Undo_BeginBlock()
 reaper.PreventUIRefresh(1)
 originalState = saveOriginalState()
@@ -419,7 +374,6 @@ retval,segment,mouseDetails = reaper.BR_GetMouseCursorContext()
 
 fadeSelectedItems(nSelectedItems)
 
-setFadeShapeOfSelectedItems(0)
 restoreOriginalState(originalState)
 
 reaper.PreventUIRefresh(-1)
