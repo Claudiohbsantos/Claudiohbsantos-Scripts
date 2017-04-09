@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="f0fa7f47d7948b34e3774f8d2e49c1f6c111b4cc" name="Claudiohbsantos Scripts">
+<index version="1" commit="a82b380cac8c744b0748aca9a7430633b3beb7f3" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -71,6 +71,10 @@
         <changelog><![CDATA[- fixed bug when item is in beginning of timeline]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/21c74d235930306354fa9e43f254801d04e749f6/Lua/Editing/CS_Extend%20Item%20to%20Full%20Length.lua</source>
       </version>
+      <version name="2.1" author="Claudiohbsantos" time="2017-04-02T17:26:45Z">
+        <changelog><![CDATA[- Script now keeps item selected after extending]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/9db484f0d5d21f89fe6ffb5c0654e7df683baf2b/Lua/Editing/CS_Extend%20Item%20to%20Full%20Length.lua</source>
+      </version>
     </reapack>
     <reapack name="CS_Extend selected item to fill time Selection.lua" type="script" desc="CS_Extend selected item to fill time Selection">
       <metadata>
@@ -125,6 +129,23 @@
       <version name="1.0" author="Claudiohbsantos" time="2017-03-28T06:06:24Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Label%20REV%20if%20it%20has%20been%20reversed.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Move Cursor To Middle of Time Selection.lua" type="script" desc="CS_Move Cursor To Middle of Time Selection">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Move Cursor To Middle of Time Selection\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Moves edit cursor to middle of current time selection\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Editing/CS_Move%20Cursor%20To%20Middle%20of%20Time%20Selection.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Nudge Cursor or Item left by grid division based on Item Selection.lua" type="script" desc="CS_Nudge Cursor or Item left by grid division based on Item Selection">
@@ -210,6 +231,23 @@
       <version name="1.0" author="Claudiohbsantos" time="2017-03-28T06:06:24Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Remove%20Selected%20area%20of%20Item%20and%20select%20right%20portion.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Render as new take with handles removing labels and extensions.lua" type="script" desc="CS_Render as new take with handles removing labels and extensions and setting original FX offline">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Render as new take with handles removing labels and extensions\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This scripts renders the item into a new take, keeping handles outside of the current item edges. After rendereing, it removes extensions such as .wav, render, -glued, and such. The fx in the original take are set to offline.\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Editing/CS_Render%20as%20new%20take%20with%20handles%20removing%20labels%20and%20extensions.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Shrink edges in both directions fading from time selection.lua" type="script" desc="CS_Shrink edges in both directions fading from time selection">
@@ -306,6 +344,97 @@ Multiple Selected
         <changelog><![CDATA[--  Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/9eecd6bb6b412eaca4072b0dc46a1370009fc33c/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
+      <version name="3.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
+        <changelog><![CDATA[--  Cleaned Up Code and Removed Dead Functions]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Editing/CS_Smart%20Fade.lua</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Lua/Markers">
+    <reapack name="CS_Create Marker 0 - Blue.lua" type="script" desc="Create Marker 0 - Blue">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Create Marker 0 - Blue\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Creates a blue marker 0 at edit cursor position. Can have many markers 0 created at different positions, and all are reset by action "Reset Marker 0 to Cursor Position", so it can be used to craeate temporary markers\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Markers/CS_Create%20Marker%200%20-%20Blue.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Create Marker 0 - Green.lua" type="script" desc="Create Marker 0 - Green">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Create Marker 0 - Green\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Creates a green marker 0 at edit cursor position. Can have many markers 0 created at different positions, and all are reset by action "Reset Marker 0 to Cursor Position", so it can be used to craeate temporary markers\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Markers/CS_Create%20Marker%200%20-%20Green.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Create Marker 0.lua" type="script" desc="Create Marker 0 - Red">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Create Marker 0\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Creates a marker with ID 0 and color red at the edit cursor position. Many markers with the same id can be added and removed at once with the "Reset Marker 0 to cursor position" action, so it's great to use as a temporary marker\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Markers/CS_Create%20Marker%200.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Create random colored region at time selection.lua" type="script" desc="CS_Create random colored region at time selection">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Create random colored region at time selection\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Creates a random colored regio at current time selection\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Markers/CS_Create%20random%20colored%20region%20at%20time%20selection.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Reset Marker 0 to cursor position.lua" type="script" desc="CS_Reset Marker 0 to cursor position">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Reset Marker 0 to cursor position\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Deletes all markers with id 0 and creates a new marker with id 0 at the current edit cursor posisition. When used with "Create Marker 0" actions, can be used to quickly create and remove temporary markers during edit\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Markers/CS_Reset%20Marker%200%20to%20cursor%20position.lua</source>
+      </version>
     </reapack>
   </category>
   <category name="Lua/Playback">
@@ -328,6 +457,42 @@ SoloXORExample
       <version name="1.0" author="Claudiohbsantos" time="2017-04-02T05:30:46Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/f0fa7f47d7948b34e3774f8d2e49c1f6c111b4cc/Lua/Playback/CS_SoloXOR_Across_Projects.lua</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Lua/Selection">
+    <reapack name="CS_Extend Track Selection to Track under Mouse.lua" type="script" desc="CS_Extend Track Selection to Track under Mouse">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Extend Track Selection to Track under Mouse\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Extends curent track selection to track currently under mouse\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Selection/CS_Extend%20Track%20Selection%20to%20Track%20under%20Mouse.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Move Cursor to beginning of Time Selection.lua" type="script" desc="CS_Move Cursor to beginning of Time Selection">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Move Cursor to beginning of Time Selection\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Moves edit cursor to beginning of time selection\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
+        <changelog><![CDATA[- Initial release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Selection/CS_Move%20Cursor%20to%20beginning%20of%20Time%20Selection.lua</source>
       </version>
     </reapack>
   </category>
