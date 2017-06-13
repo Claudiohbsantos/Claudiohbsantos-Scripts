@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="3e595c0f909c1b4e766d4db97ee34484e47a69de" name="Claudiohbsantos Scripts">
+<index version="1" commit="df69653a2356207ed7b69c8417c5a4a26c1b6c5a" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -576,7 +576,7 @@ SoloXORExample
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Go To Time\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Go To Time\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Go to Time input Press + or - to change to subtration or Addition Mode. Press Spacebar to reset default timecode to zero.\par}
 }
 ]]></description>
@@ -593,6 +593,10 @@ SoloXORExample
       <version name="1.3" author="Claudiohbsantos" time="2017-06-13T23:43:39Z">
         <changelog><![CDATA[- fixed header]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/3e595c0f909c1b4e766d4db97ee34484e47a69de/Lua/Tools/CS_GoToTimecode.lua</source>
+      </version>
+      <version name="1.4" author="Claudiohbsantos" time="2017-06-13T23:50:27Z">
+        <changelog><![CDATA[- fixed header (again)]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/df69653a2356207ed7b69c8417c5a4a26c1b6c5a/Lua/Tools/CS_GoToTimecode.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Set Time Selection In.lua" type="script" desc="CS_Set Time Selection In">
