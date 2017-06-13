@@ -1,15 +1,15 @@
 --[[
 @description CS_Go To Time
-@version 1.3
+@version 1.4
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
 @about
-  # Go To Time
+  # CS_Go To Time
   Go to Time input
   Press + or - to change to subtration  or Addition Mode. Press Spacebar to reset default timecode to zero. 
 @changelog
-  - fixed header
+  - fixed header (again)
 --]]
 
 function msg(s) reaper.ShowConsoleMsg(tostring(s)..'\n') end
