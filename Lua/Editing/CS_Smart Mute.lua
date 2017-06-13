@@ -1,6 +1,6 @@
 --[[
-@description 
-@version Smart Mute
+@description CS_Smart Mute
+@version 1.0
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 12
