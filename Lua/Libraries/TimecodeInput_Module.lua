@@ -6,10 +6,9 @@
 @date 2017 06 13
 @about
   # TimecodeInput_Module
-  Timecode Input Module for other scripts
+  Timecode Input Module for other scripts.
 @changelog
   - initial release
-@metapackage  
 --]]
 ---------------------------------------------------------------------------------------
 
