@@ -1,6 +1,6 @@
 --[[
 @description TimecodeInput_Module
-@version 1.0
+@version 1.1
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
