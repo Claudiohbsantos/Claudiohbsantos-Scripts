@@ -10,7 +10,7 @@
 @changelog
   - initial release
 @provides
-  ../Libraries/TimecodeInput_Module.lua > ../Libraries/TimecodeInput_Module.lua  
+  [nomain] ../Libraries/TimecodeInput_Module.lua 
 --]]
 
 function get_script_path()

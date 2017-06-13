@@ -11,7 +11,7 @@
 @changelog
   - initial release
 @provides
-  ../Libraries/TimecodeInput_Module.lua > ../Libraries/TimecodeInput_Module.lua
+  [nomain] ../Libraries/TimecodeInput_Module.lua
 --]]
 
 function msg(s) reaper.ShowConsoleMsg(tostring(s)..'\n') end
