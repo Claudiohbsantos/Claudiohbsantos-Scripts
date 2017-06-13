@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="fc151d567664bb4c2ccc4b34dcafbff76928bc49" name="Claudiohbsantos Scripts">
+<index version="1" commit="cba57ef33f6ee8a729becf95b898fcfce3fc6292" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -402,9 +402,17 @@ Multiple Selected
     </reapack>
   </category>
   <category name="Lua/Libraries">
-    <reapack name="TimecodeInput_Module.lua" type="script" desc="Search tracks">
+    <reapack name="TimecodeInput_Module.lua" type="script" desc="TimecodeInput_Module">
       <metadata>
-        <link rel="website">http://forum.cockos.com/member.php?u=70694</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 TimecodeInput_Module\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Timecode Input Module for other scripts\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
       </metadata>
       <version name="1.0" author="mpl" time="2017-06-13T22:20:43Z">
         <changelog><![CDATA[+ init release]]></changelog>
