@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="df69653a2356207ed7b69c8417c5a4a26c1b6c5a" name="Claudiohbsantos Scripts">
+<index version="1" commit="eca82c5cb60c61ce1e63f54414fbda34fbec3fe3" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -570,7 +570,7 @@ SoloXORExample
     </reapack>
   </category>
   <category name="Lua/Tools">
-    <reapack name="CS_GoToTimecode.lua" type="script" desc="CS_Go To Time">
+    <reapack name="CS_GoToTime.lua" type="script" desc="CS_Go To Time">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
@@ -582,21 +582,9 @@ SoloXORExample
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
       </metadata>
-      <version name="1.1" author="Claudiohbsantos" time="2017-06-13T23:31:38Z">
-        <changelog><![CDATA[- initial release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2df7f88ea887878f68381ce4c3e768b3d258be59/Lua/Tools/CS_GoToTimecode.lua</source>
-      </version>
-      <version name="1.2" author="Claudiohbsantos" time="2017-06-13T23:35:48Z">
-        <changelog><![CDATA[- initial release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2bbd6b7b0deee797c3c1db39906d305f489c1649/Lua/Tools/CS_GoToTimecode.lua</source>
-      </version>
-      <version name="1.3" author="Claudiohbsantos" time="2017-06-13T23:43:39Z">
-        <changelog><![CDATA[- fixed header]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/3e595c0f909c1b4e766d4db97ee34484e47a69de/Lua/Tools/CS_GoToTimecode.lua</source>
-      </version>
-      <version name="1.4" author="Claudiohbsantos" time="2017-06-13T23:50:27Z">
+      <version name="1.5" author="Claudiohbsantos" time="2017-06-13T23:51:30Z">
         <changelog><![CDATA[- fixed header (again)]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/df69653a2356207ed7b69c8417c5a4a26c1b6c5a/Lua/Tools/CS_GoToTimecode.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/eca82c5cb60c61ce1e63f54414fbda34fbec3fe3/Lua/Tools/CS_GoToTime.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Set Time Selection In.lua" type="script" desc="CS_Set Time Selection In">
