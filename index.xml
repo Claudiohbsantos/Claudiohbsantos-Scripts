@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="cba57ef33f6ee8a729becf95b898fcfce3fc6292" name="Claudiohbsantos Scripts">
+<index version="1" commit="2df7f88ea887878f68381ce4c3e768b3d258be59" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -408,7 +408,7 @@ Multiple Selected
 \widowctrl\hyphauto
 
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 TimecodeInput_Module\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Timecode Input Module for other scripts\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Timecode Input Module for other scripts.\par}
 }
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
@@ -562,6 +562,76 @@ SoloXORExample
       <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
         <changelog><![CDATA[- Initial release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Selection/CS_Move%20Cursor%20to%20beginning%20of%20Time%20Selection.lua</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Lua/Tools">
+    <reapack name="CS_GoToTimecode.lua" type="script" desc="Go To Time">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Go To Time\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Go to Time input Press + or - to change to subtration or Addition Mode. Press Spacebar to reset default timecode to zero.\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.1" author="Claudiohbsantos" time="2017-06-13T23:31:38Z">
+        <changelog><![CDATA[- initial release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2df7f88ea887878f68381ce4c3e768b3d258be59/Lua/Tools/CS_GoToTimecode.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Set Time Selection In.lua" type="script" desc="CS_Set Time Selection In">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Set Time Selection In\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Set Time Selection In point via time input\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.1" author="Claudiohbsantos" time="2017-06-13T23:31:38Z">
+        <changelog><![CDATA[- initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2df7f88ea887878f68381ce4c3e768b3d258be59/Lua/Tools/CS_Set%20Time%20Selection%20In.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Set Time Selection Length.lua" type="script" desc="CS_Set Time Selection Length">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Set Time Selection Length\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Set time Selection Length via time input\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.1" author="Claudiohbsantos" time="2017-06-13T23:31:38Z">
+        <changelog><![CDATA[- initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2df7f88ea887878f68381ce4c3e768b3d258be59/Lua/Tools/CS_Set%20Time%20Selection%20Length.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Set Time Selection Out.lua" type="script" desc="CS_Set Time Selection Out">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Set Time Selection Out\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Set time selection out via time input\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.1" author="Claudiohbsantos" time="2017-06-13T23:31:38Z">
+        <changelog><![CDATA[- initial release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2df7f88ea887878f68381ce4c3e768b3d258be59/Lua/Tools/CS_Set%20Time%20Selection%20Out.lua</source>
       </version>
     </reapack>
   </category>
