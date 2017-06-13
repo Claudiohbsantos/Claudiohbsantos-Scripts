@@ -358,8 +358,7 @@ Multiple Selected
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/91b4ff33f6d805dd49674a49bde9fd441c109a67/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
       <version name="2.8" author="Claudiohbsantos" time="2017-04-01T22:55:59Z">
-        <changelog><![CDATA[--  Initial Release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/9eecd6bb6b412eaca4072b0dc46a1370009fc33c/Lua/Editing/CS_Smart%20Fade.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bdaced012a30b713faf33a58abc3860dbda5311c/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
       <version name="3.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
         <changelog><![CDATA[--  Cleaned Up Code and Removed Dead Functions]]></changelog>
@@ -526,7 +525,7 @@ SoloXORExample
       </metadata>
       <version name="1.0" author="Claudiohbsantos" time="2017-04-02T05:30:46Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/f0fa7f47d7948b34e3774f8d2e49c1f6c111b4cc/Lua/Playback/CS_SoloXOR_Across_Projects.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/ca06bed8cfb4885dddd64ed6ed5c96a7f19256d3/Lua/Playback/CS_SoloXOR_Across_Projects.lua</source>
       </version>
     </reapack>
   </category>
