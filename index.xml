@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="dfa25117e283cd5399a49a830fd962e7751d8dd5" name="Claudiohbsantos Scripts">
+<index version="1" commit="fc151d567664bb4c2ccc4b34dcafbff76928bc49" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -267,6 +267,23 @@
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Shrink%20edges%20in%20both%20directions%20fading%20from%20time%20selection.lua</source>
       </version>
     </reapack>
+    <reapack name="CS_Smart Delete.lua" type="script" desc="CS_Smart Delete">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Deletes based on mouse context\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-06-13T23:05:20Z">
+        <changelog><![CDATA[- initial release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/fc151d567664bb4c2ccc4b34dcafbff76928bc49/Lua/Editing/CS_Smart%20Delete.lua</source>
+      </version>
+    </reapack>
     <reapack name="CS_Smart Fade.lua" type="script" desc="CS_Smart Fade">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
@@ -347,6 +364,23 @@ Multiple Selected
       <version name="3.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
         <changelog><![CDATA[--  Cleaned Up Code and Removed Dead Functions]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Editing/CS_Smart%20Fade.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Smart Mute.lua" type="script" desc="CS_Smart Mute">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 \par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Mutes based on mouse context\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-06-13T23:05:20Z">
+        <changelog><![CDATA[- initial release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/fc151d567664bb4c2ccc4b34dcafbff76928bc49/Lua/Editing/CS_Smart%20Mute.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Smart Split.lua" type="script" desc="CS_Smart Split">
