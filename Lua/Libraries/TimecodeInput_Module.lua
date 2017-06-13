@@ -1,10 +1,16 @@
--- @version 1.0
--- @author mpl
--- @changelog
---   + init release
--- @description Search tracks
--- @website http://forum.cockos.com/member.php?u=70694
-
+--[[
+@description TimecodeInput_Module
+@version 1.0
+@author Claudiohbsantos
+@link http://claudiohbsantos.com
+@date 2017 06 13
+@about
+  # TimecodeInput_Module
+  Timecode Input Module for other scripts
+@changelog
+  - initial release
+@metapackage  
+--]]
 ---------------------------------------------------------------------------------------
 
 local leftArrow = 1818584692
