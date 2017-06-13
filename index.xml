@@ -111,7 +111,7 @@
       <version name="1.3" author="Claudiohbsantos" time="2017-03-27T16:55:48Z">
         <changelog><![CDATA[-- Prevents take envelope from being glued
 -- Prevents neighboring clips from having their fades altered]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/048a8ff237c26c9942bbd559a077db44565b1a10/Lua/Editing/CS_Implode%20two%20monos%20into%20stereo.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b66a898fe7f950750e45ad018f52149f98cafd58/Lua/Editing/CS_Implode%20two%20monos%20into%20stereo.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Label REV if it has been reversed.lua" type="script" desc="CS_Label REV if it has been reversed">
@@ -344,7 +344,7 @@ Multiple Selected
       </metadata>
       <version name="2.5" author="Claudiohbsantos" time="2017-03-31T06:13:31Z">
         <changelog><![CDATA[- Addresses all sensible combinations of items (Yeah, sure... all I could think of at least)]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4530462b6ecc1d180706ea2f4c223eb6c270c496/Lua/Editing/CS_Smart%20Fade.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/3c7e5c453f1caf1093a3211aafb8ef50facb9efc/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
       <version name="2.6beta" author="Claudiohbsantos" time="2017-03-31T07:02:22Z">
         <changelog><![CDATA[- Addresses all sensible combinations of items (Yeah, sure... all I could think of at least)]]></changelog>
@@ -358,8 +358,7 @@ Multiple Selected
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/91b4ff33f6d805dd49674a49bde9fd441c109a67/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
       <version name="2.8" author="Claudiohbsantos" time="2017-04-01T22:55:59Z">
-        <changelog><![CDATA[--  Initial Release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/9eecd6bb6b412eaca4072b0dc46a1370009fc33c/Lua/Editing/CS_Smart%20Fade.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bdaced012a30b713faf33a58abc3860dbda5311c/Lua/Editing/CS_Smart%20Fade.lua</source>
       </version>
       <version name="3.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
         <changelog><![CDATA[--  Cleaned Up Code and Removed Dead Functions]]></changelog>
@@ -414,9 +413,9 @@ Multiple Selected
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
       </metadata>
-      <version name="1.0" author="Claudiohbsantos" time="2017-06-13T22:20:43Z">
-        <changelog><![CDATA[- initial release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2df7f88ea887878f68381ce4c3e768b3d258be59/Lua/Libraries/TimecodeInput_Module.lua</source>
+      <version name="1.0" author="mpl" time="2017-06-13T22:20:43Z">
+        <changelog><![CDATA[+ init release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/dfa25117e283cd5399a49a830fd962e7751d8dd5/Lua/Libraries/TimecodeInput_Module.lua</source>
       </version>
       <version name="1.1" author="Claudiohbsantos" time="2017-06-13T23:35:48Z">
         <changelog><![CDATA[- initial release]]></changelog>
@@ -530,7 +529,7 @@ SoloXORExample
       </metadata>
       <version name="1.0" author="Claudiohbsantos" time="2017-04-02T05:30:46Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/f0fa7f47d7948b34e3774f8d2e49c1f6c111b4cc/Lua/Playback/CS_SoloXOR_Across_Projects.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/ca06bed8cfb4885dddd64ed6ed5c96a7f19256d3/Lua/Playback/CS_SoloXOR_Across_Projects.lua</source>
       </version>
     </reapack>
   </category>
