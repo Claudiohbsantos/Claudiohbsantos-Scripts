@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="eca82c5cb60c61ce1e63f54414fbda34fbec3fe3" name="Claudiohbsantos Scripts">
+<index version="1" commit="7f835cf5479535f6ce7fed5565011df3ce08bff1" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -400,29 +400,6 @@ Multiple Selected
       </version>
     </reapack>
   </category>
-  <category name="Lua/Libraries">
-    <reapack name="TimecodeInput_Module.lua" type="script" desc="TimecodeInput_Module">
-      <metadata>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
-{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-\widowctrl\hyphauto
-
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 TimecodeInput_Module\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Timecode Input Module for other scripts.\par}
-}
-]]></description>
-        <link rel="website">http://claudiohbsantos.com</link>
-      </metadata>
-      <version name="1.0" author="mpl" time="2017-06-13T22:20:43Z">
-        <changelog><![CDATA[+ init release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/dfa25117e283cd5399a49a830fd962e7751d8dd5/Lua/Libraries/TimecodeInput_Module.lua</source>
-      </version>
-      <version name="1.1" author="Claudiohbsantos" time="2017-06-13T23:35:48Z">
-        <changelog><![CDATA[- initial release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2bbd6b7b0deee797c3c1db39906d305f489c1649/Lua/Libraries/TimecodeInput_Module.lua</source>
-      </version>
-    </reapack>
-  </category>
   <category name="Lua/Markers">
     <reapack name="CS_Create Marker 0 - Blue.lua" type="script" desc="Create Marker 0 - Blue">
       <metadata>
@@ -586,6 +563,11 @@ SoloXORExample
         <changelog><![CDATA[- fixed header (again)]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/eca82c5cb60c61ce1e63f54414fbda34fbec3fe3/Lua/Tools/CS_GoToTime.lua</source>
       </version>
+      <version name="1.6" author="Claudiohbsantos" time="2017-06-15T03:33:06Z">
+        <changelog><![CDATA[- added library dependency to package]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/7f835cf5479535f6ce7fed5565011df3ce08bff1/Lua/Tools/CS_GoToTime.lua</source>
+        <source file="../Libraries/Go To Time/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/7f835cf5479535f6ce7fed5565011df3ce08bff1/Lua/Libraries/TimecodeInput_Module.lua</source>
+      </version>
     </reapack>
     <reapack name="CS_Set Time Selection In.lua" type="script" desc="CS_Set Time Selection In">
       <metadata>
@@ -606,6 +588,11 @@ SoloXORExample
       <version name="1.2" author="Claudiohbsantos" time="2017-06-13T23:35:48Z">
         <changelog><![CDATA[- initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2bbd6b7b0deee797c3c1db39906d305f489c1649/Lua/Tools/CS_Set%20Time%20Selection%20In.lua</source>
+      </version>
+      <version name="1.3" author="Claudiohbsantos" time="2017-06-15T03:33:06Z">
+        <changelog><![CDATA[- added library dependency to package]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/7f835cf5479535f6ce7fed5565011df3ce08bff1/Lua/Tools/CS_Set%20Time%20Selection%20In.lua</source>
+        <source file="../Libraries/Set Time Selection In/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/7f835cf5479535f6ce7fed5565011df3ce08bff1/Lua/Libraries/TimecodeInput_Module.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Set Time Selection Length.lua" type="script" desc="CS_Set Time Selection Length">
@@ -628,6 +615,11 @@ SoloXORExample
         <changelog><![CDATA[- initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2bbd6b7b0deee797c3c1db39906d305f489c1649/Lua/Tools/CS_Set%20Time%20Selection%20Length.lua</source>
       </version>
+      <version name="1.3" author="Claudiohbsantos" time="2017-06-15T03:33:06Z">
+        <changelog><![CDATA[- added library dependency to package]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/7f835cf5479535f6ce7fed5565011df3ce08bff1/Lua/Tools/CS_Set%20Time%20Selection%20Length.lua</source>
+        <source file="../Libraries/Set Time Selection Length/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/7f835cf5479535f6ce7fed5565011df3ce08bff1/Lua/Libraries/TimecodeInput_Module.lua</source>
+      </version>
     </reapack>
     <reapack name="CS_Set Time Selection Out.lua" type="script" desc="CS_Set Time Selection Out">
       <metadata>
@@ -648,6 +640,11 @@ SoloXORExample
       <version name="1.2" author="Claudiohbsantos" time="2017-06-13T23:35:48Z">
         <changelog><![CDATA[- initial release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2bbd6b7b0deee797c3c1db39906d305f489c1649/Lua/Tools/CS_Set%20Time%20Selection%20Out.lua</source>
+      </version>
+      <version name="1.3" author="Claudiohbsantos" time="2017-06-15T03:33:06Z">
+        <changelog><![CDATA[- added library dependency to package]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/7f835cf5479535f6ce7fed5565011df3ce08bff1/Lua/Tools/CS_Set%20Time%20Selection%20Out.lua</source>
+        <source file="../Libraries/Set Time Selection Out/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/7f835cf5479535f6ce7fed5565011df3ce08bff1/Lua/Libraries/TimecodeInput_Module.lua</source>
       </version>
     </reapack>
   </category>
