@@ -1,6 +1,6 @@
 --[[
 @description TimecodeInput_Module
-@version 1.1
+@version 1.2
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -8,7 +8,8 @@
   # TimecodeInput_Module
   Timecode Input Module for other scripts.
 @changelog
-  - initial release
+  - Removed From Listing
+@noindex
 --]]
 ---------------------------------------------------------------------------------------
 

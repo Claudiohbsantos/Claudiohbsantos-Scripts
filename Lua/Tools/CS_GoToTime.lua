@@ -1,6 +1,6 @@
 --[[
 @description CS_Go To Time
-@version 1.5
+@version 1.6
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -9,7 +9,9 @@
   Go to Time input
   Press + or - to change to subtration  or Addition Mode. Press Spacebar to reset default timecode to zero. 
 @changelog
-  - fixed header (again)
+  - added library dependency to package
+@provides
+  ../Libraries/TimecodeInput_Module.lua > ../Libraries/Go To Time/TimecodeInput_Module.lua  
 --]]
 
 function msg(s) reaper.ShowConsoleMsg(tostring(s)..'\n') end
@@ -39,7 +41,7 @@ function prequire(...)
 end
 
 local script_path = get_script_path()
-local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\"
+local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\Go To Time\\"
 package.path = package.path .. ";" .. libraryPath .. "?.lua"
 
 local requireStatus = prequire("TimecodeInput_Module")
@@ -50,7 +52,7 @@ if requireStatus then
   defaulTimeInSeconds = reaper.GetCursorPositionEx(0)
   runTimecodeInputBox()
 else
-  reaper.ShowMessageBox("The script is missing the TimecodeInput_Module to function. Please install it from the Claudiohbsantos reapack repository and run this script acaing","Error: Library Missing",0)
+  reaper.ShowMessageBox("The script is missing the TimecodeInput_Module to function. Please reinstall this script from Reapack","Error: Library Missing",0)
 end
   
 

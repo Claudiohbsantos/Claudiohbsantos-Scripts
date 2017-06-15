@@ -1,6 +1,6 @@
 --[[
 @description CS_Set Time Selection Out
-@version 1.2
+@version 1.3
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -8,7 +8,9 @@
   # CS_Set Time Selection Out
   Set time selection out via time input
 @changelog
-  - initial release
+  - added library dependency to package
+@provides
+  ../Libraries/TimecodeInput_Module.lua > ../Libraries/Set Time Selection Out/TimecodeInput_Module.lua
 --]]
 
 function get_script_path()
@@ -35,12 +37,11 @@ end
 function prequire(...)
     local status, lib = pcall(require, ...)
     if(status) then return lib end
-    --Library failed to load, so perhaps return `nil` or something?
     return nil
 end
 
 local script_path = get_script_path()
-local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\"
+local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\Set Time Selection Out\\"
 package.path = package.path .. ";" .. libraryPath .. "?.lua"
 
 local requireStatus = prequire("TimecodeInput_Module")
@@ -54,7 +55,7 @@ if requireStatus then
   defaulTimeInSeconds = timeSelOut
   runTimecodeInputBox()
 else
-  reaper.ShowMessageBox("The script is missing the TimecodeInput_Module to function. Please install it from the Claudiohbsantos reapack repository and run this script acaing","Error: Library Missing",0)
+  reaper.ShowMessageBox("The script is missing the TimecodeInput_Module to function. Please reinstall this script from Reapack","Error: Library Missing",0)
 end
   
 
