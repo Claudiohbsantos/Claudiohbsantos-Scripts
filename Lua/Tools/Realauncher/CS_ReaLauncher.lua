@@ -12,38 +12,19 @@
 @noindex
 --]]
 ---------------------------------------------------------------------------------------
-realauncher = {}  
-realauncher.textToPrint = {}
-
-leftArrow = 1818584692
-upArrow = 30064
-rightArrow = 1919379572
-downArrow = 1685026670
-deleteKey = 6579564
-backspace = 8
-minus = 45
-plus = 43
-spacebar = 32
-enter = 13
-quotes = 34
-parenthesesOpen = 40
-parenthesesClose = 41
-tab = 9
-
-realauncher.white = function(text) gfx.set(1,1,1,0.8,0) ; gfx.drawstr(text) return end
-realauncher.grey = function(text) gfx.set(1,1,1,0.3,0) ; gfx.drawstr(text) return end
-realauncher.red = function(text) gfx.set(1,0.6,0.6,0.8,0) ; gfx.drawstr(text) return end
-realauncher.green = function(text) gfx.set(0.6,1,0.6,0.8,0) ; gfx.drawstr(text) return end
-realauncher.blue = function(text) gfx.set(0.6,0.6,1,0.8,0) ; gfx.drawstr(text) return end
+rl = {}  
+rl.textToPrint = {}
+rl.registeredCommands = {}
 
 
-minusMode = false
-plusMode = false
-resetAutoCompletedTimecode = false
-zeroTCString = "0:00:00:00"
+
+rl.white = function(text) gfx.set(1,1,1,0.8,0) ; gfx.drawstr(text) return end
+rl.grey = function(text) gfx.set(1,1,1,0.3,0) ; gfx.drawstr(text) return end
+rl.red = function(text) gfx.set(1,0.6,0.6,0.8,0) ; gfx.drawstr(text) return end
+rl.green = function(text) gfx.set(0.6,1,0.6,0.8,0) ; gfx.drawstr(text) return end
+rl.blue = function(text) gfx.set(0.6,0.6,1,0.8,0) ; gfx.drawstr(text) return end
+
 ---------------------------------------------------------------------------------------
-
-function msg(s) reaper.ShowConsoleMsg(tostring(s)..'\n') end
 
 function get_script_path()
 	local info = debug.getinfo(1,'S');
@@ -53,194 +34,120 @@ end
 
 ---------------------------------------------------------------------------------------
 
-function printText(text,color)
-	table.insert(realauncher.textToPrint,{text,color})
+function printText(text,color,typeOfUnit)
+	table.insert(rl.textToPrint,{text = text,color = color,typeOfUnit = typeOfUnit})
 end
 
 function unprintLastText(n)
-	for i=1,n+1,1 do table.remove(realauncher.textToPrint) end
+	for i=1,n+1,1 do table.remove(rl.textToPrint) end
 end
 
 function printHint(text,color)
-	realauncher.previewToPrint = {text,color}
+	rl.previewToPrint = {text = text,color = color}
 end
 
-function TextBox(char)
-if not realauncher.active_char then realauncher.active_char = 0 end
-if not realauncher.text        then realauncher.text = '' end
+function LauncherTextBox(char)
+	if not rl.active_char then rl.active_char = 0 end
+	if not rl.text        then rl.text = '' end
 
-if not numericalInputOnly then
-	if  -- regular input
-	    (
-	        (char >= 65 -- a
-	        and char <= 90) --z
-	        or (char >= 97 -- a
-	        and char <= 122) --z
-	        or ( char >= 212 -- A
-	        and char <= 223) --Z
-	        or ( char >= 48 -- 0
-	        and char <= 57) --Z
-	        or char == 95 -- _
-	        or char == 44 -- ,
-	        or char == 32 -- (space)
-	        or char == 45 -- (-)
-	        or char == 92 -- \
-	        or char == 47 -- / 
-	        or char == 46 --.
-	        or char == 58 -- :
-	        or char == 34 -- "
-	        or char == 40 -- (
-	        or char == 41 -- )
-	    )
-	    then        
-	      realauncher.text = realauncher.text:sub(0,realauncher.active_char)..
+	if  kbInput.isAnyPrintableSymbol(char) then        
+	      rl.text = rl.text:sub(0,rl.active_char)..
 	        string.char(char)..
-	        realauncher.text:sub(realauncher.active_char+1)
-	      realauncher.active_char = realauncher.active_char + 1
+	        rl.text:sub(rl.active_char+1)
+	      rl.active_char = rl.active_char + 1
 	end
-else
-		if  -- numerical input
-	    (
-	        ( char >= 48 -- 0
-	        and char <= 57) --9
-	    )
-	    then        
-	      realauncher.text = realauncher.text:sub(0,realauncher.active_char)..
-	        string.char(char)..
-	        realauncher.text:sub(realauncher.active_char+1)
-	      realauncher.active_char = realauncher.active_char + 1
-		end
 
-		if char == minus then
-    minusMode = not minusMode
-    resetAutoCompletedTimecode = not resetAutoCompletedTimecode
-    if plusMode then 
-      plusMode = false
-      resetAutoCompletedTimecode = not resetAutoCompletedTimecode
-    end
-  end
+	 if char == kbInput.backspace then
+	    rl.text = rl.text:sub(0,rl.active_char-1)..
+	      rl.text:sub(rl.active_char+1)
+	    rl.active_char = rl.active_char - 1
+	  end
 
-  if char == plus then
-    plusMode = not plusMode
-    resetAutoCompletedTimecode = not resetAutoCompletedTimecode
-    if minusMode then 
-      minusMode = false
-      resetAutoCompletedTimecode = not resetAutoCompletedTimecode 
-    end
-  end
+	  if char == kbInput.deleteKey then
+	    rl.text = rl.text:sub(0,rl.active_char)..
+	      rl.text:sub(rl.active_char+2)
+	    rl.active_char = rl.active_char
+	  end
+	        
+	  if char == kbInput.leftArrow then
+	    rl.active_char = rl.active_char - 1
+	  end
+	  
+	  if char == kbInput.rightArrow then
+	    rl.active_char = rl.active_char + 1
+	  end
 
-  if char == spacebar and not minusMode and not plusMode then
-    resetAutoCompletedTimecode = not resetAutoCompletedTimecode
-  end
-
-end 
-  
-  if char == backspace then
-    realauncher.text = realauncher.text:sub(0,realauncher.active_char-1)..
-      realauncher.text:sub(realauncher.active_char+1)
-    realauncher.active_char = realauncher.active_char - 1
-  end
-
-  if char == deleteKey then
-    realauncher.text = realauncher.text:sub(0,realauncher.active_char)..
-      realauncher.text:sub(realauncher.active_char+2)
-    realauncher.active_char = realauncher.active_char
-  end
-        
-  if char == leftArrow then
-    realauncher.active_char = realauncher.active_char - 1
-  end
-  
-  if char == rightArrow then
-    realauncher.active_char = realauncher.active_char + 1
-  end
-
-if realauncher.active_char < 0 then realauncher.active_char = 0 end
-if realauncher.active_char > realauncher.text:len()  then realauncher.active_char = realauncher.text:len() end
+	if rl.active_char < 0 then rl.active_char = 0 end
+	if rl.active_char > rl.text:len()  then rl.active_char = rl.text:len() end
 end
 
-function drawArgumentsAutocomplete(suggestion)
-	if realauncher.argSuggestion then
-		gfx.x = obj_offs*2-4
-		gfx.y = obj_offs+gui_fontsize+obj_offs/2
+function rl.timeInput(defaultTimeToDisplay)
+	rl.drawCursor = false
+	rl.customInput = true
+	if not tcInput then initTimeInput() end 
+	TCTextBox(char) 
+	local userInputInSeconds,userInputString = getTimeInput(tcInput.text,defaultTimeToDisplay)
 
-		for suggestionWord in string.gmatch(suggestion,"([^%s]+)") do
-		local alreadyDrawn = false
-			for k=1, #realauncher.argumentElement, 1 do
-				if string.find(suggestionWord,realauncher.argumentElement[k]) then
-					local matchStart = string.find(suggestionWord,realauncher.argumentElement[k])
+	if userInputInSeconds then
+		rl.drawCursor = true
+		rl.customInput = nil
+		rl.registeredCommands[rl.command][rl.waitingForCustomInput] = userInputInSeconds
+		if not rl.arguments then rl.text = rl.text.." " end
+		rl.text = rl.text..userInputString
+		rl.active_char = rl.active_char + string.len(userInputString)
 
-					gfx.drawstr(" ")
+	end
+end
 
-					if matchStart ~= 1 then 
-						realauncher.grey()
-						gfx.drawstr(suggestionWord:sub(1,matchStart-1))
-					end
+function autocomplete()
+	if rl.currentAutocomplete and char == kbInput.tab then 
+		rl.text = rl.text..rl.currentAutocomplete 
+		rl.active_char = rl.active_char + string.len(rl.currentAutocomplete )
+		rl.previewToPrint = nil
+		rl.currentAutocomplete = nil 
+		CommandDispatcher(rl.text)
+	end
+end
 
-					realauncher.blue()
-					gfx.drawstr(realauncher.argumentElement[k])
+-- function drawArgumentsAutocomplete(suggestion)
+-- 	if rl.argSuggestion then
+-- 		gfx.x = obj_offs*2-4
+-- 		gfx.y = obj_offs+gui_fontsize+obj_offs/2
 
-					if suggestionWord:len() ~= realauncher.argumentElement[k]:len() then
-						realauncher.grey()
-						gfx.drawstr(suggestionWord:sub(matchStart + realauncher.argumentElement[k]:len()))
-					end
+-- 		for suggestionWord in string.gmatch(suggestion,"([^%s]+)") do
+-- 		local alreadyDrawn = false
+-- 			for k=1, #rl.argumentElement, 1 do
+-- 				if string.find(suggestionWord,rl.argumentElement[k]) then
+-- 					local matchStart = string.find(suggestionWord,rl.argumentElement[k])
+
+-- 					gfx.drawstr(" ")
+
+-- 					if matchStart ~= 1 then 
+-- 						rl.grey()
+-- 						gfx.drawstr(suggestionWord:sub(1,matchStart-1))
+-- 					end
+
+-- 					rl.blue()
+-- 					gfx.drawstr(rl.argumentElement[k])
+
+-- 					if suggestionWord:len() ~= rl.argumentElement[k]:len() then
+-- 						rl.grey()
+-- 						gfx.drawstr(suggestionWord:sub(matchStart + rl.argumentElement[k]:len()))
+-- 					end
 					
-					alreadyDrawn = true
+-- 					alreadyDrawn = true
 	
-				end
-			end
+-- 				end
+-- 			end
 
-			if not alreadyDrawn then 
-				realauncher.grey()
-				gfx.drawstr(" "..suggestionWord)
-			end
-		end
-	end
-	realauncher.argSuggestion = nil
-end
-
-function drawModeSymbol(minusMode,plusMode)
-
-  gfx.setfont(1, gui_fontname, gui_fontsize)
-  gfx.x = obj_offs*1.5+
-            gfx.measurestr(realauncher.command) + 8
-  gfx.y = obj_offs + gui_fontsize/2 - gfx.texth/2  
-
-  if minusMode then
-    realauncher.red()
-    gfx.drawstr("-")
-  end
-
-  if plusMode then
-    realauncher.blue()
-    gfx.drawstr("+")
-  end
-end
-
-function drawTimeInputPreview(preview)
-	if realauncher.timeArgPreview then
-    gfx.x = obj_offs*1.5+
-            gfx.measurestr(realauncher.command) + 19
-    gfx.y = obj_offs + gui_fontsize/2 - gfx.texth/2
-
-    realauncher.grey()
-	gfx.drawstr(preview)
-	if not minusMode and not plusMode then
-  	 realauncher.green()
-    else 
-      if minusMode then
-        realauncher.red()  
-      else
-        realauncher.blue()
-      end
-    end
-	gfx.drawstr(realauncher.hiddenArguments)
-
-	realauncher.timeArgPreview = nil
-	realauncher.drawCursor = false	
-	end
-
-end
+-- 			if not alreadyDrawn then 
+-- 				rl.grey()
+-- 				gfx.drawstr(" "..suggestionWord)
+-- 			end
+-- 		end
+-- 	end
+-- 	rl.argSuggestion = nil
+-- end
 
 -------------------------------
 
@@ -412,175 +319,95 @@ function searchMatrixAndReturnMatchesTable(databaseMatrix,searchArgumentsTable,k
 
 	return matches
 end
-
----------------------------------------------------------------------------------------  
-function getInput(arguments,startingValue)
-	
-	if arguments and startingValue then	
-		numericalInputOnly = true
-		local defaultTimeString = ""
-		defaultTimeString = reaper.format_timestr_pos(startingValue,defaultTimeString,-1)
-
-	    local timePunctuation = {}
-	    for i=1,defaultTimeString:len(),1 do
-	      if string.match(defaultTimeString:sub(i,i),"%d") then 
-	        timePunctuation[i] = 0
-	      else
-	        timePunctuation[i] = defaultTimeString:sub(i,i)
-	      end 
-	    end
-
-	    local zeroTCString = ""
-	    for i=1,#timePunctuation,1 do
-	      zeroTCString = zeroTCString..timePunctuation[i]
-	    end
-	    local tempArgs = arguments
-	    realauncher.hiddenArguments = ""
-
-	    local i = #timePunctuation
-	    while tempArgs:len() > 0 do
-	        if timePunctuation[i] and timePunctuation[i] ~= 0 then
-	          realauncher.hiddenArguments = realauncher.hiddenArguments..timePunctuation[i]
-	        else
-	          realauncher.hiddenArguments = realauncher.hiddenArguments..tempArgs:sub(tempArgs:len())
-	          tempArgs = tempArgs:sub(1,tempArgs:len()-1)
-	        end
-	      i = i-1
-	    end
-
-	    realauncher.hiddenArguments = realauncher.hiddenArguments:reverse()	
-
-		if defaultTimeString:len()-realauncher.hiddenArguments:len() > 0 then
-    	  if not resetAutoCompletedTimecode then
-			 defaultTimeStringUnchangedDigits = defaultTimeString:sub(1,defaultTimeString:len()-realauncher.hiddenArguments:len())
-   		   else
-   		    defaultTimeStringUnchangedDigits = zeroTCString:sub(1,defaultTimeString:len()-realauncher.hiddenArguments:len()) 
-   		   end 
-		else
-			defaultTimeStringUnchangedDigits = ""
-		end
-
-		local lenOfdefaultString
-	    if string.len(realauncher.hiddenArguments) > 10 then 
-	      lenOfdefaultString = string.len(realauncher.hiddenArguments) 
-	    else 
-	      lenOfdefaultString = 10 
-	    end
-
-		defaultTimeString = string.sub(defaultTimeStringUnchangedDigits..realauncher.hiddenArguments,1,lenOfdefaultString)
-
-		realauncher.timeArgPreview = defaultTimeStringUnchangedDigits
-
-		local inputInSeconds = reaper.parse_timestr_pos(defaultTimeString,-1)
-		if char == 13 then 
-	      local resultingTimecodeInSeconds
-	      if minusMode then 
-				 -- reaper.SetEditCurPos2(0,currentPosRaw - positionToGo,true,false)
-	       resultingTimecodeInSeconds = startingValue - inputInSeconds
-	      else 
-	        if plusMode then
-	          -- reaper.SetEditCurPos2(0,currentPosRaw + positionToGo,true,false)
-	          resultingTimecodeInSeconds = startingValue + inputInSeconds
-	        else
-	          -- reaper.SetEditCurPos2(0,positionToGo,true,false) -- default mode
-	          resultingTimecodeInSeconds = inputInSeconds
-	        end
-	      end
-
-	      return resultingTimecodeInSeconds
-		end
-	else
-		numericalInputOnly = nil
-		minusMode = false
-		plusMode = false
-	end	
-
-end	
-    
 ---------------------------------------------------------------------------------------    
-function enumerateAvailableCommands()
-	for command in pairs(registeredCommands) do
-		msg(command)
-		for key,value in pairs(registeredCommands[command]) do
-			msg("    - "..key.." = "..tostring(value))
-		end
-	end
-end
----------------------------------------------------------------------------------------    
+
 function storeAndPrintArgumentUnit(argumentUnit,command)
-	if realauncher.nextIsParam then
+	if rl.nextIsParam then
 		unprintLastText(string.len(argumentUnit))
-		printText(argumentUnit.." ","green") 
+		printText(argumentUnit.." ","green","SwitchParam") 
 		if string.sub(argumentUnit,1,1) == "\"" then argumentUnit = string.sub(argumentUnit,2,-2) end
-		registeredCommands[command][realauncher.nextIsParam] = argumentUnit
-		realauncher.previewToPrint = nil
-		realauncher.nextIsParam = nil
+		rl.registeredCommands[command][rl.nextIsParam] = argumentUnit
+		rl.previewToPrint = nil
+		rl.nextIsParam = nil
 	else
 		local isSwitch = false
-		if registeredCommands[command].switches then
-			for switch in pairs(registeredCommands[command].switches) do
+		if rl.registeredCommands[command].switches then
+			for switch in pairs(rl.registeredCommands[command].switches) do
 				if argumentUnit  == ("/"..switch) or argumentUnit == ("--"..switch) then
-					if type(registeredCommands[command].switches[switch]) == "boolean" then
-						registeredCommands[command][switch] = true
-					else
-						realauncher.nextIsParam = switch
-						printHint(" ("..registeredCommands[command].switches[switch]..")","grey")
-					end
 					isSwitch = true
 					unprintLastText(string.len(argumentUnit))
-					printText(argumentUnit.." ","blue")
+					printText(argumentUnit.." ","blue","Switch")
+
+					if type(rl.registeredCommands[command].switches[switch]) == "boolean" then
+						rl.registeredCommands[command][switch] = true
+					else
+						if type(rl.registeredCommands[command].switches[switch]) == "function" then
+							rl.waitingForCustomInput = switch
+							if not rl.registeredCommands[command][switch] then rl.registeredCommands[command].switches[switch]() end
+						else
+							rl.nextIsParam = switch
+							printHint(" ("..rl.registeredCommands[command].switches[switch]..")","grey")
+						end
+					end
 				end
 			end
 		end
 		if not isSwitch then 
 			unprintLastText(string.len(argumentUnit))
-			printText(argumentUnit.." ","green") 
+			printText(argumentUnit.." ","green","Element") 
 			if string.sub(argumentUnit,1,1) == "\"" then argumentUnit = string.sub(argumentUnit,2,-2) end
-			realauncher.argumentElement[#realauncher.argumentElement + 1] = argumentUnit
+			rl.argumentElement[#rl.argumentElement + 1] = argumentUnit
 		end
 	end	
 end
 
-function matchAndStore(command,arguments)
-	realauncher.previewToPrint = nil
-	if registeredCommands[command] then
-		realauncher.textToPrint = {}
-		realauncher.command = command
-		printText(command,"red")
-
-		if arguments and string.len(arguments) > 0 then
-			printText(" ","white") 
-			realauncher.arguments = arguments
-			realauncher.argumentElement = {}	
-			local argumentUnit = ""
-			realauncher.quoteOpen = false
-			realauncher.nextIsParam = nil
-			for i=1,#realauncher.arguments,1 do
-				currentChar = string.sub(realauncher.arguments,i,i)
-				if string.find(currentChar," ") then
-					if not realauncher.quoteOpen then 
-						printText(currentChar,"white") 
-						if not string.match(argumentUnit,"^ $") and string.len(argumentUnit) > 0 then storeAndPrintArgumentUnit(argumentUnit,command) end
-						argumentUnit = ""
-					else
-						printText(currentChar,"white") 
-						argumentUnit = argumentUnit..currentChar 
-					end
-				else
-					printText(currentChar,"green")
-					if string.find(currentChar,"\"") then realauncher.quoteOpen = not realauncher.quoteOpen end
-					argumentUnit = argumentUnit..currentChar
-					if string.match(argumentUnit,"^/.*") or string.match(argumentUnit,"^%-%-.*") then suggestSwitch(string.sub(argumentUnit,2),command) end
-				end
-			end		
+function matchAndStoreArguments(command,arguments)
+	 
+	rl.arguments = arguments
+	rl.argumentElement = {}	
+	local argumentUnit = ""
+	rl.quoteOpen = false
+	rl.nextIsParam = nil
+	for i=1,#rl.arguments,1 do
+		currentChar = string.sub(rl.arguments,i,i)
+		if string.find(currentChar," ") then
+			if not rl.quoteOpen then 
+				printText(currentChar,"white","Space") 
+				if not string.match(argumentUnit,"^ $") and string.len(argumentUnit) > 0 then storeAndPrintArgumentUnit(argumentUnit,command) end
+				argumentUnit = ""
+			else
+				printText(currentChar,"white","Space") 
+				argumentUnit = argumentUnit..currentChar 
+			end
 		else
-			realauncher.arguments = nil
+			printText(currentChar,"green","Uncategorarized")
+			if string.find(currentChar,"\"") then rl.quoteOpen = not rl.quoteOpen end
+			argumentUnit = argumentUnit..currentChar
+			if string.match(argumentUnit,"^/.*") or string.match(argumentUnit,"^%-%-.*") then suggestSwitch(string.sub(argumentUnit,2),command) end
+		end
+	end
+end
+
+function matchAndStore(command,arguments)
+	rl.previewToPrint = nil
+	if rl.registeredCommands[command] then
+		rl.textToPrint = {}
+		rl.command = command
+		printText(command.." ","red","Command")
+		if arguments and string.len(arguments) > 0 then
+			matchAndStoreArguments(command,arguments)			
+		else
+			rl.arguments = nil
+			if rl.registeredCommands[command].customArg then
+				rl.waitingForCustomInput = "customArgInput"
+				if not arguments then rl.registeredCommands[command].customArg() end
+			end
+	
 		end	
 	else -- command not found
-		suggestCommand(command)
-		realauncher.command = nil
-		realauncher.arguments = nil
-		realauncher.hiddenArguments = nil 
+		if not arguments then suggestCommand(command) else rl.currentAutocomplete = nil ; rl.previewToPrint = nil end
+		rl.command = nil
+		rl.arguments = nil
 	end
 end
 
@@ -594,35 +421,36 @@ function CommandDispatcher(text)
 end
 
 function suggestSwitch(word,command)
-	local switchMatches = searchUnorderedListForExactMatchesAndReturnMatchesTable(registeredCommands[command].switches,{word})
+	local switchMatches = searchUnorderedListForExactMatchesAndReturnMatchesTable(rl.registeredCommands[command].switches,{word})
 	if #switchMatches > 0 then 
-		switchMatches = sortMatches(switchMatches) 
+		switchMatches = mergeSortMatrixDescending(switchMatches,"percentageOfProximityToArguments") 
 
 		local suggestion = string.sub(switchMatches[1].match,string.len(word)+1)
 		printHint(suggestion,"grey")
-		realauncher.currentAutocomplete = suggestion
+		rl.currentAutocomplete = suggestion
 	else
-		realauncher.previewToPrint = nil
-		realauncher.currentAutocomplete = nil 
+		rl.previewToPrint = nil
+		rl.currentAutocomplete = nil 
 	end
 end
 
 function suggestCommand(command)
-	local commandMatches = searchUnorderedListForExactMatchesAndReturnMatchesTable(registeredCommands,{command})
+	local commandMatches = searchUnorderedListForExactMatchesAndReturnMatchesTable(rl.registeredCommands,{command})
 	if #commandMatches > 0 then 
-		commandMatches = sortMatches(commandMatches) 
+		commandMatches = mergeSortMatrixDescending(commandMatches,"percentageOfProximityToArguments")
 
 		local suggestion = string.sub(commandMatches[1].match,string.len(command)+1)
 		printHint(suggestion,"grey")
-		realauncher.currentAutocomplete = suggestion
+		rl.currentAutocomplete = suggestion
+	else 
+		rl.currentAutocomplete = nil
+		rl.previewToPrint = nil
 	end
 end
 
 function drawWindow()
-  --  draw back
     gfx.set(  1,1,1,  0.2,  0) --rgb a mode
     gfx.rect(0,0,obj_mainW,obj_mainH,1)	
-  --  draw frame
     gfx.set(  1,1,1,  0.1,  0) --rgb a mode
     gfx.rect(obj_offs,obj_offs,obj_mainW-obj_offs*2,gui_fontsize+obj_offs/2 ,1)
 end
@@ -631,26 +459,26 @@ function drawText()
     gfx.setfont(1, gui_fontname, gui_fontsize)
     gfx.x = obj_offs*2
     gfx.y = obj_offs
-    if realauncher.command then
-		for i=1,#realauncher.textToPrint,1 do
-			realauncher[realauncher.textToPrint[i][2]](realauncher.textToPrint[i][1])
+    if rl.command then
+		for i=1,#rl.textToPrint,1 do
+			rl[rl.textToPrint[i].color](rl.textToPrint[i].text)
 		end
 	else
-		realauncher.white(realauncher.text)
+		rl.white(rl.text)
     end
-    if realauncher.previewToPrint then
-    	realauncher[realauncher.previewToPrint[2]](realauncher.previewToPrint[1])
+    if rl.previewToPrint then
+    	rl[rl.previewToPrint.color](rl.previewToPrint.text)
     end
 end
 
 function drawCursor()
-	if realauncher.active_char ~= nil then
+	if rl.active_char ~= nil then
     	alpha  = math.abs((os.clock()%1) -0.4)
       gfx.set(  1,1,1, alpha,  0) --rgb a mode
       gfx.x = obj_offs*1.5+
-              gfx.measurestr(realauncher.text:sub(0,realauncher.active_char)) + 2
+              gfx.measurestr(rl.text:sub(0,rl.active_char)) + 2
       gfx.y = obj_offs + gui_fontsize/2 - gfx.texth/2
-      if realauncher.drawCursor then gfx.drawstr('|') end
+      if rl.drawCursor then gfx.drawstr('|') end
     end  
 end
 
@@ -662,52 +490,47 @@ function drawDescription(text)
     gfx.drawstr(tostring(text))
 end
 
+function drawGUI()
+	drawWindow()
+	drawText()
+	drawCursor()
+	-- drawArgumentsAutocomplete(rl.argSuggestion)
+	if rl.command and rl.registeredCommands[rl.command].description then drawDescription(rl.registeredCommands[rl.command].description) end
+end
+
 ---------------------------------------------------------------------------------------    
 
 function Run()
   char  = gfx.getchar()
-  realauncher.drawCursor = true
   
 
-  TextBox(char) -- perform typing
-  realauncher.text = string.match(realauncher.text,"^%s*([^%s]?.*)")
+	if not rl.customInput then
+		LauncherTextBox(char) -- perform typing
+		rl.text = string.match(rl.text,"^%s*([^%s]?.*)")
+	end
 
-  
+	if char > 0  
+		    and rl.text 
+		    and char ~=  kbInput.rightArrow
+		    and char ~= kbInput.leftArrow then 
+		    	CommandDispatcher(rl.text)
+		  end
 
-  if char > 0  
-    and realauncher.text 
-    and char ~=  rightArrow
-    and char ~= leftArrow then 
-    	CommandDispatcher(realauncher.text)
-  end
-
-  if realauncher.command then
-  	if registeredCommands[realauncher.command].waitForEnter then 
-  		if char == 13 then CommandDispatcher(realauncher.text.." ") ; registeredCommands[realauncher.command].main(realauncher.arguments) end
+  if rl.command then
+  	if rl.registeredCommands[rl.command].waitForEnter then 
+  		if char == kbInput.enter then CommandDispatcher(rl.text.." ") ; rl.registeredCommands[rl.command].main(rl.arguments) end
   	else
-  		registeredCommands[realauncher.command].main(realauncher.arguments)
+  		rl.registeredCommands[rl.command].main(rl.arguments)
   	end
   end
 
-	drawWindow()
-	drawText()
-  	drawModeSymbol(minusMode,plusMode)
-	drawTimeInputPreview(realauncher.timeArgPreview)
-	drawCursor()
-	drawArgumentsAutocomplete(realauncher.argSuggestion)
-	if realauncher.command and registeredCommands[realauncher.command].description then drawDescription(registeredCommands[realauncher.command].description) end
-
-	if realauncher.currentAutocomplete and char == tab then 
-		realauncher.text = realauncher.text..realauncher.currentAutocomplete 
-		realauncher.active_char = realauncher.active_char + string.len(realauncher.currentAutocomplete )
-		realauncher.previewToPrint = nil
-		realauncher.currentAutocomplete = nil 
-		CommandDispatcher(realauncher.text)
-	end
+  drawGUI()
+  autocomplete()
 
   gfx.update()
   last_char = char
-  if char ~= -1 and char ~= 27 and char ~= 13  then reaper.defer(Run) else reaper.atexit(gfx.quit) end
+
+  if char ~= -1 and char ~= 27 and char ~= kbInput.enter and not rl.quitGUI then reaper.defer(Run) else reaper.atexit(gfx.quit) end
   
 end 
 
@@ -717,7 +540,7 @@ function loadModules()
 	package.path = package.path .. ";" .. scriptPath .. "?.lua"
 
 	for file in io.popen([[dir "]]..scriptPath..[[" /b]]):lines() do 
-		if string.match(file,"_LaunchModule.lua$") then 
+		if string.match(file,"_LaunchModule.lua$") or string.match(file,"_Library.lua$") then 
 			local LaunchModule = string.match(file,"(.*)%.lua")
 			require(LaunchModule)
 		end
@@ -725,15 +548,7 @@ function loadModules()
 
 end
 
-function initCommands()
-
-	registeredCommands = {
-							quit = {main = function() reaper.Main_OnCommand(40004,0) end, waitForEnter = true},
-							enumcmd = {main = enumerateAvailableCommands , waitForEnter = true}
-						 }						 
-end
-
-function initGUI()
+function initLauncherGUI()
 	obj_mainW = 800	
 	obj_mainH = 70
 	obj_offs = 10
@@ -743,9 +558,12 @@ function initGUI()
 	gui_fontsize = 23      
 	local gui_OS = reaper.GetOS()
 	if gui_OS == "OSX32" or gui_OS == "OSX64" then gui_fontsize = gui_fontsize - 7 end
+
+	Lokasenna_WindowAtCenter(obj_mainW,obj_mainH)
+	rl.drawCursor = true
 end
 
-function Lokasenna_WindowAtCenter (w, h)
+function Lokasenna_WindowAtCenter(w, h)
 	-- thanks to Lokasenna 
 	-- http://forum.cockos.com/showpost.php?p=1689028&postcount=15    
 	local l, t, r, b = 0, 0, w, h    
@@ -754,12 +572,8 @@ function Lokasenna_WindowAtCenter (w, h)
 	gfx.init("ReaLauncher", w, h, 0, x, y)  
 end
 
----------------------------------------------------------------------------------------
+-- SHOW TIME! --
 
-initGUI()
-
-initCommands()
 loadModules()
-
-Lokasenna_WindowAtCenter (obj_mainW,obj_mainH)
+initLauncherGUI()
 Run()
