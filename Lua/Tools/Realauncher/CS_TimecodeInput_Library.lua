@@ -161,4 +161,5 @@ function initTimeInput()
   tcInput.plusMode = false
   tcInput.resetAutoCompletedTimecode = false
   tcInput.zeroTCString = "0:00:00:00"
+  rl.tipLine = [[Spacebar to reset to 0  -  "+" for addition mode  -  "-" for subtraction mode]] 
 end

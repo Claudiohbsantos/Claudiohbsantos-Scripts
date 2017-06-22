@@ -1,0 +1,26 @@
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:00o
+go 0:00:00:0
+go 0:00:00:00
+go 0:00:01:23
+go 0:00:01:23
+go
+testInputs --time 
+go 0:00:00:0
+testInputs /name --name 123
+testInputs --light --flip
+testInputs /flip --flip 
+testInputs --flip 
+testInputs --flip 
+testInputs --time 0:18:51:23 

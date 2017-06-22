@@ -10,3 +10,5 @@ function enumerateAvailableCommands()
 end
 
 rl.registeredCommands.enumcmd = {main = enumerateAvailableCommands , waitForEnter = true}
+
+rl.registeredCommands["!!"] = {main = redoCommand,waitForEnter = true}

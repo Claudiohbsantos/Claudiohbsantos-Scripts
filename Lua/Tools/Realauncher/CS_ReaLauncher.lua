@@ -92,10 +92,10 @@ function rl.timeInput(defaultTimeToDisplay)
 		rl.drawCursor = true
 		rl.customInput = nil
 		rl.registeredCommands[rl.command][rl.waitingForCustomInput] = userInputInSeconds
-		if not rl.arguments then rl.text = rl.text.." " end
+		if not rl.arguments then rl.text = rl.text.." " ; rl.active_char = rl.active_char+1 end
 		rl.text = rl.text..userInputString
 		rl.active_char = rl.active_char + string.len(userInputString)
-
+		rl.tipLine = nil
 	end
 end
 
@@ -362,7 +362,6 @@ function storeAndPrintArgumentUnit(argumentUnit,command)
 end
 
 function matchAndStoreArguments(command,arguments)
-	 
 	rl.arguments = arguments
 	rl.argumentElement = {}	
 	local argumentUnit = ""
@@ -383,7 +382,8 @@ function matchAndStoreArguments(command,arguments)
 			printText(currentChar,"green","Uncategorarized")
 			if string.find(currentChar,"\"") then rl.quoteOpen = not rl.quoteOpen end
 			argumentUnit = argumentUnit..currentChar
-			if string.match(argumentUnit,"^/.*") or string.match(argumentUnit,"^%-%-.*") then suggestSwitch(string.sub(argumentUnit,2),command) end
+			if string.match(argumentUnit,"^/.*") and rl.registeredCommands[command].switches then suggestSwitch(string.sub(argumentUnit,2),command) end
+			if string.match(argumentUnit,"^%-%-.*") and rl.registeredCommands[command].switches then suggestSwitch(string.sub(argumentUnit,3),command) end
 		end
 	end
 end
@@ -391,6 +391,7 @@ end
 function matchAndStore(command,arguments)
 	rl.previewToPrint = nil
 	if rl.registeredCommands[command] then
+		rl.currentAutocomplete = nil
 		rl.textToPrint = {}
 		rl.command = command
 		printText(command.." ","red","Command")
@@ -402,7 +403,6 @@ function matchAndStore(command,arguments)
 				rl.waitingForCustomInput = "customArgInput"
 				if not arguments then rl.registeredCommands[command].customArg() end
 			end
-	
 		end	
 	else -- command not found
 		if not arguments then suggestCommand(command) else rl.currentAutocomplete = nil ; rl.previewToPrint = nil end
@@ -482,7 +482,7 @@ function drawCursor()
     end  
 end
 
-function drawDescription(text)
+function drawTip(text)
 	gfx.setfont(1, gui_fontname, gui_fontsize)
     gfx.x = obj_offs*2
     gfx.y = obj_offs + 32
@@ -495,7 +495,21 @@ function drawGUI()
 	drawText()
 	drawCursor()
 	-- drawArgumentsAutocomplete(rl.argSuggestion)
-	if rl.command and rl.registeredCommands[rl.command].description then drawDescription(rl.registeredCommands[rl.command].description) end
+	if not rl.tipLine then
+		if rl.command and rl.registeredCommands[rl.command].description then rl.tipLine = rl.registeredCommands[rl.command].description end	
+	end
+	if rl.tipLine then drawTip(rl.tipLine) end
+end
+
+function saveSettings()
+	local scriptPath = get_script_path()
+	local userSettingsPath = scriptPath.."\\User"
+
+	os.execute([[mkdir "]]..userSettingsPath..[["]])
+
+	local historyFile = io.open(userSettingsPath.."\\history.txt","a")
+	historyFile:write(rl.text.."\n")
+	historyFile:close()
 end
 
 ---------------------------------------------------------------------------------------    
@@ -530,7 +544,7 @@ function Run()
   gfx.update()
   last_char = char
 
-  if char ~= -1 and char ~= 27 and char ~= kbInput.enter and not rl.quitGUI then reaper.defer(Run) else reaper.atexit(gfx.quit) end
+  if char ~= -1 and char ~= 27 and char ~= kbInput.enter and not rl.quitGUI then reaper.defer(Run) else gfx.quit() end
   
 end 
 
@@ -577,3 +591,4 @@ end
 loadModules()
 initLauncherGUI()
 Run()
+reaper.atexit(saveSettings)
