@@ -1,20 +1,22 @@
 --[[
-@description CS_Smart Split
-@version 1.3
+@description Smart Split - Following Snap
+@version 1.0
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 12
 @about
-  # CS_Smart Split
-  Splits item under mouse cursor, 
-@changelog
+  # Smart Split - Following Snap
+  Splits item under mouse cursor at closest grid line
   - Items always end deselected
   - If Mouse is on top of an item and enclosed by the time selection, split item at time selection edges
+@changelog
+  - Initial Release
 --]]					
 
 ------------ settings
-followSnapping = false
-undoName = "Smart Split"
+
+followSnapping = true
+undoName = "Smart Split - Following Snap"
 ---------------------
 
 function msg(msg)
@@ -78,21 +80,22 @@ function snappingEnabled()
 	end
 end
 
-function mouseIsInTimeSel(mousePos)
-	local timeSelStart,timeSelEnd = reaper.GetSet_LoopTimeRange2(0,false,false,0,0,false)
-	if mousePos >= timeSelStart and mousePos <= timeSelEnd then
-		return true
-	else
-		return false
-	end
-end
-
 function setSplitPosition(mousePos)
 	if snappingEnabled() and followSnapping then
 		local nearestGrid = reaper.SnapToGrid(0, mousePos)
 		reaper.SetEditCurPos2(0,nearestGrid,false,false)
 	else	
 		reaper.SetEditCurPos2(0,mousePos,false,false)
+	end
+	
+end
+
+function mouseIsInTimeSel(mousePos)
+	local timeSelStart,timeSelEnd = reaper.GetSet_LoopTimeRange2(0,false,false,0,0,false)
+	if mousePos >= timeSelStart and mousePos <= timeSelEnd then
+		return true
+	else
+		return false
 	end
 end
 

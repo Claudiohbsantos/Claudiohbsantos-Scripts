@@ -1,5 +1,6 @@
 function goTo(arguments)
-	reaper.SetEditCurPos2(0,rl.registeredCommands.go.customArgInput,true,false)
+	local timeToGo = reaper.parse_timestr_pos(rl.argumentElement[1],-1)
+	reaper.SetEditCurPos2(0,timeToGo,true,false)
 end	
 
 function getPositionInput()
@@ -7,5 +8,6 @@ function getPositionInput()
 	rl.timeInput(cursorPosition)
 end
 
-rl.registeredCommands.go = {main = goTo,customArg = getPositionInput,waitForEnter = true,description = "Go to exact point in timeline"}
+rl.registeredCommands.go = {main = goTo,waitForEnter = true,description = "Go to exact point in timeline"}
+rl.registeredCommands.got = {main = goTo,customArg = getPositionInput,waitForEnter = true,description = "Go to exact point in timeline (time Input)"}
 

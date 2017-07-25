@@ -11,4 +11,11 @@ end
 
 rl.registeredCommands.enumcmd = {main = enumerateAvailableCommands , waitForEnter = true}
 
+function redoCommand()
+	local lastCommand = rl.history[#rl.history]
+	rl.text = lastCommand
+	CommandDispatcher(rl.text)
+	rl.registeredCommands[rl.command].main(rl.arguments)
+end
+
 rl.registeredCommands["!!"] = {main = redoCommand,waitForEnter = true}

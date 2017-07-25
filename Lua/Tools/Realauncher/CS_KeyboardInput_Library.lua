@@ -14,7 +14,10 @@ kbInput.quotes = 34
 kbInput.parenthesesOpen = 40
 kbInput.parenthesesClose = 41
 kbInput.tab = 9
+kbInput.exclamation = 33
+kbInput.equal = 61
 
+kbInput["!"] = kbInput.exclamation
 kbInput["_"] = 95 
 kbInput[","] = 44 
 kbInput["("] = 45 
@@ -25,6 +28,9 @@ kbInput[":"] = 58
 kbInput["\""] = 34 
 kbInput["("] = 40 
 kbInput[")"] = 41 
+
+kbInput.copy = 3
+kbInput.paste = 22
 
 function kbInput.isAnyPrintableSymbol(char)
 	if 
@@ -48,6 +54,8 @@ function kbInput.isAnyPrintableSymbol(char)
 	        or char == 34 -- "
 	        or char == 40 -- (
 	        or char == 41 -- )
+	        or char == kbInput.exclamation
+	        or char == kbInput.equal
 	    )
 	then
 		return true
@@ -64,3 +72,10 @@ function kbInput.isNumber(char)
     	return true
     end
 end
+
+-- Combinations
+
+kbInput.ctrl = {}
+kbInput.ctrl.ctrl = 4
+kbInput.ctrl.s = 19
+kbInput.ctrl.t = 20
