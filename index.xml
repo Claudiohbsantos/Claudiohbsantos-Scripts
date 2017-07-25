@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="7f835cf5479535f6ce7fed5565011df3ce08bff1" name="Claudiohbsantos Scripts">
+<index version="1" commit="2f069a434978e002d4c8c20061a1d593910a748c" name="Claudiohbsantos Scripts">
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
@@ -382,6 +382,25 @@ Multiple Selected
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/fc151d567664bb4c2ccc4b34dcafbff76928bc49/Lua/Editing/CS_Smart%20Mute.lua</source>
       </version>
     </reapack>
+    <reapack name="CS_Smart Split Following Snapping.lua" type="script" desc="Smart Split - Following Snap">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Smart Split - Following Snap\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Splits item under mouse cursor at closest grid line\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Items always end deselected\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab If Mouse is on top of an item and enclosed by the time selection, split item at time selection edges\sa180\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2017-07-25T06:04:26Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2f069a434978e002d4c8c20061a1d593910a748c/Lua/Editing/CS_Smart%20Split%20Following%20Snapping.lua</source>
+      </version>
+    </reapack>
     <reapack name="CS_Smart Split.lua" type="script" desc="CS_Smart Split">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
@@ -397,6 +416,11 @@ Multiple Selected
       <version name="1.0" author="Claudiohbsantos" time="2017-06-13T22:20:43Z">
         <changelog><![CDATA[- initial release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/dfa25117e283cd5399a49a830fd962e7751d8dd5/Lua/Editing/CS_Smart%20Split.lua</source>
+      </version>
+      <version name="1.3" author="Claudiohbsantos" time="2017-07-25T06:04:26Z">
+        <changelog><![CDATA[- Items always end deselected
+- If Mouse is on top of an item and enclosed by the time selection, split item at time selection edges]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2f069a434978e002d4c8c20061a1d593910a748c/Lua/Editing/CS_Smart%20Split.lua</source>
       </version>
     </reapack>
   </category>
