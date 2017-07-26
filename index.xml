@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="2f069a434978e002d4c8c20061a1d593910a748c" name="Claudiohbsantos Scripts">
+<index version="1" commit="30dd95905da3a1336be3ec4a4435ed7647a7d08a" name="Claudiohbsantos Scripts">
+  <category name="Lua/Automation">
+    <reapack name="CS_Set All Track Envelopes To Fader Scaling.lua" type="script" desc="Set All Track Envelopes To Fader Scaling">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Set All Track Envelopes To Fader Scaling\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab \sa180\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0beta" author="Claudiohbsantos" time="2017-07-26T19:50:48Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/30dd95905da3a1336be3ec4a4435ed7647a7d08a/Lua/Automation/CS_Set%20All%20Track%20Envelopes%20To%20Fader%20Scaling.lua</source>
+      </version>
+    </reapack>
+  </category>
   <category name="Lua/Editing">
     <reapack name="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope.lua" type="script" desc="CS_Copy Track Volume Envelope to Selected Takes and reset track envelope">
       <metadata>
