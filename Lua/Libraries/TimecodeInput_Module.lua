@@ -1,6 +1,6 @@
 --[[
 @description TimecodeInput_Module
-@version 2.0
+@version 2.1
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -197,23 +197,19 @@ function getInput(arguments,defaultTimeInSeconds)
 
 		textbox_t.timeArgPreview = defaultTimeStringUnchangedDigits
 
-		local inputInSeconds = reaper.parse_timestr_pos(defaultTimeString,-1)
+		local inputInSeconds = reaper.parse_timestr_pos(defaultTimeString,-1) + reaper.GetProjectTimeOffset(0, false)
 		if char == 13 then
       local resultingTimecodeInSeconds
       if minusMode then 
-        resultingTimecodeInSeconds = defaultTimeInSeconds - ( inputInSeconds + reaper.GetProjectTimeOffset(0, false))
+        resultingTimecodeInSeconds = defaultTimeInSeconds - inputInSeconds
       else 
         if plusMode then
-          resultingTimecodeInSeconds = defaultTimeInSeconds + ( inputInSeconds + reaper.GetProjectTimeOffset(0, false))
+          resultingTimecodeInSeconds = defaultTimeInSeconds + inputInSeconds 
         else
           resultingTimecodeInSeconds = inputInSeconds
         end
       end
-msg(resultingTimecodeInSeconds)
-msg(defaulTimeInSeconds)
-msg(inputInSeconds)
-msg("")
-msg(reaper.GetProjectTimeOffset(0, false))
+
       return resultingTimecodeInSeconds
 		end
 

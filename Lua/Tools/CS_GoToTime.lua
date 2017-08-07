@@ -1,6 +1,6 @@
 --[[
 @description CS_Go To Time
-@version 1.7
+@version 1.8
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13

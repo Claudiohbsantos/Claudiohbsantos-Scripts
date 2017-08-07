@@ -1,6 +1,6 @@
 --[[
 @description CS_Set Time Selection In
-@version 1.4
+@version 1.5
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
