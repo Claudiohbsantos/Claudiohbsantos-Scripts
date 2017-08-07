@@ -1,6 +1,6 @@
 --[[
 @description CS_Set Time Selection Length
-@version 1.3
+@version 1.4
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -8,7 +8,7 @@
   # CS_Set Time Selection Length
   Set time Selection Length via time input
 @changelog
-  - added library dependency to package
+  - Fixed plus and minus mode when timeline doesnt start at 0
 @provides
   ../Libraries/TimecodeInput_Module.lua > ../Libraries/Set Time Selection Length/TimecodeInput_Module.lua
 --]]

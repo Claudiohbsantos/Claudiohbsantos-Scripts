@@ -1,6 +1,6 @@
 --[[
 @description TimecodeInput_Module
-@version 1.2
+@version 2.0
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -201,15 +201,19 @@ function getInput(arguments,defaultTimeInSeconds)
 		if char == 13 then
       local resultingTimecodeInSeconds
       if minusMode then 
-        resultingTimecodeInSeconds = defaultTimeInSeconds - inputInSeconds
+        resultingTimecodeInSeconds = defaultTimeInSeconds - ( inputInSeconds + reaper.GetProjectTimeOffset(0, false))
       else 
         if plusMode then
-          resultingTimecodeInSeconds = defaultTimeInSeconds + inputInSeconds
+          resultingTimecodeInSeconds = defaultTimeInSeconds + ( inputInSeconds + reaper.GetProjectTimeOffset(0, false))
         else
           resultingTimecodeInSeconds = inputInSeconds
         end
       end
-
+msg(resultingTimecodeInSeconds)
+msg(defaulTimeInSeconds)
+msg(inputInSeconds)
+msg("")
+msg(reaper.GetProjectTimeOffset(0, false))
       return resultingTimecodeInSeconds
 		end
 

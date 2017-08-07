@@ -1,6 +1,6 @@
 --[[
 @description CS_Go To Time
-@version 1.6
+@version 1.7
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -9,7 +9,7 @@
   Go to Time input
   Press + or - to change to subtration  or Addition Mode. Press Spacebar to reset default timecode to zero. 
 @changelog
-  - added library dependency to package
+  - Fixed plus and minus mode when timeline doesnt start at 0
 @provides
   ../Libraries/TimecodeInput_Module.lua > ../Libraries/Go To Time/TimecodeInput_Module.lua  
 --]]
