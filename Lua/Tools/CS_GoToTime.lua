@@ -1,6 +1,6 @@
 --[[
 @description CS_Go To Time
-@version 1.99
+@version 1.999
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -12,6 +12,7 @@
   - Fixed plus and minus mode when timeline doesnt start at 0
 @provides
   ../Libraries/TimecodeInput_Module.lua > ../Libraries/Go To Time/TimecodeInput_Module.lua  
+  ../Libraries/CS_Library.lua > ../Libraries/Go To Time/CS_Library.lua  
 --]]
 
 function msg(s) reaper.ShowConsoleMsg(tostring(s)..'\n') end

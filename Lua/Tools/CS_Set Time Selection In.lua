@@ -1,6 +1,6 @@
 --[[
 @description CS_Set Time Selection In
-@version 1.7
+@version 1.71
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -11,6 +11,7 @@
   - Fixed plus and minus mode when timeline doesnt start at 0
 @provides
   ../Libraries/TimecodeInput_Module.lua > ../Libraries/Set Time Selection In/TimecodeInput_Module.lua  
+  ../Libraries/CS_Library.lua > ../Libraries/Go To Time/CS_Library.lua
 --]]
 
 function get_script_path()
