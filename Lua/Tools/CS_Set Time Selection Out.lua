@@ -11,7 +11,7 @@
   - Fixed plus and minus mode when timeline doesnt start at 0
 @provides
   ../Libraries/TimecodeInput_Module.lua > ../Libraries/Set Time Selection Out/TimecodeInput_Module.lua
-  ../Libraries/CS_Library.lua > ../Libraries/Go To Time/CS_Library.lua
+  ../Libraries/CS_Library.lua > ../Libraries/Set Time Selection Out/CS_Library.lua
 --]]
 
 function get_script_path()
