@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="b083dfe521d222fd6d3d5e212423ec784a620082" name="Claudiohbsantos Scripts">
+<index version="1" commit="b2186b06f1479c93d858c81b30f3a5328ec2db16" name="Claudiohbsantos Scripts">
   <category name="Lua/Automation">
     <reapack name="CS_Set All Track Envelopes To Fader Scaling.lua" type="script" desc="Set All Track Envelopes To Fader Scaling">
       <metadata>
@@ -683,6 +683,12 @@ SoloXORExample
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/67edb0deee17f692078b17729010f372dc569522/Lua/Tools/CS_Set%20Time%20Selection%20In.lua</source>
         <source file="../Libraries/Set Time Selection In/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/67edb0deee17f692078b17729010f372dc569522/Lua/Libraries/TimecodeInput_Module.lua</source>
       </version>
+      <version name="1.71" author="Claudiohbsantos" time="2017-08-10T18:18:29Z">
+        <changelog><![CDATA[- Fixed plus and minus mode when timeline doesnt start at 0]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Tools/CS_Set%20Time%20Selection%20In.lua</source>
+        <source file="../Libraries/Set Time Selection In/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Libraries/TimecodeInput_Module.lua</source>
+        <source file="../Libraries/Set Time Selection In/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Libraries/CS_Library.lua</source>
+      </version>
     </reapack>
     <reapack name="CS_Set Time Selection Length.lua" type="script" desc="CS_Set Time Selection Length">
       <metadata>
@@ -729,6 +735,12 @@ SoloXORExample
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/67edb0deee17f692078b17729010f372dc569522/Lua/Tools/CS_Set%20Time%20Selection%20Length.lua</source>
         <source file="../Libraries/Set Time Selection Length/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/67edb0deee17f692078b17729010f372dc569522/Lua/Libraries/TimecodeInput_Module.lua</source>
       </version>
+      <version name="1.71" author="Claudiohbsantos" time="2017-08-10T18:18:29Z">
+        <changelog><![CDATA[- Fixed plus and minus mode when timeline doesnt start at 0]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Tools/CS_Set%20Time%20Selection%20Length.lua</source>
+        <source file="../Libraries/Set Time Selection Length/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Libraries/TimecodeInput_Module.lua</source>
+        <source file="../Libraries/Set Time Selection Length/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Libraries/CS_Library.lua</source>
+      </version>
     </reapack>
     <reapack name="CS_Set Time Selection Out.lua" type="script" desc="CS_Set Time Selection Out">
       <metadata>
@@ -774,6 +786,12 @@ SoloXORExample
         <changelog><![CDATA[- Fixed plus and minus mode when timeline doesnt start at 0]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/67edb0deee17f692078b17729010f372dc569522/Lua/Tools/CS_Set%20Time%20Selection%20Out.lua</source>
         <source file="../Libraries/Set Time Selection Out/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/67edb0deee17f692078b17729010f372dc569522/Lua/Libraries/TimecodeInput_Module.lua</source>
+      </version>
+      <version name="1.71" author="Claudiohbsantos" time="2017-08-10T18:18:29Z">
+        <changelog><![CDATA[- Fixed plus and minus mode when timeline doesnt start at 0]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Tools/CS_Set%20Time%20Selection%20Out.lua</source>
+        <source file="../Libraries/Set Time Selection Out/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Libraries/TimecodeInput_Module.lua</source>
+        <source file="../Libraries/Set Time Selection Out/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Libraries/CS_Library.lua</source>
       </version>
     </reapack>
   </category>
