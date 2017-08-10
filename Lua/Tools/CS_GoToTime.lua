@@ -1,6 +1,6 @@
 --[[
 @description CS_Go To Time
-@version 1.9b
+@version 1.99
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -35,16 +35,18 @@ end
 
 function prequire(...)
     local status, lib = pcall(require, ...)
-    if(status) then return lib end
+
+    if (status) then return lib end
     --Library failed to load, so perhaps return `nil` or something?
     return nil
 end
 
 local script_path = get_script_path()
-local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\Go To Time\\"
-package.path = package.path .. ";" .. libraryPath .. "?.lua"
+local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\"
+package.path = package.path .. ";" .. libraryPath .. "?.lua;".. libraryPath .."Go To Time\\?.lua"
 
-local requireStatus = prequire("TimecodeInput_Module")
+local requireStatus = prequire("CS_Library")
+requireStatus = prequire("TimecodeInput_Module")
 
 if requireStatus then
   initGUI(130,"Go To Time")

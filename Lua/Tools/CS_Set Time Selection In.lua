@@ -1,6 +1,6 @@
 --[[
 @description CS_Set Time Selection In
-@version 1.6b
+@version 1.7
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -46,10 +46,11 @@ function prequire(...)
 end
 
 local script_path = get_script_path()
-local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\Set Time Selection In\\"
-package.path = package.path .. ";" .. libraryPath .. "?.lua"
+local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\"
+package.path = package.path .. ";" .. libraryPath .. "?.lua;".. libraryPath .."Go To Time\\?.lua"
 
-local requireStatus = prequire("TimecodeInput_Module")
+local requireStatus = prequire("CS_Library")
+requireStatus = prequire("TimecodeInput_Module")
 
 if requireStatus then
   

@@ -6,7 +6,7 @@
 @date 2017 06 13
 @about
   # General Library
-  Resource Lbrary for my script development
+  Resource Library for my script development
 @changelog
   - Removed From Listing
 @noindex
@@ -14,13 +14,25 @@
 
 cs = {}
 
-function cs.msg(s) reaper.ShowConsoleMsg(tostring(s)..'\n') end
+function cs.msg(...) 
+	for i,value in pairs({...}) do 
+		reaper.ShowConsoleMsg(tostring(value).."     ") 	
+	end	
+	reaper.ShowConsoleMsg('\n') 
+end
 
 function cs.get_script_path()
 	local info = debug.getinfo(1,'S');
 	local script_path = info.source:match[[^@?(.*[\/])[^\/]-$]]
 	return script_path
 end 
+
+function cs.prequire(...)
+    local status, lib = pcall(require, ...)
+    if(status) then return lib end
+    --Library failed to load, so perhaps return `nil` or something?
+    return nil
+end
 
 function cs.readProjFileToTable(projFile)
 	local f = assert(io.open(projFile,"r"))
@@ -70,5 +82,13 @@ function cs.getMouseInfo()
 end
 function cs.getTimeSelInfo()
 end
-function cs.getEditCurInfo()
+function cs.getEditCurInfo(proj)
+	local editCurInfo = {}
+	editCurInfo.projOffset = reaper.GetProjectTimeOffset(proj,false)
+	editCurInfo.relPosition = reaper.GetCursorPositionEx(proj)
+	editCurInfo.absPosition = editCurInfo.relPosition + editCurInfo.projOffset 
+	editCurInfo.posString = reaper.format_timestr_pos(editCurInfo.relPosition,"",-1)
+	return editCurInfo
+end
+function cs.getProjectInfo()
 end
