@@ -51,6 +51,7 @@ function cs.msg(...)
 	end
 
 	printTable({...})
+
 end
 
 function cs.get_script_path()
@@ -102,19 +103,11 @@ end
 function cs.rgbToColor(r,g,b)
 	return reaper.ColorToNative(r,g,b)|0x1000000
 end
-
-function removePositionsFromNumberedTable(origTable,tableOfIndexesToRemove)
-	-- receives an ordered list which will have elements removed from and an ordered list containing the indexes to be removed from the table.
-	for i,indexToRemove in ipairs(tableOfIndexesToRemove) do
-		table.remove(origTable,indexToRemove-(i-1))
-	end
-	return origTable
-end
 --------------------------------
 
 function cs.saveOriginalState()
 	local originalState = {}
-	originalState.arrangeStart,originalState.arrangeEnd = reaper.BR_GetArrangeView(0)
+
 	originalState.editCur = reaper.GetCursorPositionEx(0)
 	originalState.timeSelStart,originalState.timeSelEnd = reaper.GetSet_LoopTimeRange2(0,false,true,0,0,false)
 
@@ -154,7 +147,7 @@ function cs.restoreOriginalState(originalState)
 
 	if originalState.lockWasEnabled == 1 then reaper.Main_OnCommand(40569,0) end -- set locking
 	if originalState.autoFadeWasEnabled == 1 then reaper.Main_OnCommand(reaper.NamedCommandLookup("_SWS_XFDON"),0) end-- toggle auto-crossfade
-	reaper.BR_SetArrangeView(0,originalState.arrangeStart,originalState.arrangeEnd)
+
 end
 
 
@@ -185,6 +178,8 @@ end
 
 -------------------------------- GETTERS
 
+function cs.getMouseInfo()
+end
 function cs.getTimeSelInfo()
 end
 function cs.getEditCurInfo(proj)
@@ -198,139 +193,5 @@ end
 function cs.getProjectInfo()
 end
 
-function cs.getMouseInfo()
-end
 
------------------------ State
-function cs.snappingEnabled()
-	if reaper.GetToggleCommandStateEx(0,1157) == 0 then
-		return false
-	else 
-		return true
-	end
-end
 
------------------------ Mouse 
-function cs.initMouseCaseTables()
-	local mouse = {}
-	mouse.ruler = {}
-	mouse.tcp = {}
-	mouse.mcp = {}
-	mouse.arrange = {}
-	mouse.arrange.track = {}
-	mouse.arrange.envelope = {}
-	mouse.midi_editor = {}
-	mouse.midi_editor.cc_lane = {}
-	return mouse
-end
-
-function cs.executeMouseContextFunction(mouse)
-	local mouseWindow,mouseContext,mouseDetails = reaper.BR_GetMouseCursorContext()  
-	if mouseWindow ~= "" then
-		if mouseContext ~= "" then
-			if mouseDetails ~= "" then
-				if mouse[mouseWindow][mouseContext][mouseDetails] then mouse[mouseWindow][mouseContext][mouseDetails][1](table.unpack(mouse[mouseWindow][mouseContext][mouseDetails],2)) return end
-			else
-				if mouse[mouseWindow][mouseContext] then mouse[mouseWindow][mouseContext][1](table.unpack(mouse[mouseWindow][mouseContext],2)) return end				
-			end
-		else
-			if mouse[mouseWindow] then mouse[mouseWindow][1](table.unpack(mouse[mouseWindow],2)) return end
-		end
-	end
-	if mouse.default then mouse.default[1](table.unpack(mouse.default,2)) end
-end
-
-function cs.calculateProximityRelativeToZoom(mousePos,refPos)
-	local arrangeStart,arrangeEnd = reaper.GetSet_ArrangeView2(0,false,0,0)
-	local distanceToRef = math.abs(mousePos - refPos)
-
-	return distanceToRef/(arrangeEnd - arrangeStart)
-end
-
-local function mouseIsNearCursor(mousePos,proximity)
-	local cursor = reaper.GetCursorPositionEx(0)
-	
-	if cs.calculateProximityRelativeToZoom(mousePos,cursor) <= proximity then
-		return true
-	end
-end
-
-function cs.getClosestMarker(pos)
-	local totalMarkers = reaper.CountProjectMarkers(0)
-	if totalMarkers > 0 then
-		
-		local closestMarker = {}
-	
-		closestMarker.retval, closestMarker.isrgn, closestMarker.pos, closestMarker.rgnend, closestMarker.name, closestMarker.markrgnindexnumber, closestMarker.color = reaper.EnumProjectMarkers3(0, 0)		
-
-		for i=1,totalMarkers-1 do
-			local marker = {}
-			marker.retval, marker.isrgn, marker.pos, marker.rgnend, marker.name, marker.markrgnindexnumber, marker.color = reaper.EnumProjectMarkers3(0, i)
-			if math.abs(marker.pos - pos) < math.abs(closestMarker.pos - pos) then
-				closestMarker = marker
-			end
-		end
-		return closestMarker
-	end
-end
-
-local function getClosestMarkerOrRegionPos(pos)
-	local totalMarkers = reaper.CountProjectMarkers(0)
-
-	if totalMarkers > 0 then
-		local markerPositions = {}
-
-		for i=0,totalMarkers-1 do
-			local marker = {}
-			marker.retval, marker.isrgn, marker.pos, marker.rgnend, marker.name, marker.markrgnindexnumber, marker.color = reaper.EnumProjectMarkers3(0, i)	
-			table.insert(markerPositions,marker.pos)
-			if marker.isrgn then table.insert(markerPositions,marker.rgnend) end
-		end
-
-		local closestMarkerPos = markerPositions[1]
-		for i=2,#markerPositions do
-			if math.abs(markerPositions[i] - pos) < math.abs(closestMarkerPos - pos) then
-				closestMarkerPos = markerPositions[i]
-			end
-
-		end
-		return closestMarkerPos
-	end
-end
-
-local function mouseIsNearMarker(mousePos,proximity)
-	local marker= getClosestMarkerOrRegionPos(mousePos)
-
-	if marker then
-		if cs.calculateProximityRelativeToZoom(mousePos,marker) <= proximity then
-			return marker
-		end
-	end
-end
-
-function cs.checkMouseSnappingPositions(proximity,mouse)
-	local snapPosition = {}
-
-	if mouseIsNearCursor(mouse.pos,proximity) then
-		table.insert(snapPosition,reaper.GetCursorPositionEx(0))
-	end
-
-	local closeMarkerPos = mouseIsNearMarker(mouse.pos,proximity) 
-	if closeMarkerPos then
-		table.insert(snapPosition,closeMarkerPos)
-	end
-
-	if cs.snappingEnabled() and followSnapping then
-		local nearestGrid = reaper.SnapToGrid(0, mouse.pos)
-		table.insert(snapPosition,nearestGrid)
-	end
-
-	local closestSnap = snapPosition[1]
-	for i=2,#snapPosition do
-		if math.abs(snapPosition[i]-mouse.pos) < math.abs(closestSnap-mouse.pos) then
-			closestSnap = snapPosition[i]
-		end
-	end
-
-	return closestSnap
-end

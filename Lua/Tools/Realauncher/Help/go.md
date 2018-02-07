@@ -1,0 +1,1 @@
+To intantly open the timecode input dialogue, create an alias containing the /T (capital T) switch. 

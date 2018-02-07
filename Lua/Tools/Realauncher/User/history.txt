@@ -1,32 +1,50 @@
-ts /start 0:45:11:23 
-ts /start 0:10:00:00 /out 30
-ts /start 0:10:00:00 /out 
-ts /start 0:00:00:00 /out 0:30:00:00 
-ts /start 0:10:00:00 /out 0:30:00:00 
-go 0:20:00:00
-ts leni
-ts len=item
-ts move=cursor
-ts move=cursor
-go 0:00:00:00 
-go 0:00:12:31     
+var /l name=MONDRONGO
+var /l
+var name=MONDRONGO
+var /l
+marker  $name
+var add=return 4+5
+var /l
+marker $add
+var /l
+var add=return reaper.GetPlayPosition2()
+
+var /l
+var add=return reaper.GetPlayPosition2()
+
+var /l
+marker $add
+marker 
+marker  $playpos
+marker  $playpos
+marker  $playpos
+marker  $playpos
+marker  $playpos
+var /l
+var proj=Stubble the movie
+marker $proj
+var prob=0:05:00:00
+go $prob
+go 0:05:00:00
+var /l
+var prob
+var /l
+go sup=return $playpos + 5
+marker $sup
+var /l
+var sup=$playpos+5
+marker $sup
+var /l
+var sup=return $playpos + 5
+marker sup
+var sup
+var /l
+var sup=return 
+var sup=return $playpos + 5
+var /l
 enumcmd
-go 
-go 
-go 
-go 0:00:01:23
-go 0:00:00:09
-go 0:01:23:45
-go 0:01:11:01
-ts /start 0:05:00:00 /out 0:10:00:00
-go
-go
-go
-got 0:15:00:00 
-got 
-got 123
-got  0:22:41:23
-got  0:00:00:05 
-got  0:00:10:00
-got  0:00:15:00   123
-got  0:00:00:05
+enumcmd
+enumcmd
+enumcmd
+enumcmd
+testInputs ARG1 $playpos arg3

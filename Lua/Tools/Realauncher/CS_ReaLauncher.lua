@@ -1,6 +1,6 @@
 --[[
 @description CS_ReaLauncher
-@version 1.0
+@version 2.1alpha
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 19
@@ -12,230 +12,232 @@
 @noindex
 --]]
 ---------------------------------------------------------------------------------------
-rl = {}  
-rl.textToPrint = {}
+rl = {}
+rl.text = {}
 rl.registeredCommands = {}
-rl.config = {}
+rl.text.raw = ''
 rl.history = {}
 
-rl.config.maxHistory = 50
+local prevCommand
 
-rl.white = function(text) gfx.set(1,1,1,0.8,0) ; gfx.drawstr(text) return end
-rl.grey = function(text) gfx.set(1,1,1,0.3,0) ; gfx.drawstr(text) return end
-rl.red = function(text) gfx.set(1,0.6,0.6,0.8,0) ; gfx.drawstr(text) return end
-rl.green = function(text) gfx.set(0.6,1,0.6,0.8,0) ; gfx.drawstr(text) return end
-rl.blue = function(text) gfx.set(0.6,0.6,1,0.8,0) ; gfx.drawstr(text) return end
+local function parseText(t)
+	t.possibleCommand = nil
+	t.fullArgument = nil
+	local rawToProcess = t.raw
+	t.possibleCommand = rawToProcess:match("^%s*(%g+)") or ""
 
----------------------------------------------------------------------------------------
+	rawToProcess = rawToProcess:sub(t.possibleCommand:len()+1)
+	t.fullArgument = rawToProcess:match("^%s*(%g+.*)")
+	t.arguments = {}
+	local currChar = rawToProcess:sub(1,1)
+	local openString = false
+	local currArg = 1
 
-function get_script_path()
+	for i=1,rawToProcess:len() do
+		if not t.arguments[currArg] then t.arguments[currArg] = "" end
+
+		if currChar == [["]] then 
+			if not openString then 
+				openString = true
+			else
+				openString = false
+			end
+			goto NEXT
+		end
+
+		if currChar == " " then
+			if openString then 
+				t.arguments[currArg] = t.arguments[currArg]..currChar
+			else
+				if t.arguments[currArg] ~= "" then currArg = currArg+1 end
+			end
+			goto NEXT
+		end		
+
+		t.arguments[currArg] = t.arguments[currArg]..currChar
+
+		::NEXT::
+		rawToProcess = rawToProcess:sub(2)
+		currChar = rawToProcess:sub(1,1)
+	end
+end
+
+local function recallHistoryMaker() 
+	local positionInHistoryList = #rl.history+1
+	return function (direction) 
+		positionInHistoryList = positionInHistoryList + direction
+		if positionInHistoryList < 1 then positionInHistoryList = 1 end
+		if positionInHistoryList > #rl.history then positionInHistoryList = #rl.history end
+		return rl.history[positionInHistoryList]
+	end
+end
+
+------------------------------------------------------
+local function get_script_path()
 	local info = debug.getinfo(1,'S');
 	local script_path = info.source:match[[^@?(.*[\/])[^\/]-$]]
 	return script_path
 end 
 
----------------------------------------------------------------------------------------
-
-function printText(text,color,typeOfUnit)
-	table.insert(rl.textToPrint,{text = text,color = color,typeOfUnit = typeOfUnit})
-end
-
-function unprintLastText(n)
-	for i=1,n+1,1 do table.remove(rl.textToPrint) end
-end
-
-function printHint(text,color)
-	rl.previewToPrint = {text = text,color = color}
-end
-
-function iswindows()
-	return reaper.GetOS():find('Win') ~= nil
-end
-
-function ismacos()
-	return reaper.GetOS():find('OSX') ~= nil
-end
-
-function copy(text)
-	local tool
-
-	if ismacos() then
-	tool = 'pbcopy'
-	elseif iswindows() then
-	tool = 'clip'
+local function loadhistory()
+	local historyFile = io.open(rl.userSettingsPath.."\\history.txt","r")
+	local history = {}
+	for command in historyFile:lines() do 
+		if command ~= "\n" then table.insert(history,command) end
 	end
-
-	local proc = assert(io.popen(tool, 'w'))
-	proc:write(text)
-	proc:close()
+	return history
 end
 
-function paste()
-	local tool
-
-	if ismacos() then
-	tool = 'pbpaste'
-	elseif iswindows() then
-	tool = 'powershell -windowstyle hidden -Command Get-Clipboard'
-	end
-
-	local proc = assert(io.popen(tool, 'r'))
-	local text = proc:read("*all")
-	proc:close()
-
-	return text
-end
-
-function updateActiveChar(string)
-	rl.active_char = rl.active_char + string.len(string)
-end
-
-function LauncherTextBox(char)
-	if not rl.active_char then rl.active_char = 0 end
-	if not rl.text        then rl.text = '' end
-
-	if  kbInput.isAnyPrintableSymbol(char) then        
-	      rl.text = rl.text:sub(0,rl.active_char)..
-	        string.char(char)..
-	        rl.text:sub(rl.active_char+1)
-	      rl.active_char = rl.active_char + 1
-	end
-
-	if char == kbInput.copy then
-		copy(rl.text)
-	end
-
-	if char == kbInput.paste then
-		local pasteString = paste()
-		rl.text = rl.text..pasteString
-		updateActiveChar(pasteString)
-	end
-
-	 if char == kbInput.backspace then
-	    rl.text = rl.text:sub(0,rl.active_char-1)..
-	      rl.text:sub(rl.active_char+1)
-	    rl.active_char = rl.active_char - 1
-	  end
-
-	  if char == kbInput.deleteKey then
-	    rl.text = rl.text:sub(0,rl.active_char)..
-	      rl.text:sub(rl.active_char+2)
-	    rl.active_char = rl.active_char
-	  end
-	        
-	  if char == kbInput.leftArrow then
-	    rl.active_char = rl.active_char - 1
-	  end
-	  
-	  if char == kbInput.rightArrow then
-	    rl.active_char = rl.active_char + 1
-	  end
-
-	if rl.active_char < 0 then rl.active_char = 0 end
-	if rl.active_char > rl.text:len()  then rl.active_char = rl.text:len() end
-end
-
-function recallHistory(char)
-	if char == kbInput.upArrow then	
-		if not rl.history.recalledPosition then 
-			rl.history.recalledPosition = #rl.history 
-		else
-			rl.history.recalledPosition = rl.history.recalledPosition - 1
-			if rl.history.recalledPosition < 1 then rl.history.recalledPosition = 1 end
-		end
-		rl.text = rl.history[rl.history.recalledPosition]
-	end
-
-	if char == kbInput.downArrow then
-		if not rl.history.recalledPosition then 
-			rl.history.recalledPosition = #rl.history
-		else
-			rl.history.recalledPosition = rl.history.recalledPosition + 1
-			if rl.history.recalledPosition > #rl.history then rl.history.recalledPosition = #rl.history end
-		end
-		rl.text = rl.history[rl.history.recalledPosition]
-	end
-end
-
-function getShortcuts(char)
-	if char == kbInput.ctrl.s then rl.text = rl.text.."selItem" ; updateActiveChar("selItem") end
-end
-
-function rl.timeInput(defaultTimeToDisplay)
-	rl.drawCursor = false
-	rl.customInput = true
-	if not tcInput then initTimeInput() end
+local function saveHistory(historyTable,commandToSave)
+	if rl.text.command then
+		if rl.text.command ~= "!!" then
+			os.execute([[mkdir "]]..rl.userSettingsPath..[["]])
+			
+			table.insert(historyTable,commandToSave)
+			local offset
+			if #historyTable - rl.config.maxHistory + 1 < 1 then
+				offset = 1
+			else
+				offset = #historyTable - rl.config.maxHistory + 1
+			end
 	
-	TCTextBox(char) 
-
-	local _,userInputString = getTimeInput(tcInput.text,defaultTimeToDisplay)
-
-	if userInputString then
-		rl.drawCursor = true
-		rl.customInput = nil
-		rl.registeredCommands[rl.command][rl.waitingForCustomInput] = userInputString
-		rl.text = rl.text.." " 
-		rl.active_char = rl.active_char+1
-		rl.text = rl.text..userInputString
-		updateActiveChar(userInputString)
-		rl.tipLine = nil
-		tcInput = nil
+				local historyFile = io.open(rl.userSettingsPath.."\\history.txt","w")
+				for i = offset, #historyTable, 1 do
+					historyFile:write(historyTable[i].."\n")
+				end
+			historyFile:close()
+		end
 	end
 end
 
-function autocomplete()
-	if rl.currentAutocomplete and char == kbInput.tab then 
-		rl.text = rl.text..rl.currentAutocomplete 
-		updateActiveChar(rl.currentAutocomplete )
-		rl.previewToPrint = nil
-		rl.currentAutocomplete = nil 
-		CommandDispatcher(rl.text)
+local function loadConfig()
+	local configFile = io.open(rl.userSettingsPath.."\\config.txt","r")
+	local configTable = {}
+	for param in configFile:lines() do 
+		local paramName,value = string.match(param,"^(%a+)=([^\n]+)")
+		if paramName and value then configTable[paramName] = value end
 	end
+	return configTable
 end
 
--- function drawArgumentsAutocomplete(suggestion)
--- 	if rl.argSuggestion then
--- 		gfx.x = obj_offs*2-4
--- 		gfx.y = obj_offs+gui_fontsize+obj_offs/2
+local function loadAliases()
+	local aliasesFile = io.open(rl.userSettingsPath.."\\aliases.txt","r")
+	local aliasesTable = {}
+	for param in aliasesFile:lines() do 
+		local paramName,value = string.match(param,"^(%g+)=([^\n]+)")
+		if paramName and value then aliasesTable[paramName] = value end
+	end
+	return aliasesTable
+end
 
--- 		for suggestionWord in string.gmatch(suggestion,"([^%s]+)") do
--- 		local alreadyDrawn = false
--- 			for k=1, #rl.argumentElement, 1 do
--- 				if string.find(suggestionWord,rl.argumentElement[k]) then
--- 					local matchStart = string.find(suggestionWord,rl.argumentElement[k])
+local function loadVariables()
+	variables = {}
+	local variablesFile = io.open(rl.userSettingsPath.."\\variables.txt","r")
+	for param in variablesFile:lines() do 
+		local paramName,value = string.match(param,"^(%g+)=([^\n]+)")
+		if paramName and value then variables[paramName] = value end
+	end
+	return variables
+end
 
--- 					gfx.drawstr(" ")
+local function loadHelpFiles()
+	local helpFiles = {}
+	local helpDirectory = rl.scriptPath.."\\Help"
+	for file in io.popen([[dir "]]..helpDirectory..[[" /b]]):lines() do 
+		local f = io.open(helpDirectory.."\\"..file, "r")
+		local content = f:read("a")
+		local command = string.match(file,"(%a+)%.%a+$")
+		helpFiles[command] = content
+	end
 
--- 					if matchStart ~= 1 then 
--- 						rl.grey()
--- 						gfx.drawstr(suggestionWord:sub(1,matchStart-1))
--- 					end
+	return helpFiles
+end
 
--- 					rl.blue()
--- 					gfx.drawstr(rl.argumentElement[k])
+local function loadSettings()
+	rl.userSettingsPath = rl.scriptPath.."\\User"
 
--- 					if suggestionWord:len() ~= rl.argumentElement[k]:len() then
--- 						rl.grey()
--- 						gfx.drawstr(suggestionWord:sub(matchStart + rl.argumentElement[k]:len()))
--- 					end
-					
--- 					alreadyDrawn = true
+	rl.config = loadConfig()
+	rl.history = loadhistory()
+	rl.aliases = loadAliases()
+	rl.helpFiles = loadHelpFiles()
+	rl.variables.user = loadVariables()
+	-- loadShortcuts()
+end
+
+local function loadModules()
+	rl.scriptPath = get_script_path()
 	
--- 				end
--- 			end
+	package.path = package.path .. ";" .. rl.scriptPath .. "?.lua"
+	
+	require("CS_FunctionLibrary")
 
--- 			if not alreadyDrawn then 
--- 				rl.grey()
--- 				gfx.drawstr(" "..suggestionWord)
--- 			end
--- 		end
--- 	end
--- 	rl.argSuggestion = nil
--- end
+	for file in io.popen([[dir "]]..rl.scriptPath..[[" /b]]):lines() do 
+		if string.match(file,"_Library.lua$") then 
+			local LaunchModule = string.match(file,"(.*)%.lua")
+			require(LaunchModule)
+		end
+	end
 
--------------------------------
+	for file in io.popen([[dir "]]..rl.scriptPath..[[" /b]]):lines() do 
+		if string.match(file,"_LaunchModule.lua$") then 
+			local LaunchModule = string.match(file,"(.*)%.lua")
+			require(LaunchModule)
+		end
+	end
+end
 
-function mergeSortMatrixDescending(matrix,keyForSorting)
+local function exitRoutine()
+	saveHistory(rl.history,rl.text.raw)
+	if executeOnExit then
+		if type(executeOnExit) == "table" then
+			executeOnExit[1](table.unpack(rl.executeOnExit,2))
+		else
+			executeOnExit()
+		end
+	end
+end
+
+local function removeExcludeWords(searchArgumentsTable)
+	local nonExclude = {}
+	for i=1, #searchArgumentsTable,1 do
+		if not string.match(searchArgumentsTable[i],"^-.*") then 
+			nonExclude[#nonExclude+1] = searchArgumentsTable[i]
+		end
+	end
+
+	return nonExclude
+end
+
+
+local function calculatePercentageOfProximityToArguments(databaseEntry,searchArgumentsTable)
+	local validWords = removeExcludeWords(searchArgumentsTable)
+
+	local argumentsLength = 0
+	for i=1,#validWords,1 do
+
+		local repetitions = 0
+		for match in string.gmatch(databaseEntry,validWords[i]) do
+			repetitions = repetitions + 1
+		end
+
+		argumentsLength = argumentsLength + ( string.len(validWords[i]) * repetitions ) 
+	end
+
+	local spaces = 0
+	for space in string.gmatch(databaseEntry,"%s") do
+		spaces = spaces + 1
+	end
+	entryLength = string.len(databaseEntry) - spaces
+
+	local percentageOfProximity = argumentsLength / entryLength
+
+	percentageOfProximity = string.format("%.2f",percentageOfProximity)
+
+	return percentageOfProximity
+
+end
+
+local function mergeSortMatrixDescending(matrix,keyForSorting)
 	local matrixLength = #matrix
 	local subMatrix = {}
 	for i = 1,matrixLength,1 do
@@ -282,52 +284,7 @@ function mergeSortMatrixDescending(matrix,keyForSorting)
 end
 
 
-function sortMatches(matches)
-	local sortedMatches = mergeSortMatrixDescending(matches,"percentageOfProximityToArguments") 
-
-	return sortedMatches
-end
-
-function removeExcludeWords(searchArgumentsTable)
-	local nonExclude = {}
-	for i=1, #searchArgumentsTable,1 do
-		if not string.match(searchArgumentsTable[i],"^-.*") then 
-			nonExclude[#nonExclude+1] = searchArgumentsTable[i]
-		end
-	end
-
-	return nonExclude
-end
-
-function calculatePercentageOfProximityToArguments(databaseEntry,searchArgumentsTable)
-	local validWords = removeExcludeWords(searchArgumentsTable)
-
-	local argumentsLength = 0
-	for i=1,#validWords,1 do
-
-		local repetitions = 0
-		for match in string.gmatch(databaseEntry,validWords[i]) do
-			repetitions = repetitions + 1
-		end
-
-		argumentsLength = argumentsLength + ( string.len(validWords[i]) * repetitions ) 
-	end
-
-	local spaces = 0
-	for space in string.gmatch(databaseEntry,"%s") do
-		spaces = spaces + 1
-	end
-	entryLength = string.len(databaseEntry) - spaces
-
-	local percentageOfProximity = argumentsLength / entryLength
-
-	percentageOfProximity = string.format("%.2f",percentageOfProximity)
-
-	return percentageOfProximity
-
-end
-
-function searchUnorderedListForExactMatchesAndReturnMatchesTable(databaseList,searchArgumentsTable)
+local function searchUnorderedListForExactMatchesAndReturnMatchesTable(databaseList,searchArgumentsTable)
 	local matches = {}
 
 	for key,value in pairs(databaseList) do
@@ -361,329 +318,316 @@ function searchUnorderedListForExactMatchesAndReturnMatchesTable(databaseList,se
 	return matches
 end
 
-function searchMatrixAndReturnMatchesTable(databaseMatrix,searchArgumentsTable,keyToSearchIn)
-	local matches = {}
+function sendCursorToEndOfText()
+	rl.active_char = rl.text.raw:len()
+end
 
+function performAutocomplete(suggestion)
+	if suggestion then
+		rl.text.raw = rl.text.raw..suggestion
+		parseText(rl.text)
+		sendCursorToEndOfText()
+	end
+end
 
-	for i = 1, #databaseMatrix, 1 do
-		local isMatch
-		for k = 1, #searchArgumentsTable, 1 do
-			if string.match(searchArgumentsTable[k],"^-.*") then
-				local excludeWord = string.sub(searchArgumentsTable[k],2)
-				if string.find(databaseMatrix[i][keyToSearchIn],excludeWord) then
-					isMatch = false
-					break
-				end				
-			else
-				if  string.find(databaseMatrix[i][keyToSearchIn],searchArgumentsTable[k]) then
-					isMatch = true
-				else
-					isMatch = false
-					break
-				end
-			end
-		end
+local function appendTables(table1,table2,table2Overwritestable1)
+	local combinedTable = {}
 
-		if isMatch then
-			matches[#matches+1] = databaseMatrix[i]
-
-			local percentageOfProximityToArguments = calculatePercentageOfProximityToArguments(databaseMatrix[i][keyToSearchIn],searchArgumentsTable)
-			matches[#matches].percentageOfProximityToArguments = percentageOfProximityToArguments
-		end
+	for key,value in pairs(table1) do
+		combinedTable[key] = value
 	end
 
-	return matches
-end
----------------------------------------------------------------------------------------    
-
-function storeAndPrintArgumentUnit(argumentUnit,command)
-	if rl.nextIsParam then
-		unprintLastText(string.len(argumentUnit))
-		printText(argumentUnit.." ","green","SwitchParam") 
-		if string.sub(argumentUnit,1,1) == "\"" then argumentUnit = string.sub(argumentUnit,2,-2) end
-		rl.registeredCommands[command][rl.nextIsParam] = argumentUnit
-		rl.previewToPrint = nil
-		rl.nextIsParam = nil
-	else
-		local isSwitch = false
-		if rl.registeredCommands[command].switches then
-			for switch in pairs(rl.registeredCommands[command].switches) do
-				if argumentUnit  == ("/"..switch) or argumentUnit == ("--"..switch) then
-					isSwitch = true
-					unprintLastText(string.len(argumentUnit))
-					printText(argumentUnit.." ","blue","Switch")
-
-					if type(rl.registeredCommands[command].switches[switch]) == "boolean" then
-						rl.registeredCommands[command][switch] = true
-					else
-						if type(rl.registeredCommands[command].switches[switch]) == "function" then
-							rl.waitingForCustomInput = switch
-							if not rl.registeredCommands[command][switch] then rl.registeredCommands[command].switches[switch]() end
-						else
-							rl.nextIsParam = switch
-							printHint(" ("..rl.registeredCommands[command].switches[switch]..")","grey")
-						end
+	if table2 then
+		for key,value in pairs(table2) do
+			if not combinedTable[key] then
+				combinedTable[key] = value
+			else
+				if table2Overwritestable1 then
+					combinedTable[key] = value
+				else
+					if type(key) == "number" then
+						combinedTable[#combinedTable+1] = value
 					end
 				end
 			end
 		end
-		if not isSwitch then 
-			unprintLastText(string.len(argumentUnit))
-			printText(argumentUnit.." ","green","Element") 
-			if string.sub(argumentUnit,1,1) == "\"" then argumentUnit = string.sub(argumentUnit,2,-2) end
-			rl.argumentElement[#rl.argumentElement + 1] = argumentUnit
-		end
-	end	
-end
-
-function matchAndStoreArguments(command,arguments)
-	rl.arguments = arguments
-	if string.sub(arguments,-1,-1) ~= " " then arguments = arguments.." " end
-	rl.argumentElement = {}	
-	local argumentUnit = ""
-	rl.quoteOpen = false
-	rl.nextIsParam = nil
-	for i=1,string.len(arguments),1 do
-		currentChar = string.sub(arguments,i,i)
-		if string.find(currentChar," ") then
-			if not rl.quoteOpen then 
-				printText(currentChar,"white","Space")
-				if not string.match(argumentUnit,"^ $") and string.len(argumentUnit) > 0 then storeAndPrintArgumentUnit(argumentUnit,command) end
-				argumentUnit = ""
-			else
-				printText(currentChar,"white","Space")
-				argumentUnit = argumentUnit..currentChar 
-			end
-		else
-			printText(currentChar,"green","Uncategorized")
-			if string.find(currentChar,"\"") then rl.quoteOpen = not rl.quoteOpen end
-			argumentUnit = argumentUnit..currentChar
-			if string.match(argumentUnit,"^/.*") and rl.registeredCommands[command].switches then suggestSwitch(string.sub(argumentUnit,2),command) end
-			if string.match(argumentUnit,"^%-%-.*") and rl.registeredCommands[command].switches then suggestSwitch(string.sub(argumentUnit,3),command) end
-		end
 	end
-end
 
-function matchAndStore(command,arguments)
-	rl.previewToPrint = nil
-	if rl.registeredCommands[command] and string.match(rl.text,"^%s*[^%s]+( )") then
-		rl.currentAutocomplete = nil
-		rl.textToPrint = {}
-		rl.command = command
-		printText(command.." ","red","Command")
-		if arguments and string.len(arguments) > 0 then
-			matchAndStoreArguments(command,arguments)			
-		else
-			rl.arguments = nil
-			if rl.registeredCommands[command].customArg then
-				rl.waitingForCustomInput = "customArgInput"
-				if not arguments then rl.registeredCommands[command].customArg() end
-			end
-		end	
-	else -- command not found
-		if not arguments then suggestCommand(command) else rl.currentAutocomplete = nil ; rl.previewToPrint = nil end
-		rl.command = nil
-		rl.arguments = nil
-	end
-end
-
-function CommandDispatcher(text)
-	if not text then return end
-
-	local command = string.match(text,"^%s*([^%s]+)")
-	local arguments = string.match(text,"^%s*[^%s]+ (.+)")
-
-	matchAndStore(command,arguments)
-end
-
-function suggestSwitch(word,command)
-	local switchMatches = searchUnorderedListForExactMatchesAndReturnMatchesTable(rl.registeredCommands[command].switches,{word})
-	if #switchMatches > 0 then 
-		switchMatches = mergeSortMatrixDescending(switchMatches,"percentageOfProximityToArguments") 
-
-		local suggestion = string.sub(switchMatches[1].match,string.len(word)+1)
-
-		printHint(suggestion,"grey")
-		rl.currentAutocomplete = suggestion
-	else
-		rl.previewToPrint = nil
-		rl.currentAutocomplete = nil 
-	end
+	return combinedTable
 end
 
 function suggestCommand(command)
-	local commandMatches = searchUnorderedListForExactMatchesAndReturnMatchesTable(rl.registeredCommands,{command})
-	if #commandMatches > 0 then 
+	local commandsAndAliases = appendTables(rl.registeredCommands,rl.aliases)
+
+	local commandMatches = searchUnorderedListForExactMatchesAndReturnMatchesTable(commandsAndAliases,{command})
+	if #commandMatches > 0 and command:len() > 0 and  rl.text.raw:match("^%g+$") then 
 		commandMatches = mergeSortMatrixDescending(commandMatches,"percentageOfProximityToArguments")
 
 		local suggestion = string.sub(commandMatches[1].match,string.len(command)+1)
-		printHint(suggestion,"grey")
 		rl.currentAutocomplete = suggestion
 	else 
 		rl.currentAutocomplete = nil
-		rl.previewToPrint = nil
 	end
 end
 
-function drawWindow()
-    gfx.set(  1,1,1,  0.2,  0) --rgb a mode
-    gfx.rect(0,0,obj_mainW,obj_mainH,1)	
-    gfx.set(  1,1,1,  0.1,  0) --rgb a mode
-    gfx.rect(obj_offs,obj_offs,obj_mainW-obj_offs*2,gui_fontsize+obj_offs/2 ,1)
-end
-
-function drawText()
-    gfx.setfont(1, gui_fontname, gui_fontsize)
-    gfx.x = obj_offs*2
-    gfx.y = obj_offs
-    if rl.command then
-    	if string.match(rl.textToPrint[#rl.textToPrint].text,".* $") then rl.textToPrint[#rl.textToPrint].text = string.sub(rl.textToPrint[#rl.textToPrint].text,1,-2) end
-		for i=1,#rl.textToPrint,1 do
-			rl[rl.textToPrint[i].color](rl.textToPrint[i].text)
-		end
-	else
-		rl.white(rl.text)
-    end
-    if rl.previewToPrint then
-    	rl[rl.previewToPrint.color](rl.previewToPrint.text)
-    end
-end
-
-function drawCursor()
-	if rl.active_char ~= nil then
-    	alpha  = math.abs((os.clock()%1) -0.4)
-      gfx.set(  1,1,1, alpha,  0) --rgb a mode
-      gfx.x = obj_offs*1.5+
-              gfx.measurestr(rl.text:sub(0,rl.active_char)) + 2
-      gfx.y = obj_offs + gui_fontsize/2 - gfx.texth/2
-      if rl.drawCursor then gfx.drawstr('|') end
-    end  
-end
-
-function drawTip(text)
-	gfx.setfont(1, gui_fontname, gui_fontsize)
-    gfx.x = obj_offs*2
-    gfx.y = obj_offs + 32
-    gfx.set(1,1,1,0.3,0)
-    gfx.drawstr(tostring(text))
-end
-
-function drawGUI()
-	drawWindow()
-	drawText()
-	drawCursor()
-	-- drawArgumentsAutocomplete(rl.argSuggestion)
-	if not rl.tipLine then
-		if rl.command and rl.registeredCommands[rl.command].description then rl.tipLine = rl.registeredCommands[rl.command].description end	
-	end
-	if rl.tipLine then drawTip(rl.tipLine) end
-end
-
-function saveHistory()
-	if rl.command then
-		os.execute([[mkdir "]]..rl.userSettingsPath..[["]])
+function initLauncherGUI(position)
+	local function Lokasenna_WindowAtCenter(w, h,position)
+		-- thanks to Lokasenna 
+		-- http://forum.cockos.com/showpost.php?p=1689028&postcount=15    
+		local l, t, r, b = 0, 0, w, h    
+		local __, __, screen_w, screen_h = reaper.my_getViewport(l, t, r, b, l, t, r, b, 1)    
 		
-		table.insert(rl.history,rl.text)
-		local offset
-		if #rl.history - rl.config.maxHistory + 1 < 1 then
-			offset = 1
-		else
-			offset = #rl.history - rl.config.maxHistory + 1
+		if position == "bottom" then
+			local x, y = (screen_w - w) / 2, (screen_h - h) - 70
+			return w,h,x,y
+		else -- center
+			local x, y = (screen_w - w) / 2, (screen_h - h) / 2  
+			return w,h,x,y  
 		end
 
-		local historyFile = io.open(rl.userSettingsPath.."\\history.txt","w")
-		for i = offset, #rl.history, 1 do
-			historyFile:write(rl.history[i].."\n")
-		end
-		historyFile:close()
 	end
-end
-
-function loadhistory()
-	local historyFile = io.open(rl.userSettingsPath.."\\history.txt","r")
-	local lastCommand
-	for command in historyFile:lines() do 
-		if command ~= "\n" then table.insert(rl.history,command) end
-	end
-end
-
----------------------------------------------------------------------------------------    
-
-function Run()
-	char  = gfx.getchar()
-	if not rl.customInput then
-		LauncherTextBox(char) -- perform typing
-		recallHistory(char)
-		getShortcuts(char)
-		rl.text = string.match(rl.text,"^%s*([^%s]?.*)")
-	end
-	if char > 0  
-		    and rl.text 
-		    and char ~=  kbInput.rightArrow
-		    and char ~= kbInput.leftArrow then 
-		    	CommandDispatcher(rl.text)
-		  end
-	if rl.command then
-		if rl.registeredCommands[rl.command].waitForEnter then 
-			if char == kbInput.enter then CommandDispatcher(rl.text) ; rl.registeredCommands[rl.command].main(rl.arguments) end
-		else
-			rl.registeredCommands[rl.command].main(rl.arguments)
-		end
-	end
-	drawGUI()
-	autocomplete()
-	gfx.update()
-	last_char = char
-	if char ~= -1 and char ~= 27 and char ~= kbInput.enter then reaper.defer(Run) else gfx.quit() end
-end 
-
----------------------------------------------------------------------------------------
-function loadModules()
-	rl.scriptPath = get_script_path()
-	rl.userSettingsPath = rl.scriptPath.."\\User"
-
-	package.path = package.path .. ";" .. rl.scriptPath .. "?.lua"
-
-	for file in io.popen([[dir "]]..rl.scriptPath..[[" /b]]):lines() do 
-		if string.match(file,"_LaunchModule.lua$") or string.match(file,"_Library.lua$") then 
-			local LaunchModule = string.match(file,"(.*)%.lua")
-			require(LaunchModule)
-		end
-	end
-end
-
-function loadSettings()
-	loadhistory()
-end
-
-function initLauncherGUI()
-	obj_mainW = 800	
-	obj_mainH = 70
-	obj_offs = 10
 	
+	gfx.quit()
 	gui_aa = 1
 	gui_fontname = 'Calibri'
 	gui_fontsize = 23      
 	local gui_OS = reaper.GetOS()
 	if gui_OS == "OSX32" or gui_OS == "OSX64" then gui_fontsize = gui_fontsize - 7 end
 
-	Lokasenna_WindowAtCenter(obj_mainW,obj_mainH)
-	rl.drawCursor = true
+	w,h,x,y = Lokasenna_WindowAtCenter(rl.config.launcherWidth,rl.config.launcherHeight,position)
+	gfx.init("ReaLauncher", w, h, 0, x, y)
+
 end
 
-function Lokasenna_WindowAtCenter(w, h)
-	-- thanks to Lokasenna 
-	-- http://forum.cockos.com/showpost.php?p=1689028&postcount=15    
-	local l, t, r, b = 0, 0, w, h    
-	local __, __, screen_w, screen_h = reaper.my_getViewport(l, t, r, b, l, t, r, b, 1)    
-	local x, y = (screen_w - w) / 2, (screen_h - h) / 2    
-	gfx.init("ReaLauncher", w, h, 0, x, y)  
+local function launcherTextBox(char)
+	if not rl.active_char then rl.active_char = 0 end
+
+	if  kbInput.isAnyPrintableSymbol(char) then        
+	      rl.text.raw = rl.text.raw:sub(0,rl.active_char)..
+	        string.char(char)..
+	        rl.text.raw:sub(rl.active_char+1)
+	      rl.active_char = rl.active_char + 1
+	end
+
+	 if char == kbInput.backspace then
+	 	if rl.active_char > 0 then
+	    	rl.text.raw = rl.text.raw:sub(0,rl.active_char-1)..
+	      		rl.text.raw:sub(rl.active_char+1)
+	    	rl.active_char = rl.active_char - 1
+	    end	
+	  end
+
+	  if char == kbInput.deleteKey then
+	    rl.text.raw = rl.text.raw:sub(0,rl.active_char)..
+	      rl.text.raw:sub(rl.active_char+2)
+	    rl.active_char = rl.active_char
+	  end
+	        
+	  if char == kbInput.leftArrow then
+	    rl.active_char = rl.active_char - 1
+	  end
+	  
+	  if char == kbInput.rightArrow then
+	    rl.active_char = rl.active_char + 1
+	  end
+
+	if rl.active_char < 0 then rl.active_char = 0 end
+	if rl.active_char > rl.text.raw:len()  then rl.active_char = rl.text.raw:len() end
 end
+
+local function matchRegisteredCommands(t)
+	rl.currentAutocomplete = nil
+	if t.possibleCommand then 
+		t.command = nil
+		for command in pairs(rl.registeredCommands) do
+			if command == t.possibleCommand then
+				t.command = t.possibleCommand
+				t.possibleCommand = nil
+			end
+		end
+		if not t.command and t.raw:match("^%g+$") then
+			suggestCommand(t.possibleCommand)
+		end
+	end
+end
+
+local function matchAliases(t)
+	if t.raw then
+		for alias,substitution in pairs(rl.aliases) do
+			if alias == t.raw then
+				t.raw = substitution
+				parseText(t)
+				rl.active_char = rl.text.raw:len()
+				break
+			end
+		end
+	end
+end
+
+local function matchSwitches(args)
+	for switch in pairs (switches) do switches[switch] = switchesDefaultVals[switch] end -- reset switches from previous parses
+	local nextIsSwitchVal = nil
+	local toRemoveFromArgsTable = {}
+	for i,arg in ipairs(args) do
+		if nextIsSwitchVal then
+			switches[nextIsSwitchVal] = arg
+			table.insert(toRemoveFromArgsTable,i)
+			nextIsSwitchVal = false
+		end
+
+		for switch,defaultValue in pairs(switches) do
+			if arg:match("^/"..switch) or arg:match("^%-%-"..switch) then
+				if type(defaultValue) == "number" or type(defaultValue) == "string" then
+					nextIsSwitchVal = switch
+					table.insert(toRemoveFromArgsTable,i)
+				else 
+					if type(defaultValue) == "boolean" then
+						switches[switch] = not switchesDefaultVals[switch]
+						table.insert(toRemoveFromArgsTable,i)
+					end
+				end
+			end
+		end
+	end
+	args = removePositionsFromNumberedTable(args,toRemoveFromArgsTable)
+	return args
+end 
+
+local function typeOrExecuteChar(char)
+	if type(charFunction[char]) == "function" then
+		charFunction[char]()
+	else
+		launcherTextBox(char)	
+	end
+
+end
+
+local function dummyFunction()
+end
+
+local function setCurrentEnvironment(currCommand)
+	local environment = currCommand or "default"
+	charFunction = appendTables(rl.registeredCommands.default.charFunction,rl.registeredCommands[environment].charFunction,true)
+	passiveFunction = rl.registeredCommands[environment].passiveFunction or dummyFunction
+	onEnterFunction = rl.registeredCommands[environment].onEnter or dummyFunction
+	entranceFunction = rl.registeredCommands[environment].entranceFunction or dummyFunction
+	executeOnExit =  rl.registeredCommands[environment].exitFunction or dummyFunction
+	switches = rl.registeredCommands[environment].switches or {}
+	extendedHelp = rl.registeredCommands[environment].help
+	drawGUI = rl.registeredCommands[environment].gui or drawMainGUI
+
+	switchesDefaultVals = {}
+	for switch,defaultValue in pairs(switches) do switchesDefaultVals[switch] = defaultValue end
+
+	rl.text.tipLine = rl.registeredCommands[environment].description or ""
+	return environment
+end
+
+local function matchUserVariables(argIndex,argument,argsTable,userVariables)
+	for var,value in pairs(userVariables) do
+		if argument:match("^%$"..var) then 
+			if type(value) == "string" and value:match("^return .+") then
+				argsTable[argIndex] = tostring(load(value)())
+			else
+				argsTable[argIndex] = tostring(value)
+			end
+			return true
+		end
+	end
+end
+
+local function matchNativeVariables(argIndex,argument,argsTable,nativeVariables)
+	for var,value in pairs(nativeVariables) do
+		if argument:match("^%$"..var) then 
+				argsTable[argIndex] = tostring(value)
+			return true
+		end
+	end
+end
+local function substituteVariables(argsTable)
+	if rl.variables then 
+		for i,argument in ipairs(argsTable) do
+			if argument:match("^%$") then
+				if matchUserVariables(i,argument,argsTable,rl.variables.user) then return end
+				-- if user var matched return early so user var takes priority over native one
+				if matchNativeVariables(i,argument,argsTable,rl.variables.native) then return end
+			end		
+		end
+	end
+end
+
+function parseInput(t)
+	parseText(t)
+	matchAliases(t)
+	matchRegisteredCommands(t)
+	substituteVariables(t.arguments)
+	matchSwitches(t.arguments)
+end
+
+function changeEnvironment(newEnv) 
+	executeOnExit()
+	setCurrentEnvironment(newEnv)
+	parseInput(rl.text)
+	entranceFunction()		
+end
+
+function launchAltGUI(altgui,...)
+	rl.altGUI = true
+	gfx.quit() 
+	pcall(altgui,...)
+end
+
+function returnToMainLoop(returnValue)
+	gfx.quit()
+    rl.altGUIReturn = returnValue 
+    rl.altGUI = false 
+    initLauncherGUI("center")
+    realauncherMainLoop()
+end
+
+local function retrieveAltGUIReturnValue(retval)
+	if retval then
+		rl.text.raw = rl.text.raw..retval
+		retval = nil
+		sendCursorToEndOfText()	
+	end
+end
+
+function realauncherMainLoop()
+	if not rl.altGUI then	
+		rl.text.currChar  = gfx.getchar()
+	
+		rl.altGUIReturn = retrieveAltGUIReturnValue(rl.altGUIReturn)
+	
+		if rl.text.currChar ~= 0 then 
+			typeOrExecuteChar(rl.text.currChar)
+			parseInput(rl.text)
+		end
+			
+		if rl.text.command ~= prevCommand then
+			changeEnvironment(rl.text.command)
+			prevCommand = rl.text.command
+		end
+	
+		passiveFunction()
+		if rl.text.currChar == kbInput.enter then onEnterFunction() end
+		
+		drawGUI() -- from GUI_Library
+	
+		gfx.update()
+		if rl.text.currChar ~= -1 and rl.text.currChar ~= kbInput.escape and rl.text.currChar ~= kbInput.enter then reaper.defer(realauncherMainLoop) else gfx.quit() end
+	end
+end 
 
 -- SHOW TIME! --
 
 loadModules()
 loadSettings()
-initLauncherGUI()
-Run()
-reaper.atexit(saveHistory)
+recallHistory = recallHistoryMaker()
+
+setCurrentEnvironment()
+
+initLauncherGUI("center")
+realauncherMainLoop()
+
+reaper.atexit(exitRoutine)

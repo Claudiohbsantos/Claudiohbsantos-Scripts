@@ -1,0 +1,6 @@
+tt=go /T 
+rk=marker /r 
+mk=marker 
+got=go /t 
+ir=itemrate 
+iv=itemvolume 

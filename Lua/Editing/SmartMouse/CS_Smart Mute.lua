@@ -64,6 +64,21 @@ function restoreOriginalState(originalState)
 
 end
 
+local function loadCSLibrary()
+	local function get_script_path()
+		local info = debug.getinfo(1,'S');
+		local script_path = info.source:match[[^@?(.*[\/])[^\/]-$]]
+		return script_path
+	end 
+
+	local scriptPath = get_script_path()
+	package.path = package.path .. ";" .. scriptPath .. "?.lua"
+	local library = "CS_Library"
+	require(library)
+
+end
+
+
 function muteItems()
 	local mouseItem = reaper.BR_GetMouseCursorContext_Item()
 
@@ -99,25 +114,37 @@ reaper.PreventUIRefresh(1)
 
 originalState = saveOriginalState()
 
-local mouseWindow,mouseContext,mouseDetails = reaper.BR_GetMouseCursorContext()  
+loadCSLibrary()
 
-if mouseWindow == "arrange" then
-	if mouseContext == "track" then 
-		if mouseDetails == "item"or mouseDetails == "item_stretch_marker" then
-			muteItems()
-		end
-		if mouseDetails == "empty" then
-			reaper.Main_OnCommand(40175,0) -- mute items
-		end
-	end
+mouse = cs.initMouseCaseTables()
 
-end
+-- mouse.default = {default}
+mouse.arrange.track.item = {muteItems}
+mouse.arrange.track.item_stretch_marker = {muteItems}
+mouse.arrange.track.empty = {muteTracks}
+mouse.tcp.track = {muteTracks}
 
-if mouseWindow == "tcp" then
-	if mouseContext == "track" then
-		muteTracks()
-	end
-end
+cs.executeMouseContextFunction(mouse)
+
+-- local mouseWindow,mouseContext,mouseDetails = reaper.BR_GetMouseCursorContext()  
+
+-- if mouseWindow == "arrange" then
+-- 	if mouseContext == "track" then 
+-- 		if mouseDetails == "item"or mouseDetails == "item_stretch_marker" then
+-- 			muteItems()
+-- 		end
+-- 		if mouseDetails == "empty" then
+-- 			reaper.Main_OnCommand(40175,0) -- mute items
+-- 		end
+-- 	end
+
+-- end
+
+-- if mouseWindow == "tcp" then
+-- 	if mouseContext == "track" then
+-- 		muteTracks()
+-- 	end
+-- end
 
 restoreOriginalState(originalState)
 

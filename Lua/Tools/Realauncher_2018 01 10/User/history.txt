@@ -1,0 +1,50 @@
+selectTrack c
+selectTrack d
+test 
+test 
+test 
+selectTrack g
+selectTrack a
+selectTrack c
+selectTrack 
+selectTrack 
+selectTrack g
+selectTrack c
+selectTrack cg
+selectTrack c
+selectTrack 
+selectTrack 
+selectTrack c
+selectTrack c
+selectTrack c
+selectTrack gb
+selectTrack c
+selectTrack drp
+ifi 23
+ifo 50
+ifi 30
+iv 5
+iv 
+iv -1
+iv -1
+iv -4
+iv -5
+iv 
+iv -5
+iv 5
+iv 
+ip 
+ip 4
+ip -3
+testInputs 
+testInputs /flip /name BEST /channels 2
+go 123
+go 4
+got  0:00:02:32
+got  0:00:04:00
+got  0:00:04:12
+got  0:00:00:02
+got  0:01:23:12
+got  0:00:00:01
+got  0:00:02:21
+iv 

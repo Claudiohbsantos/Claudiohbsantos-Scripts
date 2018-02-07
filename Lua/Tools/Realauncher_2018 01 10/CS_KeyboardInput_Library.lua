@@ -1,8 +1,3 @@
---[[
-@noindex
-]]--
-
-
 kbInput = {}
 
 kbInput.leftArrow = 1818584692
@@ -22,13 +17,8 @@ kbInput.parenthesesClose = 41
 kbInput.tab = 9
 kbInput.exclamation = 33
 kbInput.equal = 61
-kbInput.escape = 27
-kbInput.circumflex = 94
-kbInput.dollarSign = 36
 
-kbInput["$"] = kbInput.dollarSign
 kbInput["!"] = kbInput.exclamation
-kbInput["^"] = kbInput.circumflex
 kbInput["_"] = 95 
 kbInput[","] = 44 
 kbInput["("] = 45 
@@ -69,8 +59,6 @@ function kbInput.isAnyPrintableSymbol(char)
 	        or char == kbInput.equal
 	        or char == kbInput.plus
 	        or char == kbInput.asterisk
-	        or char == kbInput.circumflex
-	        or char == kbInput.dollarSign
 	    )
 	then
 		return true
@@ -94,5 +82,3 @@ kbInput.ctrl = {}
 kbInput.ctrl.ctrl = 4
 kbInput.ctrl.s = 19
 kbInput.ctrl.t = 20
-
-kbInput[97] = "a"

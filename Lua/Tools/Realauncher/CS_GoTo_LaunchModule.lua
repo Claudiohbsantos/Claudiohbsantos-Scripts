@@ -1,13 +1,22 @@
-function goTo(arguments)
-	local timeToGo = reaper.parse_timestr_pos(rl.argumentElement[1],-1)
-	reaper.SetEditCurPos2(0,timeToGo,true,false)
-end	
+--[[
+@noindex
+]]--
 
-function getPositionInput()
-	local cursorPosition = reaper.GetCursorPositionEx(0)
-	rl.timeInput(cursorPosition)
+
+function goTo()
+	if switches.t ~= switchesDefaultVals.t or switches.T then
+		if switches.T then switches.t = rl.text.arguments[1] end
+		local destination =  switches.t - reaper.GetProjectTimeOffset(proj,false)
+		reaper.SetEditCurPos2(0,destination,true,false)
+	end
 end
 
-rl.registeredCommands.go = {main = goTo,waitForEnter = true,description = "Go to exact point in timeline"}
-rl.registeredCommands.got = {main = goTo,customArg = getPositionInput,waitForEnter = true,description = "Go to exact point in timeline (time Input)"}
-
+rl.registeredCommands.go = {
+	charFunction = {
+		[kbInput.ctrl.t] = function ()  launchAltGUI(tcInputStart,reaper.GetCursorPositionEx(0) + reaper.GetProjectTimeOffset(proj,false)) end,
+		},
+	switches = {t = reaper.GetCursorPositionEx(0) + reaper.GetProjectTimeOffset(proj,false), T = false},
+	entranceFunction = function () if switches.T then launchAltGUI(tcInputStart,reaper.GetCursorPositionEx(0) + reaper.GetProjectTimeOffset(proj,false)) end end,
+	onEnter = goTo,
+	description = "Go To Position in Timeline",	
+}

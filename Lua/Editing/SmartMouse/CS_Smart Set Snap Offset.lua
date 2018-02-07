@@ -1,15 +1,21 @@
 --[[
-@description CS_Smart Delete
-@version 1.0
+@description CS_Smart Set Snap Offset
+@version 1.0alpha
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
-@date 2017 06 12
+@date 2018 01 30
 @about
-  # 
-  Deletes based on mouse context
+  # CS_Smart Set Snap Offset
+  Trims behind item under mouse cursor, 
 @changelog
-  - initial release
---]]	
+  - Items always end deselected
+  - If Mouse is on top of an item and enclosed by the time selection, split item at time selection edges
+--]]					
+
+------------ settings
+followSnapping = false
+undoName = "Smart Set Snap Offset"
+---------------------
 
 function msg(msg)
 	reaper.ShowConsoleMsg(msg.."\n")
@@ -51,12 +57,12 @@ function restoreOriginalState(originalState)
 
 	reaper.Main_OnCommand(40297,0) -- unselect all tracks
 	for i=1, #originalState.selTracks,1 do
-			reaper.SetTrackSelected(originalState.selTracks[i],true)
+		reaper.SetTrackSelected(originalState.selTracks[i],true)
 	end
 
 	reaper.SelectAllMediaItems(0,false)
 	for i=1,#originalState.selItems,1 do
-			reaper.SetMediaItemSelected(originalState.selItems[i],true)
+		reaper.SetMediaItemSelected(originalState.selItems[i],true)
 	end
 
 	if originalState.lockWasEnabled == 1 then reaper.Main_OnCommand(40569,0) end -- set locking
@@ -64,64 +70,58 @@ function restoreOriginalState(originalState)
 
 end
 
-function deleteItemUnderMouse()
+
+function setSnapOffset()
+	local mousePos = reaper.BR_GetMouseCursorContext_Position()
 	local mouseItem = reaper.BR_GetMouseCursorContext_Item()
+
+	reaper.SetEditCurPos2(0,mousePos,false,false)
 
 	for i=1,#originalState.selItems,1 do
 		if mouseItem == originalState.selItems[i] then
-			reaper.Main_OnCommand(40006,0) -- remove items
-			originalState.selItems = {}
+			reaper.Main_OnCommand(40936,0) -- normalize
+			reaper.Main_OnCommand(40836,0) -- go to closest transient in item
+			reaper.Main_OnCommand(40541,0) -- set snap offset to cursor
+			reaper.Main_OnCommand(40936,0) -- unnormalize
 			return
 		end
 	end	
+
 	reaper.SelectAllMediaItems(0,false)
 	reaper.SetMediaItemSelected(mouseItem,true)
-	reaper.Main_OnCommand(40006,0) -- Remove Items
+	reaper.Main_OnCommand(40936,0) -- normalize
+	reaper.Main_OnCommand(40836,0) -- go to closest transient in item
+	reaper.Main_OnCommand(40936,0) -- unnormalize
+	reaper.Main_OnCommand(40541,0) -- set snap offset to cursor
 	return
 end
 
-function deleteTracks()
-	local mouseTrack = reaper.BR_GetMouseCursorContext_Track()
+function run()
 
-	for i=1,#originalState.selTracks,1 do
-		if mouseTrack == originalState.selTracks[i] then
-			reaper.Main_OnCommand(40005,0) -- remove tracks
-			originalState.selTracks = {}
-			return
-		end
-	end
-	reaper.Main_OnCommand(40297,0) -- Unselect all tracks
-	reaper.SetTrackSelected(mouseTrack,true)
-	reaper.Main_OnCommand(40005,0) -- remove tracks
-	return
-end
+	reaper.Undo_BeginBlock()
+	reaper.PreventUIRefresh(1)
 
-reaper.Undo_BeginBlock()
-reaper.PreventUIRefresh(1)
+	originalState = saveOriginalState()
 
-originalState = saveOriginalState()
+	local mouseRetval,mouseContext,mouseDetails = reaper.BR_GetMouseCursorContext()  
 
-local mouseWindow,mouseContext,mouseDetails = reaper.BR_GetMouseCursorContext()  
-
-if mouseWindow == "arrange" then
-	if mouseContext == "track" then 
-		if mouseDetails == "item"or mouseDetails == "item_stretch_marker" then
-			deleteItemUnderMouse()
-		else 
+	if mouseRetval then
+		if mouseContext == "track" then 
+			if mouseDetails == "item" or mouseDetails == "item_stretch_marker" then
+				setSnapOffset()
+			end
 			if mouseDetails == "empty" then
-				reaper.Main_OnCommand(40697,0) -- Remove items/tracks/envelops depending on focus
+				if #originalState.selItems > 0 then
+					
+				end	
 			end
 		end
 	end
+
+	restoreOriginalState(originalState)
+
+	reaper.PreventUIRefresh(-1)
+	reaper.Undo_EndBlock(undoName, 0)
 end
 
-if mouseWindow == "tcp" then
-	if mouseContext == "track" then
-		deleteTracks()
-	end
-end
-
-restoreOriginalState(originalState)
-
-reaper.PreventUIRefresh(-1)
-reaper.Undo_EndBlock("CS_Smart Delete", 0)
+run()
