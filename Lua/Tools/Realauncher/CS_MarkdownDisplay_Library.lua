@@ -2,17 +2,37 @@
 @noindex
 ]]--
 
+local margin = 10
+local MDDisplayH = 750
+local MDDisplayW = 1000
 
 local markdownString
 
+
+local function wrapTextToFitDisplay(line)
+	if gfx.measurestr(line) >= gfx.w - 2*margin then
+		local wrappedLine = ""	
+		for word in line:gmatch("%g+%s*") do	
+			if gfx.measurestr(wrappedLine..word) >= gfx.w - 2*margin then
+				wrappedLine = wrappedLine.."\n"
+			end
+			wrappedLine = wrappedLine..word
+		end
+		return wrappedLine
+	else
+		return line
+	end
+end
+
 local print = {}
-print.h1 = function(text) gfx.set(1,0.6,0.6,0.8,0) ; gfx.drawstr(text) end
-print.h2 = function(text) gfx.set(0.6,0.6,1,0.8,0) ; gfx.drawstr(text) end
-print.h3 = function(text) gfx.set(1,0.8,0.6,0.8,0) ; gfx.drawstr(text) end
-print.italics = function(text) end
-print.bold = function(text) end
-print.list = function(text) gfx.set(0.6,0.6,1,0.8,0) ; gfx.drawstr(text) end
-print.inlineCode = function(text) end
+print.h1 = function(text) gfx.setfont(1,gui_fontname, 35,98) ; text = wrapTextToFitDisplay(text) ; gfx.set(1,0.6,0.6,0.8,0) ; gfx.drawstr(text) end
+print.h2 = function(text) gfx.setfont(1,gui_fontname, 30) ; text = wrapTextToFitDisplay(text) ; gfx.set(0.6,0.6,1,0.8,0) ; gfx.drawstr(text) end
+print.h3 = function(text) gfx.setfont(1,gui_fontname, 25) ; text = wrapTextToFitDisplay(text) ; gfx.set(1,0.8,0.6,0.8,0) ; gfx.drawstr(text) end
+-- print.italics = function(text) end
+-- print.bold = function(text) gfx.setfont(1,gui_fontname, 20,98) ; gfx.set(0.6,0.6,0.6,0.8,0) ; gfx.drawstr(text) end
+-- print.list = function(text) gfx.set(0.6,0.6,1,0.8,0) ; gfx.drawstr(text) end
+-- print.inlineCode = function(text) end
+print.default = function(text) gfx.setfont(1,gui_fontname, 20) ; text = wrapTextToFitDisplay(text) ; gfx.set(0.6,0.6,0.6,0.8,0) ; gfx.drawstr(text) end
 
 local markdownPatterns = {
 -- https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
@@ -20,26 +40,47 @@ local markdownPatterns = {
 	h2 = "^## ([^\n]*)",
 	h3 = "^### ([^\n]*)",
 	italics = "%*([^\n]+)%*", -- missing underscore option
-	bold = "%*%*([^\n]+)%*%*", -- missing underscore option
+	bold = "(.*)%*%*([^\n]+)%*%*(.*)", -- missing underscore option
 	list = "^%-([^\n]+)",
 	inlineCode = "`([^\n]+)`",
 }
 
+local function drawVertScrollBar()
+	-- draw bar bg	
+	local barW = 20
+	gfx.set(  0.15,0.15,0.15,  1,  0)
+	gfx.rect(gfx.w - barW,0,barW,gfx.h,1)
+	-- calculate viewable percetage
+local totalHeight = 3000
+	local scrollH = gfx.h/(totalHeight/gfx.h)
+
+	-- draw scroll bar
+local scrollPos = 0	
+	gfx.set(  0.3,0.3,0.3,  1,  0)
+	gfx.rect(gfx.w - barW,scrollPos,barW,scrollH,1)
+end
+
 local function parseAndPrintMarkdown(t)
 -- https://github.com/mpeterv/markdown	
-	for line in t:gmatch("[^\n]*\n") do
-	
-		for format,pattern in pairs(markdownPatterns) do
-			local capture = line:match(pattern)
-			if capture then
-				print[format](capture)
-			end
-		end
-		gfx.x = 0	
+
+	gfx.setfont(1,"Courier New", 20)
+
+	for line in t:gmatch("[^\r\n]*") do
+
+		drawVertScrollBar()
+		gfx.x = margin
 		local _,charH = gfx.measurechar("1")	
 		gfx.y = gfx.y + charH
-	end
 
+		if gfx.y > gfx.h then break end
+
+		if line:match(markdownPatterns.h1) then print.h1(line:match(markdownPatterns.h1)) ; goto NEXT end 
+		if line:match(markdownPatterns.h2) then print.h2(line:match(markdownPatterns.h2)) ; goto NEXT end 
+		if line:match(markdownPatterns.h3) then print.h3(line:match(markdownPatterns.h3)) ; goto NEXT end 
+		print.default(line)
+
+	::NEXT::
+	end
 end
 
 local function setBackground()
@@ -83,8 +124,8 @@ local function initGUI(boxWidth,boxHeight,windowName)
 	obj_offs = 10
 
 	gui_aa = 1
-	gui_fontname = 'Calibri'
-	gui_fontsize = 23      
+	gui_fontname = 'Consolas'
+	gui_fontsize = 21      
 	local gui_OS = reaper.GetOS()
 	if gui_OS == "OSX32" or gui_OS == "OSX64" then gui_fontsize = gui_fontsize - 7 end
 	mouse = {}
@@ -95,7 +136,7 @@ end
 --------------------------------------------------------------------------------------
 
 function  openMarkdownDisplay(markdownToDisplay)
-	initGUI(1000,750,"Markdown Test")
+	initGUI(MDDisplayW,MDDisplayH,"Markdown Test")
 	markdownString = markdownToDisplay
 	displayMarkdown(markdownString)
 end

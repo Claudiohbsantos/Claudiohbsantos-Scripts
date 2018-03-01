@@ -1,1 +1,1 @@
-K:/Scripts/Reascripts/Claudiohbsantos-Scripts/Lua/Libraries/CS_Library.lua
+K:/Programs/Reaperportable/Scripts/Claudiohbsantos-Scripts/Lua/Libraries/CS_Library.lua

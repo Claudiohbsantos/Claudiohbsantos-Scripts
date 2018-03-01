@@ -12,29 +12,86 @@
 @noindex
 --]]
 ---------------------------------------------------------------------------------------
-rl = {}
-rl.text = {}
-rl.registeredCommands = {}
-rl.text.raw = ''
-rl.history = {}
 
-local prevCommand
+local function matchVariables(str,tableOfVariables)
+	::RESTART::
+	for var,value in pairs(tableOfVariables) do
+		local matches
+		if type(value) == "string" and value:match("^return .+") then
+			str,matches = str:gsub("%$"..var,function () return load(value)() end)
+		else	
+			str,matches = str:gsub("%$"..var,tostring(value))
+		end
+		if matches > 0 then goto RESTART end
+	end
+	return str
+end
 
-local function parseText(t)
-	t.possibleCommand = nil
-	t.fullArgument = nil
-	local rawToProcess = t.raw
-	t.possibleCommand = rawToProcess:match("^%s*(%g+)") or ""
+local function substituteVariables(str) 
+	local newString = str
+	newString = matchVariables(newString,rl.variables.user)
+	newString = matchVariables(newString,rl.variables.native)
+	return newString
+end
 
-	rawToProcess = rawToProcess:sub(t.possibleCommand:len()+1)
-	t.fullArgument = rawToProcess:match("^%s*(%g+.*)")
-	t.arguments = {}
+local function checkUniversalSwitches(universalSwitches)
+	if universalSwitches.execnow then executeNowFlag = true end
+	if universalSwitches.help and rl.helpFiles[rl.text.util] then launchAltGUI(openMarkdownDisplay,rl.helpFiles[rl.text.util]) end
+end
+
+local function matchSwitches(args)
+	for switch in pairs (switches) do switches[switch] = switchesDefaultVals[switch] end -- reset switches from previous parses
+	local nextIsSwitchVal = nil
+	local toRemoveFromArgsTable = {}
+	for i,arg in ipairs(args) do
+		if nextIsSwitchVal then
+			switches[nextIsSwitchVal] = arg
+			table.insert(toRemoveFromArgsTable,i)
+			nextIsSwitchVal = false
+		end
+
+		for switch,defaultValue in pairs(switches) do
+			if arg:match("^/"..switch) or arg:match("^%-%-"..switch) then
+				if type(defaultValue) == "number" or type(defaultValue) == "string" then
+					nextIsSwitchVal = switch
+					table.insert(toRemoveFromArgsTable,i)
+				else 
+					if type(defaultValue) == "boolean" then
+						switches[switch] = not switchesDefaultVals[switch]
+						table.insert(toRemoveFromArgsTable,i)
+					end
+				end
+			end
+		end
+	end
+	args = removePositionsFromNumberedTable(args,toRemoveFromArgsTable)
+	return args
+end 
+
+local function matchUniversalSwitches(args)
+	local toRemoveFromArgsTable = {}
+	for i,arg in ipairs(args) do
+		for switch,defaultValue in pairs(universalSwitches) do
+			if arg:match("^/"..switch) or arg:match("^%-%-"..switch) then
+				if type(defaultValue) == "boolean" then
+					universalSwitches[switch] = not universalSwitches[switch]
+					table.insert(toRemoveFromArgsTable,i)
+				end
+			end
+		end
+	end
+	args = removePositionsFromNumberedTable(args,toRemoveFromArgsTable)
+	return args
+end
+
+local function fillArgumentsTable(rawToProcess)
+	local argsTable = {}
 	local currChar = rawToProcess:sub(1,1)
 	local openString = false
 	local currArg = 1
 
 	for i=1,rawToProcess:len() do
-		if not t.arguments[currArg] then t.arguments[currArg] = "" end
+		if not argsTable[currArg] then argsTable[currArg] = "" end
 
 		if currChar == [["]] then 
 			if not openString then 
@@ -47,18 +104,82 @@ local function parseText(t)
 
 		if currChar == " " then
 			if openString then 
-				t.arguments[currArg] = t.arguments[currArg]..currChar
+				argsTable[currArg] = argsTable[currArg]..currChar
 			else
-				if t.arguments[currArg] ~= "" then currArg = currArg+1 end
+				if argsTable[currArg] ~= "" then currArg = currArg+1 end
 			end
 			goto NEXT
 		end		
 
-		t.arguments[currArg] = t.arguments[currArg]..currChar
+		argsTable[currArg] = argsTable[currArg]..currChar
 
 		::NEXT::
 		rawToProcess = rawToProcess:sub(2)
 		currChar = rawToProcess:sub(1,1)
+	end
+	return argsTable
+end
+
+local function matchAliases(possibleUtil)
+	for alias,substitution in pairs(rl.aliases) do
+		if alias == possibleUtil then
+			rl.text.raw = substitution
+			sendCursorToEndOfText()
+			return substitution
+		end
+	end
+end
+
+local function matchRegisteredUtils(possibleUtil)
+	rl.currentAutocomplete = nil
+	if possibleUtil then 
+		for util in pairs(rl.registeredUtils) do
+			if util == possibleUtil then
+				local matchedUtil = possibleUtil
+				possibleUtil = nil
+				return matchedUtil
+			end
+		end
+		if not matchedUtil and possibleUtil:match("^%g+$") then
+			suggestUtil(possibleUtil)
+		end
+	end
+end
+
+local function  getPossibleUtil(rawToProcess)
+	local possibleUtil = rawToProcess:match("^%s*(%g+)") or ""
+	rawToProcess = rawToProcess:sub(possibleUtil:len()+1)
+	return rawToProcess,possibleUtil
+reaper.Undo_EndBlock(string descchange,integer extraflags)
+
+local function parseCommands(t)
+	local commandsTable = {}
+	for command in t:gmatch("([^;]+)") do
+		table.insert(commandsTable,command)
+	end
+	return commandsTable
+end
+
+function parseInput(t)
+	::RESTARTPARSE::
+
+	t.possibleUtil = nil
+	t.fullArgument = nil
+	local rawToProcess = t.raw
+
+	rawToProcess, possibleUtil = getPossibleUtil(rawToProcess)
+	if possibleUtil then 
+		if matchAliases(possibleUtil) then goto RESTARTPARSE end
+		t.commands = parseCommands(t.raw)
+		t.util = matchRegisteredUtils(possibleUtil)
+	end
+
+	if t.util then 
+		if rl.config.subvariables then rawToProcess = substituteVariables(rawToProcess) end
+		t.fullArgument = rawToProcess:match("^%s*(%g+.*)")
+		t.arguments = fillArgumentsTable(rawToProcess)
+		matchUniversalSwitches(t.arguments)
+		matchSwitches(t.arguments)
 	end
 end
 
@@ -82,18 +203,18 @@ end
 local function loadhistory()
 	local historyFile = io.open(rl.userSettingsPath.."\\history.txt","r")
 	local history = {}
-	for command in historyFile:lines() do 
-		if command ~= "\n" then table.insert(history,command) end
+	for util in historyFile:lines() do 
+		if util ~= "\n" then table.insert(history,util) end
 	end
 	return history
 end
 
-local function saveHistory(historyTable,commandToSave)
-	if rl.text.command then
-		if rl.text.command ~= "!!" then
-			os.execute([[mkdir "]]..rl.userSettingsPath..[["]])
+local function saveHistory(historyTable,utilToSave)
+	if rl.text.util then
+		if rl.text.util ~= "!!" then
+			-- os.execute([[mkdir "]]..rl.userSettingsPath..[["]])
 			
-			table.insert(historyTable,commandToSave)
+			table.insert(historyTable,utilToSave)
 			local offset
 			if #historyTable - rl.config.maxHistory + 1 < 1 then
 				offset = 1
@@ -110,58 +231,29 @@ local function saveHistory(historyTable,commandToSave)
 	end
 end
 
-local function loadConfig()
-	local configFile = io.open(rl.userSettingsPath.."\\config.txt","r")
-	local configTable = {}
-	for param in configFile:lines() do 
-		local paramName,value = string.match(param,"^(%a+)=([^\n]+)")
-		if paramName and value then configTable[paramName] = value end
-	end
-	return configTable
-end
-
-local function loadAliases()
-	local aliasesFile = io.open(rl.userSettingsPath.."\\aliases.txt","r")
-	local aliasesTable = {}
-	for param in aliasesFile:lines() do 
+local function loadUserSettingsFromFile(filename)
+	local settingsFile = io.open(rl.userSettingsPath.."\\"..filename,"r")
+	settingsTable = {}
+	for param in settingsFile:lines() do 
 		local paramName,value = string.match(param,"^(%g+)=([^\n]+)")
-		if paramName and value then aliasesTable[paramName] = value end
+		if paramName and value then settingsTable[paramName] = value end
 	end
-	return aliasesTable
-end
-
-local function loadVariables()
-	variables = {}
-	local variablesFile = io.open(rl.userSettingsPath.."\\variables.txt","r")
-	for param in variablesFile:lines() do 
-		local paramName,value = string.match(param,"^(%g+)=([^\n]+)")
-		if paramName and value then variables[paramName] = value end
-	end
-	return variables
+	return settingsTable
 end
 
 local function loadHelpFiles()
 	local helpFiles = {}
 	local helpDirectory = rl.scriptPath.."\\Help"
-	for file in io.popen([[dir "]]..helpDirectory..[[" /b]]):lines() do 
-		local f = io.open(helpDirectory.."\\"..file, "r")
-		local content = f:read("a")
-		local command = string.match(file,"(%a+)%.%a+$")
-		helpFiles[command] = content
+
+	for util in pairs(rl.registeredUtils) do
+		local f = io.open(helpDirectory.."\\"..util..".md", "r")
+		if f then
+			local content = f:read("a")
+			helpFiles[util] = content
+			f:close()
+		end
 	end
-
 	return helpFiles
-end
-
-local function loadSettings()
-	rl.userSettingsPath = rl.scriptPath.."\\User"
-
-	rl.config = loadConfig()
-	rl.history = loadhistory()
-	rl.aliases = loadAliases()
-	rl.helpFiles = loadHelpFiles()
-	rl.variables.user = loadVariables()
-	-- loadShortcuts()
 end
 
 local function loadModules()
@@ -171,20 +263,33 @@ local function loadModules()
 	
 	require("CS_FunctionLibrary")
 
-	for file in io.popen([[dir "]]..rl.scriptPath..[[" /b]]):lines() do 
-		if string.match(file,"_Library.lua$") then 
-			local LaunchModule = string.match(file,"(.*)%.lua")
-			require(LaunchModule)
-		end
+
+	for library in rl.config.libraries:gmatch("([^;]+)") do
+		require(library)
 	end
 
-	for file in io.popen([[dir "]]..rl.scriptPath..[[" /b]]):lines() do 
-		if string.match(file,"_LaunchModule.lua$") then 
-			local LaunchModule = string.match(file,"(.*)%.lua")
-			require(LaunchModule)
-		end
+	for module in rl.config.modules:gmatch("([^;]+)") do
+		require(module)
 	end
+
 end
+
+local function loadSettings()
+	rl.scriptPath = get_script_path()
+
+	rl.userSettingsPath = rl.scriptPath.."\\User"
+	rl.config = loadUserSettingsFromFile("config.txt")
+
+	loadModules()
+
+	rl.history = loadhistory()
+	rl.aliases = loadUserSettingsFromFile("aliases.txt")
+	rl.helpFiles = loadHelpFiles()
+	rl.variables.user = loadUserSettingsFromFile("variables.txt")
+	-- loadShortcuts()
+end
+
+
 
 local function exitRoutine()
 	saveHistory(rl.history,rl.text.raw)
@@ -325,8 +430,8 @@ end
 function performAutocomplete(suggestion)
 	if suggestion then
 		rl.text.raw = rl.text.raw..suggestion
-		parseText(rl.text)
 		sendCursorToEndOfText()
+		parseInput(rl.text)
 	end
 end
 
@@ -356,47 +461,18 @@ local function appendTables(table1,table2,table2Overwritestable1)
 	return combinedTable
 end
 
-function suggestCommand(command)
-	local commandsAndAliases = appendTables(rl.registeredCommands,rl.aliases)
+function suggestUtil(util)
+	local utilsAndAliases = appendTables(rl.registeredUtils,rl.aliases)
 
-	local commandMatches = searchUnorderedListForExactMatchesAndReturnMatchesTable(commandsAndAliases,{command})
-	if #commandMatches > 0 and command:len() > 0 and  rl.text.raw:match("^%g+$") then 
-		commandMatches = mergeSortMatrixDescending(commandMatches,"percentageOfProximityToArguments")
+	local utilMatches = searchUnorderedListForExactMatchesAndReturnMatchesTable(utilsAndAliases,{util})
+	if #utilMatches > 0 and util:len() > 0 and  rl.text.raw:match("^%g+$") then 
+		utilMatches = mergeSortMatrixDescending(utilMatches,"percentageOfProximityToArguments")
 
-		local suggestion = string.sub(commandMatches[1].match,string.len(command)+1)
+		local suggestion = string.sub(utilMatches[1].match,string.len(util)+1)
 		rl.currentAutocomplete = suggestion
 	else 
 		rl.currentAutocomplete = nil
 	end
-end
-
-function initLauncherGUI(position)
-	local function Lokasenna_WindowAtCenter(w, h,position)
-		-- thanks to Lokasenna 
-		-- http://forum.cockos.com/showpost.php?p=1689028&postcount=15    
-		local l, t, r, b = 0, 0, w, h    
-		local __, __, screen_w, screen_h = reaper.my_getViewport(l, t, r, b, l, t, r, b, 1)    
-		
-		if position == "bottom" then
-			local x, y = (screen_w - w) / 2, (screen_h - h) - 70
-			return w,h,x,y
-		else -- center
-			local x, y = (screen_w - w) / 2, (screen_h - h) / 2  
-			return w,h,x,y  
-		end
-
-	end
-	
-	gfx.quit()
-	gui_aa = 1
-	gui_fontname = 'Calibri'
-	gui_fontsize = 23      
-	local gui_OS = reaper.GetOS()
-	if gui_OS == "OSX32" or gui_OS == "OSX64" then gui_fontsize = gui_fontsize - 7 end
-
-	w,h,x,y = Lokasenna_WindowAtCenter(rl.config.launcherWidth,rl.config.launcherHeight,position)
-	gfx.init("ReaLauncher", w, h, 0, x, y)
-
 end
 
 local function launcherTextBox(char)
@@ -435,64 +511,6 @@ local function launcherTextBox(char)
 	if rl.active_char > rl.text.raw:len()  then rl.active_char = rl.text.raw:len() end
 end
 
-local function matchRegisteredCommands(t)
-	rl.currentAutocomplete = nil
-	if t.possibleCommand then 
-		t.command = nil
-		for command in pairs(rl.registeredCommands) do
-			if command == t.possibleCommand then
-				t.command = t.possibleCommand
-				t.possibleCommand = nil
-			end
-		end
-		if not t.command and t.raw:match("^%g+$") then
-			suggestCommand(t.possibleCommand)
-		end
-	end
-end
-
-local function matchAliases(t)
-	if t.raw then
-		for alias,substitution in pairs(rl.aliases) do
-			if alias == t.raw then
-				t.raw = substitution
-				parseText(t)
-				rl.active_char = rl.text.raw:len()
-				break
-			end
-		end
-	end
-end
-
-local function matchSwitches(args)
-	for switch in pairs (switches) do switches[switch] = switchesDefaultVals[switch] end -- reset switches from previous parses
-	local nextIsSwitchVal = nil
-	local toRemoveFromArgsTable = {}
-	for i,arg in ipairs(args) do
-		if nextIsSwitchVal then
-			switches[nextIsSwitchVal] = arg
-			table.insert(toRemoveFromArgsTable,i)
-			nextIsSwitchVal = false
-		end
-
-		for switch,defaultValue in pairs(switches) do
-			if arg:match("^/"..switch) or arg:match("^%-%-"..switch) then
-				if type(defaultValue) == "number" or type(defaultValue) == "string" then
-					nextIsSwitchVal = switch
-					table.insert(toRemoveFromArgsTable,i)
-				else 
-					if type(defaultValue) == "boolean" then
-						switches[switch] = not switchesDefaultVals[switch]
-						table.insert(toRemoveFromArgsTable,i)
-					end
-				end
-			end
-		end
-	end
-	args = removePositionsFromNumberedTable(args,toRemoveFromArgsTable)
-	return args
-end 
-
 local function typeOrExecuteChar(char)
 	if type(charFunction[char]) == "function" then
 		charFunction[char]()
@@ -505,63 +523,22 @@ end
 local function dummyFunction()
 end
 
-local function setCurrentEnvironment(currCommand)
-	local environment = currCommand or "default"
-	charFunction = appendTables(rl.registeredCommands.default.charFunction,rl.registeredCommands[environment].charFunction,true)
-	passiveFunction = rl.registeredCommands[environment].passiveFunction or dummyFunction
-	onEnterFunction = rl.registeredCommands[environment].onEnter or dummyFunction
-	entranceFunction = rl.registeredCommands[environment].entranceFunction or dummyFunction
-	executeOnExit =  rl.registeredCommands[environment].exitFunction or dummyFunction
-	switches = rl.registeredCommands[environment].switches or {}
-	extendedHelp = rl.registeredCommands[environment].help
-	drawGUI = rl.registeredCommands[environment].gui or drawMainGUI
+local function setCurrentEnvironment(currUtil)
+	local environment = currUtil or "default"
+	charFunction = appendTables(rl.registeredUtils.default.charFunction,rl.registeredUtils[environment].charFunction,true)
+	passiveFunction = rl.registeredUtils[environment].passiveFunction or dummyFunction
+	onEnterFunction = rl.registeredUtils[environment].onEnter or dummyFunction
+	entranceFunction = rl.registeredUtils[environment].entranceFunction or dummyFunction
+	executeOnExit =  rl.registeredUtils[environment].exitFunction or dummyFunction
+	switches = rl.registeredUtils[environment].switches or {}
+	extendedHelp = rl.registeredUtils[environment].help
+	drawGUI = rl.registeredUtils[environment].gui or drawMainGUI
 
 	switchesDefaultVals = {}
 	for switch,defaultValue in pairs(switches) do switchesDefaultVals[switch] = defaultValue end
 
-	rl.text.tipLine = rl.registeredCommands[environment].description or ""
+	rl.text.tipLine = rl.registeredUtils[environment].description or ""
 	return environment
-end
-
-local function matchUserVariables(argIndex,argument,argsTable,userVariables)
-	for var,value in pairs(userVariables) do
-		if argument:match("^%$"..var) then 
-			if type(value) == "string" and value:match("^return .+") then
-				argsTable[argIndex] = tostring(load(value)())
-			else
-				argsTable[argIndex] = tostring(value)
-			end
-			return true
-		end
-	end
-end
-
-local function matchNativeVariables(argIndex,argument,argsTable,nativeVariables)
-	for var,value in pairs(nativeVariables) do
-		if argument:match("^%$"..var) then 
-				argsTable[argIndex] = tostring(value)
-			return true
-		end
-	end
-end
-local function substituteVariables(argsTable)
-	if rl.variables then 
-		for i,argument in ipairs(argsTable) do
-			if argument:match("^%$") then
-				if matchUserVariables(i,argument,argsTable,rl.variables.user) then return end
-				-- if user var matched return early so user var takes priority over native one
-				if matchNativeVariables(i,argument,argsTable,rl.variables.native) then return end
-			end		
-		end
-	end
-end
-
-function parseInput(t)
-	parseText(t)
-	matchAliases(t)
-	matchRegisteredCommands(t)
-	substituteVariables(t.arguments)
-	matchSwitches(t.arguments)
 end
 
 function changeEnvironment(newEnv) 
@@ -599,35 +576,49 @@ function realauncherMainLoop()
 	
 		rl.altGUIReturn = retrieveAltGUIReturnValue(rl.altGUIReturn)
 	
-		if rl.text.currChar ~= 0 then 
+		if rl.text.currChar ~= 0 or preloadedText then 
+			preloadedText = nil
 			typeOrExecuteChar(rl.text.currChar)
 			parseInput(rl.text)
+			checkUniversalSwitches(universalSwitches)
 		end
 			
-		if rl.text.command ~= prevCommand then
-			changeEnvironment(rl.text.command)
-			prevCommand = rl.text.command
+		if rl.text.util ~= prevUtil then
+			changeEnvironment(rl.text.util)
+			prevUtil = rl.text.util
 		end
 	
 		passiveFunction()
-		if rl.text.currChar == kbInput.enter then onEnterFunction() end
+		if rl.text.currChar == kbInput.enter or executeNowFlag then onEnterFunction() end
 		
-		drawGUI() -- from GUI_Library
+		if not executeNowFlag then drawGUI() end -- from GUI_Library
 	
 		gfx.update()
-		if rl.text.currChar ~= -1 and rl.text.currChar ~= kbInput.escape and rl.text.currChar ~= kbInput.enter then reaper.defer(realauncherMainLoop) else gfx.quit() end
+		if rl.text.currChar ~= -1 and rl.text.currChar ~= kbInput.escape and rl.text.currChar ~= kbInput.enter and not executeNowFlag then reaper.defer(realauncherMainLoop) else gfx.quit() end
 	end
 end 
 
+function runRealauncher(preloadedText)
+	rl = {}
+	rl.text = {}
+	rl.text.raw = preloadedText or ''
+	sendCursorToEndOfText()
+
+	local prevUtil
+
+	rl.registeredUtils = {}
+	
+	loadSettings()
+	recallHistory = recallHistoryMaker()
+	
+	setCurrentEnvironment()
+	
+	if not executeNowFlag then initLauncherGUI("center") end
+	realauncherMainLoop()
+	
+	reaper.atexit(exitRoutine)
+end
+
 -- SHOW TIME! --
 
-loadModules()
-loadSettings()
-recallHistory = recallHistoryMaker()
-
-setCurrentEnvironment()
-
-initLauncherGUI("center")
-realauncherMainLoop()
-
-reaper.atexit(exitRoutine)
+runRealauncher(preloadedText)

@@ -43,10 +43,10 @@ end
 
 local function drawHelpButton(w,h,offset)
   local help
-  if not rl.text.command then
+  if not rl.text.util then
     help = rl.helpFiles.default
   else
-    help = rl.helpFiles[rl.text.command]
+    help = rl.helpFiles[rl.text.util]
   end
 
   if help then
@@ -72,7 +72,6 @@ local function drawHelpButton(w,h,offset)
     gfx.y = helpBox.y
     printGreen("?")
 
-    -- if mouseClick(helpBox) then reaper.ClearConsole() ; reaper.ShowConsoleMsg(help) end
     if mouseClick(helpBox) then launchAltGUI(openMarkdownDisplay,help) end
   end
 end
@@ -80,12 +79,12 @@ end
 local function drawText(obj_offs)
     gfx.setfont(1, gui_fontname, gui_fontsize)
     gfx.x = obj_offs*2
-    gfx.y = obj_offs
+    gfx.y = obj_offs+2
 
-    if rl.text.command then 
-      printRed(rl.text.command)
-      local _,endOfCommand = rl.text.raw:find(rl.text.command)
-      local toPrint = rl.text.raw:sub(endOfCommand+1)
+    if rl.text.util then 
+      printRed(rl.text.util)
+      local _,endOfUtil = rl.text.raw:find(rl.text.util)
+      local toPrint = rl.text.raw:sub(endOfUtil+1)
       for word in toPrint:gmatch("%s*%g+") do
         if word:match("^%s+/.+") or word:match("^%s+%-%-.+") then
           printBlue(word)
@@ -132,4 +131,32 @@ function drawMainGUI()
   if tcInput then drawModeSymbol(tcInput) end
 
   if rl.text.tipLine then drawTip(rl.text.tipLine,obj_offs) end
+end
+
+function initLauncherGUI(position)
+  local function Lokasenna_WindowAtCenter(w, h,position)
+    -- thanks to Lokasenna 
+    -- http://forum.cockos.com/showpost.php?p=1689028&postcount=15    
+    local l, t, r, b = 0, 0, w, h    
+    local __, __, screen_w, screen_h = reaper.my_getViewport(l, t, r, b, l, t, r, b, 1)    
+    
+    if position == "bottom" then
+      local x, y = (screen_w - w) / 2, (screen_h - h) - 70
+      return w,h,x,y
+    else -- center
+      local x, y = (screen_w - w) / 2, (screen_h - h) / 2  
+      return w,h,x,y  
+    end
+
+  end
+  
+  gfx.quit()
+  gui_aa = 1
+  gui_fontname = 'Consolas'
+  gui_fontsize = 21      
+  local gui_OS = reaper.GetOS()
+  if gui_OS == "OSX32" or gui_OS == "OSX64" then gui_fontsize = gui_fontsize - 7 end
+
+  w,h,x,y = Lokasenna_WindowAtCenter(rl.config.launcherWidth,rl.config.launcherHeight,position)
+  gfx.init("ReaLauncher", w, h, 0, x, y)
 end

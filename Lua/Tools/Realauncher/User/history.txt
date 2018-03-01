@@ -1,50 +1,50 @@
-var /l name=MONDRONGO
-var /l
-var name=MONDRONGO
-var /l
-marker  $name
-var add=return 4+5
-var /l
-marker $add
-var /l
-var add=return reaper.GetPlayPosition2()
-
-var /l
-var add=return reaper.GetPlayPosition2()
-
-var /l
-marker $add
-marker 
-marker  $playpos
-marker  $playpos
-marker  $playpos
-marker  $playpos
-marker  $playpos
-var /l
-var proj=Stubble the movie
-marker $proj
-var prob=0:05:00:00
-go $prob
-go 0:05:00:00
-var /l
-var prob
-var /l
-go sup=return $playpos + 5
-marker $sup
-var /l
-var sup=$playpos+5
-marker $sup
-var /l
-var sup=return $playpos + 5
-marker sup
-var sup
-var /l
-var sup=return 
-var sup=return $playpos + 5
-var /l
-enumcmd
-enumcmd
-enumcmd
-enumcmd
-enumcmd
-testInputs ARG1 $playpos arg3
+itemvolume +2
+itemvolume +2
+itemvolume +2
+itemvolume +2
+itemvolume 0
+itemvolume 1
+itemvolume -3
+itemvolume -2.3
+itemvolume -.2
+itemvolume -2.4
+itemvolume 
+alias ip=itemvolume +
+itemvolume +2
+itemvolume +2
+itemvolume +2
+itemvolume +1
+itemvolume +10
+itemvolume +0
+itemvolume 0
+itemvolume 0
+subscript i=i
+itemvolume +1
+itemvolume +2
+itemvolume +3
+itemvolume +4
+itemvolume +5
+itemvolume +1
+itemvolume 0
+itemvolume 0
+alias im=itemvolume -
+itemvolume -1
+itemvolume -2
+itemvolume -3
+itemvolume +3
+itemvolume +3
+itemvolume -2
+itemvolume +2
+itemvolume 0
+itemvolume +2
+itemvolume 0
+itemvolume +1
+itemvolume +5
+itemvolume -2
+itemvolume -10
+itemvolume 123 
+keyboardCodeViewer ::
+itemvolume + 12 
+itemvolume
+itemvolume +2 ; iter
+itemvolume +2 ; itemrate 4 ;    alias /l

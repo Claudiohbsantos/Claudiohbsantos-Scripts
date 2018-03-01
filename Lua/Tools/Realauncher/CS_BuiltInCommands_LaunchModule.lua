@@ -2,6 +2,15 @@
 @noindex
 ]]--
 
+local function saveTableToFile(tableToSave,filePath)
+	local tableFile = io.open(filePath,"w")
+	for alias,sub in pairs(tableToSave) do
+		if sub ~= "" then
+			tableFile:write(alias.."="..sub.."\n")
+		end
+	end
+	tableFile:close()
+end
 
 function ismacos()
 	return reaper.GetOS():find('OSX') ~= nil
@@ -12,36 +21,19 @@ function iswindows()
 end
 
 function copyToClipboard(text)
-	local tool
-
-	if ismacos() then
-	tool = 'pbcopy'
-	elseif iswindows() then
-	tool = 'clip'
-	end
-
-	local proc = assert(io.popen(tool, 'w'))
-	proc:write(text)
-	proc:close()
+	reaper.CF_SetClipboard(text)
 end
 
 function pasteFromClipboard()
-	local tool
-
-	if ismacos() then
-	tool = 'pbpaste'
-	elseif iswindows() then
-	tool = 'powershell -windowstyle hidden -Command Get-Clipboard'
-	end
-
-	local proc = assert(io.popen(tool, 'r'))
-	local text = proc:read("*all")
-	proc:close()
-
+	local fastString = reaper.SNM_CreateFastString("")
+	local text = reaper.CF_GetClipboardBig(fastString)
+	reaper.SNM_DeleteFastString(fastString)
 	return text
 end
 
-rl.registeredCommands.default = {
+universalSwitches = {execnow = false,help = false}
+
+rl.registeredUtils.default = {
 	charFunction = {
 					[kbInput.upArrow] = function() rl.text.raw = recallHistory(-1) ; sendCursorToEndOfText() end,
 					[kbInput.downArrow] = function() rl.text.raw = recallHistory(1) ; sendCursorToEndOfText() end, 
@@ -52,28 +44,53 @@ rl.registeredCommands.default = {
 	description = "Click the \"?\" button on the right for help. ReaLauncher by Claudio Santos.",
 }
 
-rl.registeredCommands.quit = {onEnter = function() reaper.Main_OnCommand(40004,0) end, description = "Quit Reaper"}
+rl.registeredUtils.quit = {onEnter = function() reaper.Main_OnCommand(40004,0) end, description = "Quit Reaper"}
 
-local function enumerateAvailableCommands()
-	for command in pairs(rl.registeredCommands) do
-		if command ~= "default" then
-			reaper.ShowConsoleMsg(command.." - "..(rl.registeredCommands[command].description or "").."\n")
+local function scanModules()
+	local scannedLibraries = ""
+	local scannedModules = ""
+	for file in io.popen([[dir "]]..rl.scriptPath..[[" /b]]):lines() do 
+		
+		if string.match(file,"_Library.lua$") then 
+			local LaunchModule = string.match(file,"(.*)%.lua")
+			scannedLibraries = scannedLibraries..LaunchModule..";"
+		end
+	end
+
+	for file in io.popen([[dir "]]..rl.scriptPath..[[" /b]]):lines() do 
+		if string.match(file,"_LaunchModule.lua$") then 
+			local LaunchModule = string.match(file,"(.*)%.lua")
+			scannedModules = scannedModules..LaunchModule..";"
+		end
+	end
+
+	rl.config.libraries = scannedLibraries
+	rl.config.modules = scannedModules
+	saveTableToFile(rl.config,rl.userSettingsPath.."\\config.txt")
+end
+
+rl.registeredUtils.scanmodules = {onEnter = scanModules,description = "Scan Realauncher folder for new/deleted modules"}
+
+local function enumerateAvailableUtils()
+	for util in pairs(rl.registeredUtils) do
+		if util ~= "default" then
+			reaper.ShowConsoleMsg(util.." - "..(rl.registeredUtils[util].description or "").."\n")
 		end	
 	end
 end
 
-rl.registeredCommands.enumcmd = {onEnter = enumerateAvailableCommands, description = "List all registered Commands and their descriptions"}
+rl.registeredUtils.enumcmd = {onEnter = enumerateAvailableUtils, description = "List all registered Utils and their descriptions"}
 
-function redoCommand()
+function redoUtil()
 	rl.text.raw = rl.history[#rl.history]
 	sendCursorToEndOfText()
 	parseInput(rl.text)
-	changeEnvironment(rl.text.command)
+	changeEnvironment(rl.text.util)
 	passiveFunction()
 	onEnterFunction()
 end
 
-rl.registeredCommands["!!"] = {onEnter = redoCommand,description = "Redo last command", passiveFunction = function() rl.text.tipLine = [[Redo "]]..rl.history[#rl.history]..[["]] end}
+rl.registeredUtils["!!"] = {onEnter = redoUtil,description = "Redo last util", passiveFunction = function() rl.text.tipLine = [[Redo "]]..rl.history[#rl.history]..[["]] end}
 
 local function list(table)
 	for key,value in pairs(table) do
@@ -81,21 +98,11 @@ local function list(table)
 	end
 end
 
-local function saveTableToFile(aliasesTable,aliasesFilePath)
-	local aliasesFile = io.open(aliasesFilePath,"w")
-	for alias,sub in pairs(aliasesTable) do
-		if sub ~= "" then
-			aliasesFile:write(alias.."="..sub.."\n")
-		end
-	end
-	aliasesFile:close()
-end
-
 local function registerAlias()
 	if not rl.text.fullArgument then return end
 	if switches.l then list(rl.aliases) return end
 
-	local newAlias,substitution = rl.text.fullArgument:match("(%w+)=*([^\r\n]*)")
+	local newAlias,substitution = rl.text.fullArgument:match("([^=%s]+)=([^\r\n]*)")
 
 	if newAlias then
 		rl.aliases[newAlias] = substitution
@@ -103,18 +110,19 @@ local function registerAlias()
 	end
 end
 
-rl.registeredCommands.alias = {
+rl.registeredUtils.alias = {
 	onEnter = registerAlias,
 	description = "Register, display and delete aliases",
-	entranceFunction = function () rl.text.tipLine = "(ALIAS)=[NEW SUBSTITUTION] | if there is no substitution, alias will be erased" end,
+	entranceFunction = function () rl.text.tipLine = "(alias)=[new substitution] | if there is no substitution, alias will be erased" end,
 	switches = {l = false},
+	passiveFunction = function() executeNowFlag = false end, -- stops /execnow flag from triggering
 	}
 
 local function registerVariable()
 	if not rl.text.fullArgument then return end
 	if switches.l then cs.msg("USER VARIABLES:") ; list(rl.variables.user) ; cs.msg("NATIVE VARIABLES:") ; list(rl.variables.nativeDescriptions) return end
 
-	local newVar,substitution = rl.text.fullArgument:match("(%w+)=*([^\r\n]*)")
+	local newVar,substitution = rl.text.fullArgument:match("([^=%s]+)=([^\r\n]*)")
 
 	if newVar then
 		rl.variables.user[newVar] = substitution
@@ -122,10 +130,66 @@ local function registerVariable()
 	end
 end
 
-rl.registeredCommands.var = {
+rl.registeredUtils.var = {
 	onEnter = registerVariable,
 	description = "Register, display and delete variables",
+	entranceFunction = function () rl.text.tipLine = "(variable)=[value] | if there is no value, variable will be erased" end,
 	switches = {l = false},
+	passiveFunction = function() executeNowFlag = false end, -- stops /execnow flag from triggering
+}
+
+local function writeSubscriptFile(name,preloadedText)
+	local filePath = rl.scriptPath..[[Subscripts\]]..name..[[_RealauncherSubscript.lua]]
+
+	local subscriptFile = io.open(filePath,"w")
+
+	local subscriptContent = [[
+-- @noindex
+local function get_script_path()
+	local info = debug.getinfo(1,'S');
+	local script_path = info.source:match("^@?(.*[\\/])[^\\/]-$")
+	return script_path
+end 
+
+local function loadRealauncher()
+	local scriptPath = get_script_path()
+	local realauncherRoot = scriptPath:match("^@?(.*[\\/])Subscripts[\\/]$")
+
+	package.path = package.path .. ";" .. realauncherRoot .. "?.lua"
+
+	require("CS_ReaLauncher")
+end
+
+executeNowFlag = ]]..tostring((switches.q or false))..[[
+
+preloadedText = "]]..preloadedText..[["
+loadRealauncher()
+]]
+
+	subscriptFile:write(subscriptContent)
+
+	subscriptFile:close()
+end
+
+local function createSubscript()
+	if not rl.text.fullArgument then return end
+
+	local name,preloadedText = rl.text.fullArgument:match("([^=%s]+)=([^\r\n]*)")
+
+	if name and preloadedText then
+		writeSubscriptFile(name,preloadedText)
+	end
+end
+
+rl.registeredUtils.subscript = {
+	onEnter = createSubscript,
+	description = "Create ReaLauncher subscript",
+	switches = {
+		q = false,
+		},
+	passiveFunction = function() executeNowFlag = false end, -- stops /execnow flag from triggering
+	entranceFunction = function() rl.config.subvariables = false end,
+	exitFunction = function() rl.config.subvariables = true end,
 }
 
 local function declareMathFunctions()
@@ -173,4 +237,4 @@ function cmdCalculate()
 	end
 end
 
-rl.registeredCommands.math = {passiveFunction = cmdCalculate,description = "Command Line Calculator"}
+rl.registeredUtils.math = {passiveFunction = cmdCalculate,description = "Util Line Calculator"}

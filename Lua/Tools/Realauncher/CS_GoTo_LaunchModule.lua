@@ -11,7 +11,7 @@ function goTo()
 	end
 end
 
-rl.registeredCommands.go = {
+rl.registeredUtils.go = {
 	charFunction = {
 		[kbInput.ctrl.t] = function ()  launchAltGUI(tcInputStart,reaper.GetCursorPositionEx(0) + reaper.GetProjectTimeOffset(proj,false)) end,
 		},

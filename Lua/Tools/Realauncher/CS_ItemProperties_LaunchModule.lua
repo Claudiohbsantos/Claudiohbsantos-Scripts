@@ -36,24 +36,22 @@ local function itemVolume()
 	reaper.PreventUIRefresh(1)
 
 	local arguments = rl.text.arguments[1]
-	if arguments == "" or not arguments then arguments = 0 end
-	local operator,value = parseArguments(arguments)
-	for item in cs.selectedItems(0) do
-		local currentItemVolume = cs.itemVolumeToDB(reaper.GetMediaItemInfo_Value(item,"D_VOL"))
-		local newValue = calc[operator](currentItemVolume,value)
-		reaper.SetMediaItemInfo_Value(item,"D_VOL",cs.dbToItemVolume(newValue))
+	if arguments and arguments ~= ""  then
+		local operator,value = parseArguments(arguments)
+		for item in cs.selectedItems(0) do
+			local currentItemVolume = cs.itemVolumeToDB(reaper.GetMediaItemInfo_Value(item,"D_VOL"))
+			local newValue = calc[operator](currentItemVolume,value)
+			reaper.SetMediaItemInfo_Value(item,"D_VOL",cs.dbToItemVolume(newValue))
+		end
+		
 	end
 	reaper.PreventUIRefresh(-1)
 	reaper.Undo_EndBlock("Modify item Volumes to "..arguments, 0)
 	reaper.UpdateArrange()
 end
 
-rl.registeredCommands.itemvolume = {onEnter = itemVolume,
+rl.registeredUtils.itemvolume = {onEnter = itemVolume,
 	description = "Set Item Volume",
-	charFunction = {
-		[kbInput.upArrow] = function() reaper.Main_OnCommand(41925,0) end, -- nudge items volumes up +1
-		[kbInput.downArrow] = function() reaper.Main_OnCommand(41924,0) end, -- nudge items volumes down -1
-		}
 	}
 
 local function itemPitch()
@@ -77,7 +75,7 @@ local function itemPitch()
 	reaper.UpdateArrange()
 end
 
-rl.registeredCommands.itempitch = {onEnter = itemPitch,description = "Set Item Pitch"}
+rl.registeredUtils.itempitch = {onEnter = itemPitch,description = "Set Item Pitch"}
 
 function itemPlayRate()
 	reaper.Undo_BeginBlock()
@@ -100,7 +98,7 @@ function itemPlayRate()
 	reaper.UpdateArrange()
 end
 
-rl.registeredCommands.itemrate = {onEnter = itemPlayRate,description = "Set Item Playrate"}
+rl.registeredUtils.itemrate = {onEnter = itemPlayRate,description = "Set Item Playrate"}
 
 local function itemFadeInLength()
 	reaper.Undo_BeginBlock()
@@ -121,7 +119,7 @@ local function itemFadeInLength()
 	reaper.UpdateArrange()
 end
 
-rl.registeredCommands.itemfadein = {onEnter = itemFadeInLength,description = "Set Item FadeIn Length"}
+rl.registeredUtils.itemfadein = {onEnter = itemFadeInLength,description = "Set Item FadeIn Length"}
 
 local function itemFadeOutLength()
 	reaper.Undo_BeginBlock()
@@ -142,7 +140,7 @@ local function itemFadeOutLength()
 	reaper.UpdateArrange()
 end
 
-rl.registeredCommands.itemfadeout = {onEnter = itemFadeOutLength,description = "Set Item FadeOut Length"}
+rl.registeredUtils.itemfadeout = {onEnter = itemFadeOutLength,description = "Set Item FadeOut Length"}
 
 local function itemLength()
 	reaper.Undo_BeginBlock()
@@ -163,7 +161,7 @@ local function itemLength()
 	reaper.UpdateArrange()
 end
 
-rl.registeredCommands.itemlength = {onEnter = itemLength,description = "Set Item Length"}
+rl.registeredUtils.itemlength = {onEnter = itemLength,description = "Set Item Length"}
 
 
 

@@ -19,7 +19,7 @@ function createMarker()
 	reaper.AddProjectMarker2(0,marker.isRgn,marker.pos,marker.rgnEnd,marker.name,marker.index,marker.color)
 end
 
-rl.registeredCommands.marker = {
+rl.registeredUtils.marker = {
 	onEnter = createMarker,
 	description = "Create Marker at Edit Cursor Position",
 	switches = {
