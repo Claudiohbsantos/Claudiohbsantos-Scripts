@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="b2186b06f1479c93d858c81b30f3a5328ec2db16" name="Claudiohbsantos Scripts">
+<index version="1" commit="d204a33019db33927baadcb5917044a1706d3b9d" name="Claudiohbsantos Scripts">
   <category name="Lua/Automation">
     <reapack name="CS_Set All Track Envelopes To Fader Scaling.lua" type="script" desc="Set All Track Envelopes To Fader Scaling">
       <metadata>
@@ -286,6 +286,8 @@
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c4316dcae28321d801d45912c6c1caf38b3e81c1/Lua/Editing/CS_Shrink%20edges%20in%20both%20directions%20fading%20from%20time%20selection.lua</source>
       </version>
     </reapack>
+  </category>
+  <category name="Lua/Editing/SmartMouse">
     <reapack name="CS_Smart Delete.lua" type="script" desc="CS_Smart Delete">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
@@ -298,9 +300,9 @@
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
       </metadata>
-      <version name="1.0" author="Claudiohbsantos" time="2017-06-13T23:05:20Z">
+      <version name="1.4" author="Claudiohbsantos" time="2018-02-07T22:19:41Z">
         <changelog><![CDATA[- initial release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/fc151d567664bb4c2ccc4b34dcafbff76928bc49/Lua/Editing/CS_Smart%20Delete.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/df688b7c4dc719fabf5a64c762f716b832ab438c/Lua/Editing/SmartMouse/CS_Smart%20Delete.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Smart Fade.lua" type="script" desc="CS_Smart Fade">
@@ -361,27 +363,9 @@ Multiple Selected
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
       </metadata>
-      <version name="2.5" author="Claudiohbsantos" time="2017-03-31T06:13:31Z">
-        <changelog><![CDATA[- Addresses all sensible combinations of items (Yeah, sure... all I could think of at least)]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/3c7e5c453f1caf1093a3211aafb8ef50facb9efc/Lua/Editing/CS_Smart%20Fade.lua</source>
-      </version>
-      <version name="2.6beta" author="Claudiohbsantos" time="2017-03-31T07:02:22Z">
-        <changelog><![CDATA[- Addresses all sensible combinations of items (Yeah, sure... all I could think of at least)]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/180135b7a92a82a7c3c61c3058c9e764e34bdec8/Lua/Editing/CS_Smart%20Fade.lua</source>
-      </version>
-      <version name="2.6" author="Claudiohbsantos" time="2017-03-31T07:46:26Z">
-        <changelog><![CDATA[- Extensive Code Optimizations]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/c80ac66c1ba62bf8be6f9c1a31dbe5e75aa2a63d/Lua/Editing/CS_Smart%20Fade.lua</source>
-      </version>
-      <version name="2.7" author="Claudiohbsantos" time="2017-04-01T19:22:18Z">
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/91b4ff33f6d805dd49674a49bde9fd441c109a67/Lua/Editing/CS_Smart%20Fade.lua</source>
-      </version>
-      <version name="2.8" author="Claudiohbsantos" time="2017-04-01T22:55:59Z">
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bdaced012a30b713faf33a58abc3860dbda5311c/Lua/Editing/CS_Smart%20Fade.lua</source>
-      </version>
-      <version name="3.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
+      <version name="3.0" author="Claudiohbsantos" time="2018-02-07T22:19:41Z">
         <changelog><![CDATA[--  Cleaned Up Code and Removed Dead Functions]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Editing/CS_Smart%20Fade.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/df688b7c4dc719fabf5a64c762f716b832ab438c/Lua/Editing/SmartMouse/CS_Smart%20Fade.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Smart Mute.lua" type="script" desc="CS_Smart Mute">
@@ -396,9 +380,27 @@ Multiple Selected
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
       </metadata>
-      <version name="1.0" author="Claudiohbsantos" time="2017-06-13T23:05:20Z">
+      <version name="1.0" author="Claudiohbsantos" time="2018-02-07T22:19:41Z">
         <changelog><![CDATA[- initial release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/fc151d567664bb4c2ccc4b34dcafbff76928bc49/Lua/Editing/CS_Smart%20Mute.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/df688b7c4dc719fabf5a64c762f716b832ab438c/Lua/Editing/SmartMouse/CS_Smart%20Mute.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Smart Set Snap Offset.lua" type="script" desc="CS_Smart Set Snap Offset">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Smart Set Snap Offset\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Trims behind item under mouse cursor,\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0alpha" author="Claudiohbsantos" time="2018-02-07T22:19:41Z">
+        <changelog><![CDATA[- Items always end deselected
+- If Mouse is on top of an item and enclosed by the time selection, split item at time selection edges]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/df688b7c4dc719fabf5a64c762f716b832ab438c/Lua/Editing/SmartMouse/CS_Smart%20Set%20Snap%20Offset.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Smart Split Following Snapping.lua" type="script" desc="Smart Split - Following Snap">
@@ -415,9 +417,9 @@ Multiple Selected
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
       </metadata>
-      <version name="1.0" author="Claudiohbsantos" time="2017-07-25T06:04:26Z">
+      <version name="1.0" author="Claudiohbsantos" time="2018-02-07T22:19:41Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2f069a434978e002d4c8c20061a1d593910a748c/Lua/Editing/CS_Smart%20Split%20Following%20Snapping.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/df688b7c4dc719fabf5a64c762f716b832ab438c/Lua/Editing/SmartMouse/CS_Smart%20Split%20Following%20Snapping.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Smart Split.lua" type="script" desc="CS_Smart Split">
@@ -432,14 +434,46 @@ Multiple Selected
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
       </metadata>
-      <version name="1.0" author="Claudiohbsantos" time="2017-06-13T22:20:43Z">
-        <changelog><![CDATA[- initial release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/dfa25117e283cd5399a49a830fd962e7751d8dd5/Lua/Editing/CS_Smart%20Split.lua</source>
-      </version>
-      <version name="1.3" author="Claudiohbsantos" time="2017-07-25T06:04:26Z">
+      <version name="1.3" author="Claudiohbsantos" time="2018-02-07T22:19:41Z">
         <changelog><![CDATA[- Items always end deselected
 - If Mouse is on top of an item and enclosed by the time selection, split item at time selection edges]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/2f069a434978e002d4c8c20061a1d593910a748c/Lua/Editing/CS_Smart%20Split.lua</source>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/df688b7c4dc719fabf5a64c762f716b832ab438c/Lua/Editing/SmartMouse/CS_Smart%20Split.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Smart Trim Left Edge.lua" type="script" desc="CS_Smart Trim Left Edge">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Smart Trim Left Edge\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Trims behind item under mouse cursor,\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0alpha" author="Claudiohbsantos" time="2018-02-07T22:19:41Z">
+        <changelog><![CDATA[- Items always end deselected
+- If Mouse is on top of an item and enclosed by the time selection, split item at time selection edges]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/df688b7c4dc719fabf5a64c762f716b832ab438c/Lua/Editing/SmartMouse/CS_Smart%20Trim%20Left%20Edge.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Smart Trim Right Edge.lua" type="script" desc="CS_Smart Trim Right Edge">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Smart Trim Right Edge\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Trims behind item under mouse cursor,\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0alpha" author="Claudiohbsantos" time="2018-02-07T22:19:41Z">
+        <changelog><![CDATA[- Items always end deselected
+- If Mouse is on top of an item and enclosed by the time selection, split item at time selection edges]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/df688b7c4dc719fabf5a64c762f716b832ab438c/Lua/Editing/SmartMouse/CS_Smart%20Trim%20Right%20Edge.lua</source>
       </version>
     </reapack>
   </category>
@@ -792,6 +826,23 @@ SoloXORExample
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Tools/CS_Set%20Time%20Selection%20Out.lua</source>
         <source file="../Libraries/Set Time Selection Out/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Libraries/TimecodeInput_Module.lua</source>
         <source file="../Libraries/Set Time Selection Out/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b2186b06f1479c93d858c81b30f3a5328ec2db16/Lua/Libraries/CS_Library.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_SetProjectStartTime.lua" type="script" desc="Set Project Start Time (Offset)">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Set Project Start Time (Offset)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Set project start time Press + or - to change to subtration or Addition Mode. Press Spacebar to reset default timecode to zero.\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-03-08T15:30:01Z">
+        <changelog><![CDATA[- ]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/d204a33019db33927baadcb5917044a1706d3b9d/Lua/Tools/CS_SetProjectStartTime.lua</source>
       </version>
     </reapack>
   </category>
