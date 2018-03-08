@@ -2,37 +2,6 @@
 @noindex
 ]]--
 
-local function saveTableToFile(tableToSave,filePath)
-	local tableFile = io.open(filePath,"w")
-	for alias,sub in pairs(tableToSave) do
-		if sub ~= "" then
-			tableFile:write(alias.."="..sub.."\n")
-		end
-	end
-	tableFile:close()
-end
-
-function ismacos()
-	return reaper.GetOS():find('OSX') ~= nil
-end
-
-function iswindows()
-	return reaper.GetOS():find('Win') ~= nil
-end
-
-function copyToClipboard(text)
-	reaper.CF_SetClipboard(text)
-end
-
-function pasteFromClipboard()
-	local fastString = reaper.SNM_CreateFastString("")
-	local text = reaper.CF_GetClipboardBig(fastString)
-	reaper.SNM_DeleteFastString(fastString)
-	return text
-end
-
-universalSwitches = {execnow = false,help = false}
-
 rl.registeredUtils.default = {
 	charFunction = {
 					[kbInput.upArrow] = function() rl.text.raw = recallHistory(-1) ; sendCursorToEndOfText() end,
@@ -40,43 +9,26 @@ rl.registeredUtils.default = {
 					[kbInput.tab] = function () performAutocomplete(rl.currentAutocomplete) end,
 					[kbInput.copy] = function () copyToClipboard(rl.text.raw) end,
 					[kbInput.paste] = function () rl.text.raw = rl.text.raw..pasteFromClipboard(); sendCursorToEndOfText() end,
+					[kbInput.ctrl.t] = function ()  launchAltGUI(tcInputStart,0) end,
 					},				
-	description = "Click the \"?\" button on the right for help. ReaLauncher by Claudio Santos.",
+	description = "Click the \"?\" button on the right for help.",
 }
 
 rl.registeredUtils.quit = {onEnter = function() reaper.Main_OnCommand(40004,0) end, description = "Quit Reaper"}
 
-local function scanModules()
-	local scannedLibraries = ""
-	local scannedModules = ""
-	for file in io.popen([[dir "]]..rl.scriptPath..[[" /b]]):lines() do 
-		
-		if string.match(file,"_Library.lua$") then 
-			local LaunchModule = string.match(file,"(.*)%.lua")
-			scannedLibraries = scannedLibraries..LaunchModule..";"
-		end
-	end
-
-	for file in io.popen([[dir "]]..rl.scriptPath..[[" /b]]):lines() do 
-		if string.match(file,"_LaunchModule.lua$") then 
-			local LaunchModule = string.match(file,"(.*)%.lua")
-			scannedModules = scannedModules..LaunchModule..";"
-		end
-	end
-
-	rl.config.libraries = scannedLibraries
-	rl.config.modules = scannedModules
-	saveTableToFile(rl.config,rl.userSettingsPath.."\\config.txt")
-end
-
 rl.registeredUtils.scanmodules = {onEnter = scanModules,description = "Scan Realauncher folder for new/deleted modules"}
 
+
+
 local function enumerateAvailableUtils()
+	local installedUtils = {}
 	for util in pairs(rl.registeredUtils) do
 		if util ~= "default" then
-			reaper.ShowConsoleMsg(util.." - "..(rl.registeredUtils[util].description or "").."\n")
+			installedUtils[util] = (rl.registeredUtils[util].description or "")
 		end	
 	end
+
+	list("Installed Utilities",installedUtils)
 end
 
 rl.registeredUtils.enumcmd = {onEnter = enumerateAvailableUtils, description = "List all registered Utils and their descriptions"}
@@ -84,25 +36,30 @@ rl.registeredUtils.enumcmd = {onEnter = enumerateAvailableUtils, description = "
 function redoUtil()
 	rl.text.raw = rl.history[#rl.history]
 	sendCursorToEndOfText()
-	parseInput(rl.text)
-	changeEnvironment(rl.text.util)
-	passiveFunction()
-	onEnterFunction()
+	rl.text.commands = parseInput(rl.text.raw)
+	for i in ipairs(rl.text.commands) do
+		rl.text.currentCommandIndex = i
+		rl.currentCommand = rl.text.commands[i]
+		rl.currentCommand = parseCommand(rl.currentCommand)
+		-- checkUniversalSwitches(universalSwitches)
+	end
+	for i in ipairs (rl.text.commands) do
+		rl.currentCommand = rl.text.commands[i]
+		setCurrentEnvironment(rl.currentCommand.util)
+		passiveFunction()
+		onEnterFunction(rl.currentCommand) 
+	end
+	
 end
 
 rl.registeredUtils["!!"] = {onEnter = redoUtil,description = "Redo last util", passiveFunction = function() rl.text.tipLine = [[Redo "]]..rl.history[#rl.history]..[["]] end}
 
-local function list(table)
-	for key,value in pairs(table) do
-		reaper.ShowConsoleMsg(key.."  =  "..tostring(value).."\n")
-	end
-end
-
 local function registerAlias()
-	if not rl.text.fullArgument then return end
-	if switches.l then list(rl.aliases) return end
+	if not rl.currentCommand.arguments then return end
+	if rl.currentCommand.switches.l then list("Aliases",rl.aliases) return end
 
-	local newAlias,substitution = rl.text.fullArgument:match("([^=%s]+)=([^\r\n]*)")
+	if rl.currentCommand.arguments[1] ~= "" then newAlias = rl.currentCommand.arguments[1] end
+	if rl.currentCommand.arguments[2] ~= "" then substitution = table.concat(rl.currentCommand.arguments," ",2) end
 
 	if newAlias then
 		rl.aliases[newAlias] = substitution
@@ -113,16 +70,26 @@ end
 rl.registeredUtils.alias = {
 	onEnter = registerAlias,
 	description = "Register, display and delete aliases",
-	entranceFunction = function () rl.text.tipLine = "(alias)=[new substitution] | if there is no substitution, alias will be erased" end,
+	entranceFunction = function () 
+		rl.text.tipLine = "(alias) [new substitution] ; if there is no substitution, alias will be erased" 
+		rl.config.subvariables = false
+	end,
 	switches = {l = false},
 	passiveFunction = function() executeNowFlag = false end, -- stops /execnow flag from triggering
+	exitFunction = function () rl.config.subvariables = true end,
 	}
 
-local function registerVariable()
-	if not rl.text.fullArgument then return end
-	if switches.l then cs.msg("USER VARIABLES:") ; list(rl.variables.user) ; cs.msg("NATIVE VARIABLES:") ; list(rl.variables.nativeDescriptions) return end
+local function registerVariable(input)
+	if not rl.currentCommand.arguments then return end
+	
+	if input.switches.l then 
+		local tableToPrint = {["User Variables"] = rl.variables.user,["Native Variables"] = rl.variables.nativeDescriptions}
+		list("Variables",tableToPrint)
+		return 
+	end
 
-	local newVar,substitution = rl.text.fullArgument:match("([^=%s]+)=([^\r\n]*)")
+	if rl.currentCommand.arguments[1] ~= "" then newVar = rl.currentCommand.arguments[1] end
+	if rl.currentCommand.arguments[2] ~= "" then substitution = table.concat(rl.currentCommand.arguments," ",2) end
 
 	if newVar then
 		rl.variables.user[newVar] = substitution
@@ -133,17 +100,64 @@ end
 rl.registeredUtils.var = {
 	onEnter = registerVariable,
 	description = "Register, display and delete variables",
-	entranceFunction = function () rl.text.tipLine = "(variable)=[value] | if there is no value, variable will be erased" end,
+	entranceFunction = function () rl.text.tipLine = "(variable) [value] ; if there is no value, variable will be erased" ; rl.config.subvariables = false end,
 	switches = {l = false},
 	passiveFunction = function() executeNowFlag = false end, -- stops /execnow flag from triggering
+	exitFunction = function () rl.config.subvariables = true end,
 }
 
-local function writeSubscriptFile(name,preloadedText)
-	local filePath = rl.scriptPath..[[Subscripts\]]..name..[[_RealauncherSubscript.lua]]
 
-	local subscriptFile = io.open(filePath,"w")
+local function registerConfig(input)
+	if not rl.currentCommand.arguments then return end
 
-	local subscriptContent = [[
+	if input.switches.l then
+		list("Configurations",rl.config)
+	end
+
+	local configName,configVal
+	if cs.strHasValue(rl.currentCommand.arguments[1]) and strHasValue(rl.currentCommand.arguments[2]) then
+		configName = rl.currentCommand.arguments[1]
+		configVal = rl.currentCommand.arguments[2]
+		rl.config[configName] = configVal
+		saveTableToFile(rl.config,rl.userSettingsPath.."\\config.txt")
+	end
+end
+
+rl.registeredUtils.config = {
+	onEnter = registerConfig,
+	description = "Display and Modify config settings",
+	entranceFunction = function () rl.text.tipLine = "/l to list current values" end,
+	switches = {l = false},
+}
+
+-- local function compileDependencies()
+-- 	local all = "-- Script compiled from Realauncher.\n--Be warned: It's a mess down here\n\n"
+	
+-- 	all = all .. "rl = {variables = {},history = {},aliases = {},helpFiles = {}}\nrl.compiled = true\n"
+-- 	all = all .. cs.tableToString("rl.config",rl.config) .. "\n"
+-- 	-- all = all .. cs.tableToString("rl.variables.user",rl.variables.user) .. "\n"
+
+-- 	local filesToCompile = {"CS_RealauncherCore","CS_FunctionLibrary"}
+
+-- 	for library in rl.config.libraries:gmatch("([^;]+)") do
+-- 		table.insert(filesToCompile,library)
+-- 	end
+
+-- 	for mod in rl.config.modules:gmatch("([^;]+)") do
+-- 		table.insert(filesToCompile,mod)
+-- 	end
+
+-- 	for i,file in ipairs(filesToCompile) do
+-- 		local f = io.open(rl.scriptPath..file..".lua","r")
+-- 		all = all.."do\n"..f:read("a").."\nend\n"
+-- 		f:close()
+-- 	end
+
+-- 	return all
+-- end
+
+local function writeSubscriptFile(name,preloadedText,quiet,compile)
+	local linker = [[
 -- @noindex
 local function get_script_path()
 	local info = debug.getinfo(1,'S');
@@ -159,25 +173,42 @@ local function loadRealauncher()
 
 	require("CS_ReaLauncher")
 end
-
-executeNowFlag = ]]..tostring((switches.q or false))..[[
-
-preloadedText = "]]..preloadedText..[["
-loadRealauncher()
 ]]
+
+	-- local dependencies = compileDependencies()
+
+	local subscriptLauncher = [[
+executeNowFlag = ]]..tostring((quiet or false))..[[
+
+preloadedText = "]]..preloadedText.."\"\n"
+
+	local subscriptContent,suffix
+	-- if compile then 
+	-- 	subscriptContent = subscriptLauncher..dependencies
+	-- 	suffix = "StandaloneRealauncher" 
+	-- else 
+		subscriptContent = linker..subscriptLauncher.."\nloadRealauncher()"
+		suffix = "RealauncherSubscript"
+	-- end
+
+	local filePath = rl.scriptPath..[[Subscripts\]]..name..[[_]]..suffix..[[.lua]]
+
+	local subscriptFile = io.open(filePath,"w")
 
 	subscriptFile:write(subscriptContent)
 
 	subscriptFile:close()
 end
 
-local function createSubscript()
-	if not rl.text.fullArgument then return end
+local function createSubscript(input)
+	if not rl.currentCommand.arguments then return end
 
-	local name,preloadedText = rl.text.fullArgument:match("([^=%s]+)=([^\r\n]*)")
+	if rl.currentCommand.arguments[1] ~= "" then name = rl.currentCommand.arguments[1] end
+	if rl.currentCommand.arguments[2] ~= "" then preloadedText = table.concat(rl.currentCommand.arguments," ",2) end
+	preloadedText = preloadedText:gsub("\\;","\\\";\\\"")
 
 	if name and preloadedText then
-		writeSubscriptFile(name,preloadedText)
+		writeSubscriptFile(name,preloadedText,input.switches.q)
 	end
 end
 
@@ -192,49 +223,37 @@ rl.registeredUtils.subscript = {
 	exitFunction = function() rl.config.subvariables = true end,
 }
 
-local function declareMathFunctions()
-	local declarations = [[
-local abs = math.abs
-local acos = math.acos
-local asin = math.asin
-local atan = math.atan
-local ceil = math.ceil
-local cos = math.cos
-local deg = math.deg
-local exp = math.exp
-local floor = math.floor
-local fmod = math.fmod
-local huge = math.huge
-local log = math.log
-local max = math.max
-local maxinteger = math.maxinteger
-local min = math.min
-local mininteger = math.mininteger
-local modf = math.modf
-local pi = math.pi
-local rad = math.rad
-local random = math.random
-local randomseed = math.randomseed
-local sin = math.sin
-local sqrt = math.sqrt
-local tan = math.tan
-local tointeger = math.tointeger
-local type = math.type
-local ult = math.ult
-]]
-
-	return declarations
-end
-
-function cmdCalculate()
-	if rl.text.fullArgument then
-
-		local calculation = load(declareMathFunctions().." return "..rl.text.fullArgument)
-		if calculation then
-			local sucessful,result = pcall(calculation)
-			if sucessful then rl.text.tipLine = result else rl.text.tipLine = "The Calculation is incorrect" end
-		end
+local function cmdCalculate()
+	if rl.currentCommand.fullArgument then
+		local result = evaluateMathExp(rl.currentCommand.fullArgument)		
+		if type(result) == "number" then rl.text.tipLine = result else rl.text.tipLine = "The Calculation is incorrect" end
 	end
 end
 
-rl.registeredUtils.math = {passiveFunction = cmdCalculate,description = "Util Line Calculator"}
+rl.registeredUtils.math = {passiveFunction = cmdCalculate,description = "Calculator"}
+
+local function repCommand(inputTable)
+	if inputTable.arguments[1] and type(tonumber(inputTable.arguments[1])) == "number" then
+		for i=1,inputTable.arguments[1]-1 do
+			table.insert(rl.text.commands,inputTable.cmdIndex+1,rl.text.commands[inputTable.cmdIndex+1])
+		end
+	else
+		reaper.ShowMessageBox("The utility \"repeat\" accepts one number as an argument","Realauncher Error",0)
+	end
+end
+
+rl.registeredUtils.rep = {onEnter = repCommand, description = "Repeat next command X times"}
+
+rl.registeredUtils.help = {onEnter = function() viewMarkdown(rl.helpFiles["default"],true) end, description = "Open Realauncher help"}
+
+rl.registeredUtils.testInputs = {onEnter = function() cs.msg(rl.currentCommand) end, description = "Prints parsed arguments to console"}
+
+rl.registeredUtils.keyboardCodeViewer = {
+	passiveFunction = 
+		function() 
+			if rl.currentCommand.currChar ~= 0 then 
+				rl.currentCommand.tipLine = rl.currentCommand.currChar
+			end 
+		end,
+	description = "Display typed character codes",	 
+	}

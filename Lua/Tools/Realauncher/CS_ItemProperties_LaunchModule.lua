@@ -2,63 +2,55 @@
 @noindex
 ]]--
 
-local calc = {}
+local function itemVolume(iTable)
+	local arguments = iTable.arguments[1]
 
-calc["+"] = function  (val1,val2)
-	return val1 + val2
-end
+	if arguments and arguments:match("%d")  then
 
-calc["-"] = function  (val1,val2)
-	return val1 - val2
-end
-
-calc["/"] = function  (val1,val2)
-	return val1 / val2
-end
-
-calc["*"] = function  (val1,val2)
-	return val1 * val2
-end
-
-calc["set"] = function (val1,val2)
-	return val2 or 0
-end
-
-local function parseArguments(arguments)
-	local operator,value = string.match(arguments,"^([%+%-/%*]?)([%d%.]+)")
-	if operator == "" then operator = "set"	end
-
-	return operator, value 
-end
-
-local function itemVolume()
 	reaper.Undo_BeginBlock()
 	reaper.PreventUIRefresh(1)
-
-	local arguments = rl.text.arguments[1]
-	if arguments and arguments ~= ""  then
-		local operator,value = parseArguments(arguments)
+		
 		for item in cs.selectedItems(0) do
 			local currentItemVolume = cs.itemVolumeToDB(reaper.GetMediaItemInfo_Value(item,"D_VOL"))
-			local newValue = calc[operator](currentItemVolume,value)
+			local newValue = calcRelativeNumber(arguments,currentItemVolume)
 			reaper.SetMediaItemInfo_Value(item,"D_VOL",cs.dbToItemVolume(newValue))
 		end
 		
-	end
 	reaper.PreventUIRefresh(-1)
 	reaper.Undo_EndBlock("Modify item Volumes to "..arguments, 0)
 	reaper.UpdateArrange()
+
+	end
+	
 end
 
 rl.registeredUtils.itemvolume = {onEnter = itemVolume,
 	description = "Set Item Volume",
+	switches = {i = false},
+	passiveFunction = function()
+			if rl.currentCommand.switches.i then
+				rl.registeredUtils.itemvolume.charFunction = {
+					[kbInput.g] =  function() itemVolume({arguments = {[1] = "-0.1"}}) end,
+					[kbInput.f] =  function() itemVolume({arguments = {[1] = "-1"}}) end,
+					[kbInput.d] =  function() itemVolume({arguments = {[1] = "-5"}}) end,
+					[kbInput.s] =  function() itemVolume({arguments = {[1] = "-10"}}) end,
+					[kbInput.h] =  function() itemVolume({arguments = {[1] = "+0.1"}}) end,
+					[kbInput.j] =  function() itemVolume({arguments = {[1] = "+1"}}) end,
+					[kbInput.k] =  function() itemVolume({arguments = {[1] = "+5"}}) end,
+					[kbInput.l] =  function() itemVolume({arguments = {[1] = "+10"}}) end,
+					[kbInput.n] =  function() reaper.Main_OnCommand(40936,0) end, -- normalize/unormalize
+					[kbInput["0"]] =  function() itemVolume({arguments = {[1] = "0"}}) end,
+				}
+				setCurrentEnvironment("itemvolume")
+			end
+		end,
 	}
 
-local function itemPitch()
+local function itemPitch(input)
 	reaper.Undo_BeginBlock()
 	reaper.PreventUIRefresh(1)
 
-	local arguments = rl.text.arguments[1]
+	local arguments = input.arguments[1]
 	if arguments == "" or not arguments then arguments = 0 end
 	local operator,value = parseArguments(arguments)
 
@@ -77,11 +69,11 @@ end
 
 rl.registeredUtils.itempitch = {onEnter = itemPitch,description = "Set Item Pitch"}
 
-function itemPlayRate()
+function itemPlayRate(input)
 	reaper.Undo_BeginBlock()
 	reaper.PreventUIRefresh(1)
 
-	local arguments = rl.text.arguments[1]
+	local arguments = input.arguments[1]
 	if arguments == "" or not arguments then arguments = 1 end
 	local operator,value = parseArguments(arguments)
 
@@ -100,11 +92,11 @@ end
 
 rl.registeredUtils.itemrate = {onEnter = itemPlayRate,description = "Set Item Playrate"}
 
-local function itemFadeInLength()
+local function itemFadeInLength(input)
 	reaper.Undo_BeginBlock()
 	reaper.PreventUIRefresh(1)
 
-	local arguments = rl.text.arguments[1]
+	local arguments = input.arguments[1]
 	if arguments == "" or not arguments then arguments = 0 end
 	local operator,value = parseArguments(arguments)
 
@@ -121,11 +113,11 @@ end
 
 rl.registeredUtils.itemfadein = {onEnter = itemFadeInLength,description = "Set Item FadeIn Length"}
 
-local function itemFadeOutLength()
+local function itemFadeOutLength(input)
 	reaper.Undo_BeginBlock()
 	reaper.PreventUIRefresh(1)
 
-	local arguments = rl.text.arguments[1]
+	local arguments = input.arguments[1]
 	if arguments == "" or not arguments then arguments = 0 end
 	local operator,value = parseArguments(arguments)
 
@@ -142,11 +134,11 @@ end
 
 rl.registeredUtils.itemfadeout = {onEnter = itemFadeOutLength,description = "Set Item FadeOut Length"}
 
-local function itemLength()
+local function itemLength(input)
 	reaper.Undo_BeginBlock()
 	reaper.PreventUIRefresh(1)
 
-	local arguments = rl.text.arguments[1]
+	local arguments = input.arguments[1]
 	if arguments == "" or not arguments then arguments = 0 end
 	local operator,value = parseArguments(arguments)
 

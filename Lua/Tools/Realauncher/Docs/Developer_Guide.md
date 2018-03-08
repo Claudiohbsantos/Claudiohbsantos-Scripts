@@ -73,7 +73,7 @@ In order to do so, the following functions must be used:
 
 ### closing the Alt Gui:
 
-`returnToMainLoop(returnValue)` - in which returnValue must be a number or a string.
+`returnToMainLoop(returnValue,execimmediately)` - in which returnValue must be a number or a string. execimmediately is a boolean that if true will force execution of the onEnter function on realauncher. 
 
 ## Help
 
@@ -95,3 +95,4 @@ There are some universal switches that can't be registered and that will always 
 ## config file
 
 - subvariables - *boolean* Substitute variables or not
+

@@ -4,8 +4,7 @@
 
 `itemvolume [+-/*][value]`
 
-## Shortcuts
+## Interactive Mode Shortcuts
 
-- **UpArrow** - Nudge selected items volume up by +1 db
-- **DownArrow** - Nudge selected items volume down by -1 db
+- <kbd>j</kbd> - Nudge selected items volume up by +1 db
 

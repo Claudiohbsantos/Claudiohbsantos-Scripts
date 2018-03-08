@@ -1,20 +1,20 @@
 --[[
 @noindex
 ]]--
-function createMarker()
+function createMarker(input)
 	local marker = {}
 
-	marker.name = table.concat(rl.text.arguments," ") or ""
+	marker.name = table.concat(rl.currentCommand.arguments," ") or ""
 	
-	marker.isRgn = switches.r
-	if switches.r then 
+	marker.isRgn = input.switches.r
+	if input.switches.r then 
 		marker.pos,marker.rgnEnd = reaper.GetSet_LoopTimeRange2(0,false,false,0,0,false) 
 	else 
 		marker.pos = reaper.GetCursorPositionEx(0)
 		marker.rgnEnd = 0
 	end
 	
-	marker.index = switches.i
+	marker.index = input.switches.i
 	marker.color = 0
 	reaper.AddProjectMarker2(0,marker.isRgn,marker.pos,marker.rgnEnd,marker.name,marker.index,marker.color)
 end

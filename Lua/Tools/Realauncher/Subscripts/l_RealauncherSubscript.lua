@@ -13,6 +13,7 @@ local function loadRealauncher()
 
 	require("CS_ReaLauncher")
 end
+executeNowFlag = true
+preloadedText = "go $viewEnd"
 
-preloadedText = ""
 loadRealauncher()

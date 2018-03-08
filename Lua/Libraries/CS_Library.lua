@@ -14,6 +14,8 @@
 
 cs = {}
 
+function cs.randomString() return os.tmpname():match("[^%.\\/]+") end 
+
 function cs.doOnce(foo,...)
 	local function newExecutedFunctionsTable(foo)
 		local done = {}
@@ -333,4 +335,186 @@ function cs.checkMouseSnappingPositions(proximity,mouse)
 	end
 
 	return closestSnap
+end
+
+------------------------ Utilities
+
+function cs.strHasValue(str)
+	if str and str ~= "" then
+		return str
+	end
+end
+
+function cs.removeExcludeWords(searchArgumentsTable)
+	local nonExclude = {}
+	for i=1, #searchArgumentsTable,1 do
+		if not string.match(searchArgumentsTable[i],"^-.*") then 
+			nonExclude[#nonExclude+1] = searchArgumentsTable[i]
+		end
+	end
+
+	return nonExclude
+end
+
+
+function cs.calculatePercentageOfProximityToArguments(databaseEntry,searchArgumentsTable)
+	local validWords = cs.removeExcludeWords(searchArgumentsTable)
+
+	local argumentsLength = 0
+	for i=1,#validWords,1 do
+
+		local repetitions = 0
+		for match in string.gmatch(databaseEntry,validWords[i]) do
+			repetitions = repetitions + 1
+		end
+
+		argumentsLength = argumentsLength + ( string.len(validWords[i]) * repetitions ) 
+	end
+
+	local spaces = 0
+	for space in string.gmatch(databaseEntry,"%s") do
+		spaces = spaces + 1
+	end
+	entryLength = string.len(databaseEntry) - spaces
+
+	local percentageOfProximity = argumentsLength / entryLength
+
+	percentageOfProximity = string.format("%.2f",percentageOfProximity)
+
+	return percentageOfProximity
+
+end
+
+function cs.searchUnorderedListForExactMatchesAndReturnMatchesTable(databaseList,searchArgumentsTable)
+	local matches = {}
+
+	for key,value in pairs(databaseList) do
+		local isMatch
+		for k,searchArg in ipairs(searchArgumentsTable) do
+			if string.match(searchArg,"^-.*") then
+				local excludeWord = string.sub(searchArg,2)
+				if string.match(key,"^"..excludeWord) then
+					isMatch = false
+					break
+				end				
+			else
+				if  string.match(key,"^"..searchArg) then
+					isMatch = true
+				else
+					isMatch = false
+				end
+			end
+		end
+
+		if isMatch then
+			
+			local percentageOfProximityToArguments = cs.calculatePercentageOfProximityToArguments(key,searchArgumentsTable)
+
+			table.insert(matches,{match = key,percentageOfProximityToArguments = percentageOfProximityToArguments})
+			matches[#matches].percentageOfProximityToArguments = percentageOfProximityToArguments
+		end
+	end
+
+
+	return matches
+end
+
+function cs.searchMatrixAndReturnMatchesTable(databaseMatrix,keyToSearchIn,searchArgumentsTable)
+	-- databaseMatrix = {keyToSearchIn = string,bla=bla,blu=blu}
+	local matches = {}
+
+	for i = 1, #databaseMatrix, 1 do
+		local isMatch
+		for k = 1, #searchArgumentsTable, 1 do
+			if string.match(searchArgumentsTable[k],"^-.*") then
+				local excludeWord = string.sub(searchArgumentsTable[k],2)
+				if string.find(databaseMatrix[i][keyToSearchIn],excludeWord) then
+					isMatch = false
+					break
+				end				
+			else
+				if  string.find(databaseMatrix[i][keyToSearchIn],searchArgumentsTable[k]) then
+					isMatch = true
+				else
+					isMatch = false
+					break
+				end
+			end
+		end
+
+		if isMatch then
+			matches[#matches+1] = databaseMatrix[i]
+
+			local percentageOfProximityToArguments = cs.calculatePercentageOfProximityToArguments(databaseMatrix[i][keyToSearchIn],searchArgumentsTable)
+			matches[#matches].percentageOfProximityToArguments = percentageOfProximityToArguments
+		end
+	end
+
+	return matches
+end
+
+function cs.mergeSortMatrixDescending(matrix,keyForSorting)
+	local matrixLength = #matrix
+	local subMatrix = {}
+	for i = 1,matrixLength,1 do
+		subMatrix[i] = {}
+		subMatrix[i][1] = matrix[i]
+	end
+
+	while #subMatrix[1] < matrixLength do
+		local i = 1
+		while i <= #subMatrix do
+			local a = i
+			local b = i+1
+			if subMatrix[b] then 
+				local buffer = {}
+				local nElementsToCompare = #subMatrix[a] + #subMatrix[b]
+				while #buffer < nElementsToCompare do
+					if subMatrix[a][1] and subMatrix[b][1] then
+						if subMatrix[a][1][keyForSorting] > subMatrix[b][1][keyForSorting] then
+							table.insert(buffer,subMatrix[a][1])
+							table.remove(subMatrix[a],1)
+						else
+							table.insert(buffer,subMatrix[b][1])
+							table.remove(subMatrix[b],1)
+						end
+					else
+						if subMatrix[a][1] then 
+							table.insert(buffer,subMatrix[a][1])
+							table.remove(subMatrix[a],1)
+						end
+						if subMatrix[b][1] then 
+							table.insert(buffer,subMatrix[b][1])
+							table.remove(subMatrix[b],1)
+						end
+					end
+				end
+				subMatrix[a] = buffer
+				table.remove(subMatrix,b)
+			end
+			i = i + 1
+		end
+	end
+	local sortedMatrix = subMatrix[1]
+	return sortedMatrix
+end
+
+function cs.tableToString(tablename,table)
+	if type(table) ~= "table" then error("cs.tableToString() needs to receive a table",2) end
+	local str = ""
+
+	str = tablename.." = {\n"
+
+	for key,val in pairs(table) do
+		local valstring
+
+		if type(val) == "boolean" or type(val) == "number" then valstring = tostring(val) end
+		if type(val) == "string" then valstring = "\""..val.."\"" end
+		--TODO table
+		str = str..key.." = "..valstring..",\n"
+	end
+
+	str = str.."}\n"
+
+	return str
 end

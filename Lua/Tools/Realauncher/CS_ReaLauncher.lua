@@ -13,6 +13,11 @@
 --]]
 ---------------------------------------------------------------------------------------
 
+--[[
+@noindex
+--]]
+---------------------------------------------------------------------------------------
+
 local function matchVariables(str,tableOfVariables)
 	::RESTART::
 	for var,value in pairs(tableOfVariables) do
@@ -34,23 +39,71 @@ local function substituteVariables(str)
 	return newString
 end
 
-local function checkUniversalSwitches(universalSwitches)
-	if universalSwitches.execnow then executeNowFlag = true end
-	if universalSwitches.help and rl.helpFiles[rl.text.util] then launchAltGUI(openMarkdownDisplay,rl.helpFiles[rl.text.util]) end
+local function declareMathFunctions()
+	local declarations = [[
+	local abs = math.abs
+	local acos = math.acos
+	local asin = math.asin
+	local atan = math.atan
+	local ceil = math.ceil
+	local cos = math.cos
+	local deg = math.deg
+	local exp = math.exp
+	local floor = math.floor
+	local fmod = math.fmod
+	local huge = math.huge
+	local log = math.log
+	local max = math.max
+	local maxinteger = math.maxinteger
+	local min = math.min
+	local mininteger = math.mininteger
+	local modf = math.modf
+	local pi = math.pi
+	local rad = math.rad
+	local random = math.random
+	local randomseed = math.randomseed
+	local sin = math.sin
+	local sqrt = math.sqrt
+	local tan = math.tan
+	local tointeger = math.tointeger
+	local type = math.type
+	local ult = math.ult
+	]]
+
+	return declarations
 end
 
-local function matchSwitches(args)
-	for switch in pairs (switches) do switches[switch] = switchesDefaultVals[switch] end -- reset switches from previous parses
+function evaluateMathExp(exp)
+	local expFunction = load(declareMathFunctions().." return "..exp)
+	local success,result = pcall(expFunction)
+	return result
+end
+
+local function substituteMathInParentheses(str)
+	local newString = str
+	newString = newString:gsub("%[(.-)%]",evaluateMathExp)
+	return newString
+end
+
+local function checkUniversalSwitches(universalSwitches)
+	if universalSwitches.execnow then executeNowFlag = true end
+	if universalSwitches.help and rl.helpFiles[rl.currentCommand.util] then viewMarkdown(rl.helpFiles[rl.currentCommand.util],true) ; forceExit = true end
+end
+
+local function matchSwitches(t)
+	local switches = {}
+	local switchesDefaultVals = rl.registeredUtils[t.util].switches or {}
+	for switch,val in pairs(switchesDefaultVals) do switches[switch] = val end
 	local nextIsSwitchVal = nil
 	local toRemoveFromArgsTable = {}
-	for i,arg in ipairs(args) do
+	for i,arg in ipairs(t.arguments) do
 		if nextIsSwitchVal then
 			switches[nextIsSwitchVal] = arg
 			table.insert(toRemoveFromArgsTable,i)
 			nextIsSwitchVal = false
 		end
 
-		for switch,defaultValue in pairs(switches) do
+		for switch,defaultValue in pairs(switchesDefaultVals) do
 			if arg:match("^/"..switch) or arg:match("^%-%-"..switch) then
 				if type(defaultValue) == "number" or type(defaultValue) == "string" then
 					nextIsSwitchVal = switch
@@ -64,8 +117,8 @@ local function matchSwitches(args)
 			end
 		end
 	end
-	args = removePositionsFromNumberedTable(args,toRemoveFromArgsTable)
-	return args
+	t.arguments = removePositionsFromNumberedTable(t.arguments,toRemoveFromArgsTable)
+	return switches,t.arguments
 end 
 
 local function matchUniversalSwitches(args)
@@ -123,14 +176,15 @@ end
 local function matchAliases(possibleUtil)
 	for alias,substitution in pairs(rl.aliases) do
 		if alias == possibleUtil then
-			rl.text.raw = substitution
+			rl.text.raw = rl.text.raw:sub(1,-(alias:len()+1))..substitution
 			sendCursorToEndOfText()
+			rl.forceReparse = true
 			return substitution
 		end
 	end
 end
 
-local function matchRegisteredUtils(possibleUtil)
+local function matchRegisteredUtils(possibleUtil,args)
 	rl.currentAutocomplete = nil
 	if possibleUtil then 
 		for util in pairs(rl.registeredUtils) do
@@ -140,7 +194,7 @@ local function matchRegisteredUtils(possibleUtil)
 				return matchedUtil
 			end
 		end
-		if not matchedUtil and possibleUtil:match("^%g+$") then
+		if not matchedUtil and args == "" then
 			suggestUtil(possibleUtil)
 		end
 	end
@@ -148,39 +202,70 @@ end
 
 local function  getPossibleUtil(rawToProcess)
 	local possibleUtil = rawToProcess:match("^%s*(%g+)") or ""
-	rawToProcess = rawToProcess:sub(possibleUtil:len()+1)
+	local startOfPossibleUtil,endOfPossibleUtil = rawToProcess:find(possibleUtil)
+	rawToProcess = rawToProcess:sub(endOfPossibleUtil+1)
 	return rawToProcess,possibleUtil
-reaper.Undo_EndBlock(string descchange,integer extraflags)
+end
 
-local function parseCommands(t)
+function parseInput(t)
 	local commandsTable = {}
-	for command in t:gmatch("([^;]+)") do
-		table.insert(commandsTable,command)
+
+	local currChar = t:sub(1,1)
+	local openString = false
+	local currCommand = 1
+	for i=1,t:len() do
+		if not commandsTable[currCommand] then commandsTable[currCommand] = {raw = ""} end
+
+		if currChar == [["]] then 
+			if not openString then 
+				openString = true
+			else
+				openString = false
+			end
+			commandsTable[currCommand].raw = commandsTable[currCommand].raw..currChar
+			goto NEXT
+		end
+
+		if currChar == ";" then
+			if openString then 
+				commandsTable[currCommand].raw = commandsTable[currCommand].raw..currChar
+			else
+				currCommand = currCommand+1
+				commandsTable[currCommand] = {raw = ""}
+			end
+			goto NEXT
+		end		
+
+		commandsTable[currCommand].raw = commandsTable[currCommand].raw..currChar
+
+		::NEXT::
+		t = t:sub(2)
+		currChar = t:sub(1,1)
 	end
 	return commandsTable
 end
 
-function parseInput(t)
-	::RESTARTPARSE::
-
+function parseCommand(t)
+	
 	t.possibleUtil = nil
 	t.fullArgument = nil
-	local rawToProcess = t.raw
 
+	local rawToProcess = t.raw
 	rawToProcess, possibleUtil = getPossibleUtil(rawToProcess)
 	if possibleUtil then 
-		if matchAliases(possibleUtil) then goto RESTARTPARSE end
-		t.commands = parseCommands(t.raw)
-		t.util = matchRegisteredUtils(possibleUtil)
+		matchAliases(possibleUtil)
+		t.util = matchRegisteredUtils(possibleUtil,rawToProcess)
 	end
 
 	if t.util then 
 		if rl.config.subvariables then rawToProcess = substituteVariables(rawToProcess) end
+		if rl.config.subvariables then rawToProcess = substituteMathInParentheses(rawToProcess) end
 		t.fullArgument = rawToProcess:match("^%s*(%g+.*)")
 		t.arguments = fillArgumentsTable(rawToProcess)
 		matchUniversalSwitches(t.arguments)
-		matchSwitches(t.arguments)
+		t.switches = matchSwitches(t)
 	end
+	return t
 end
 
 local function recallHistoryMaker() 
@@ -210,24 +295,23 @@ local function loadhistory()
 end
 
 local function saveHistory(historyTable,utilToSave)
-	if rl.text.util then
-		if rl.text.util ~= "!!" then
-			-- os.execute([[mkdir "]]..rl.userSettingsPath..[["]])
-			
-			table.insert(historyTable,utilToSave)
-			local offset
-			if #historyTable - rl.config.maxHistory + 1 < 1 then
-				offset = 1
-			else
-				offset = #historyTable - rl.config.maxHistory + 1
-			end
+	if rl.currentCommand.util ~= "!!" then
 	
-				local historyFile = io.open(rl.userSettingsPath.."\\history.txt","w")
-				for i = offset, #historyTable, 1 do
-					historyFile:write(historyTable[i].."\n")
-				end
-			historyFile:close()
+		utilToSave = utilToSave:gsub("/execnow","")
+
+		table.insert(historyTable,utilToSave)
+		local offset
+		if #historyTable - rl.config.maxHistory + 1 < 1 then
+			offset = 1
+		else
+			offset = #historyTable - rl.config.maxHistory + 1
 		end
+
+			local historyFile = io.open(rl.userSettingsPath.."\\history.txt","w")
+			for i = offset, #historyTable, 1 do
+				historyFile:write(historyTable[i].."\n")
+			end
+		historyFile:close()
 	end
 end
 
@@ -243,33 +327,84 @@ end
 
 local function loadHelpFiles()
 	local helpFiles = {}
-	local helpDirectory = rl.scriptPath.."\\Help"
 
 	for util in pairs(rl.registeredUtils) do
-		local f = io.open(helpDirectory.."\\"..util..".md", "r")
-		if f then
-			local content = f:read("a")
-			helpFiles[util] = content
-			f:close()
+		if reaper.file_exists(rl.helpFilesPath.."\\"..util..".md") then
+			helpFiles[util] = rl.helpFilesPath.."\\"..util..".md"
 		end
 	end
 	return helpFiles
 end
 
+function saveTableToFile(tableToSave,filePath)
+	local tableFile = io.open(filePath,"w")
+	for alias,sub in pairs(tableToSave) do
+		if sub ~= "" then
+			tableFile:write(alias.."="..sub.."\n")
+		end
+	end
+	tableFile:close()
+end
+
+function scanModules()
+	local scannedLibraries = ""
+	local scannedModules = ""
+	for file in io.popen([[dir "]]..rl.scriptPath..[[" /b]]):lines() do 
+		
+		if string.match(file,"_Library.lua$") then 
+			local LaunchModule = string.match(file,"(.*)%.lua")
+			scannedLibraries = scannedLibraries..LaunchModule..";"
+		end
+	end
+
+	for file in io.popen([[dir "]]..rl.scriptPath..[[" /b]]):lines() do 
+		if string.match(file,"_LaunchModule.lua$") then 
+			local LaunchModule = string.match(file,"(.*)%.lua")
+			scannedModules = scannedModules..LaunchModule..";"
+		end
+	end
+
+	rl.config.libraries = scannedLibraries
+	rl.config.modules = scannedModules
+	saveTableToFile(rl.config,rl.userSettingsPath.."\\config.txt")
+end
+
 local function loadModules()
+	-- TODO catch error message in case of error on module
 	rl.scriptPath = get_script_path()
 	
 	package.path = package.path .. ";" .. rl.scriptPath .. "?.lua"
 	
 	require("CS_FunctionLibrary")
-
+	local alreadyattempted = false
+	::RESTART_MODULE_LOADING::
 
 	for library in rl.config.libraries:gmatch("([^;]+)") do
-		require(library)
+		local success,err = pcall(require,library)
+		if not success then
+			scanModules()
+			rl.config = loadUserSettingsFromFile("config.txt")
+			if not alreadyattempted then
+				alreadyattempted = true	
+				goto RESTART_MODULE_LOADING
+			else
+				error(err)
+			end
+		end
 	end
 
-	for module in rl.config.modules:gmatch("([^;]+)") do
-		require(module)
+	for mod in rl.config.modules:gmatch("([^;]+)") do
+		local success,err = pcall(require,mod)	
+		if not success then
+			scanModules()
+			rl.config = loadUserSettingsFromFile("config.txt")
+			if not alreadyattempted then
+				alreadyattempted = true	
+				goto RESTART_MODULE_LOADING
+			else
+				error(err)
+			end
+		end
 	end
 
 end
@@ -277,18 +412,19 @@ end
 local function loadSettings()
 	rl.scriptPath = get_script_path()
 
-	rl.userSettingsPath = rl.scriptPath.."\\User"
-	rl.config = loadUserSettingsFromFile("config.txt")
+	rl.userSettingsPath = rl.scriptPath.."User"
+	rl.helpFilesPath = rl.scriptPath.."Help"
+	rl.thirdPartyPath = rl.scriptPath.."3rdparty"
+
+	rl.config = rl.config or loadUserSettingsFromFile("config.txt")
 
 	loadModules()
 
-	rl.history = loadhistory()
-	rl.aliases = loadUserSettingsFromFile("aliases.txt")
-	rl.helpFiles = loadHelpFiles()
-	rl.variables.user = loadUserSettingsFromFile("variables.txt")
-	-- loadShortcuts()
+	rl.history = rl.history or loadhistory()
+	rl.aliases = rl.aliases or loadUserSettingsFromFile("aliases.txt")
+	rl.helpFiles = rl.helpFiles or loadHelpFiles()
+	rl.variables.user = rl.variables.user or loadUserSettingsFromFile("variables.txt")
 end
-
 
 
 local function exitRoutine()
@@ -302,126 +438,6 @@ local function exitRoutine()
 	end
 end
 
-local function removeExcludeWords(searchArgumentsTable)
-	local nonExclude = {}
-	for i=1, #searchArgumentsTable,1 do
-		if not string.match(searchArgumentsTable[i],"^-.*") then 
-			nonExclude[#nonExclude+1] = searchArgumentsTable[i]
-		end
-	end
-
-	return nonExclude
-end
-
-
-local function calculatePercentageOfProximityToArguments(databaseEntry,searchArgumentsTable)
-	local validWords = removeExcludeWords(searchArgumentsTable)
-
-	local argumentsLength = 0
-	for i=1,#validWords,1 do
-
-		local repetitions = 0
-		for match in string.gmatch(databaseEntry,validWords[i]) do
-			repetitions = repetitions + 1
-		end
-
-		argumentsLength = argumentsLength + ( string.len(validWords[i]) * repetitions ) 
-	end
-
-	local spaces = 0
-	for space in string.gmatch(databaseEntry,"%s") do
-		spaces = spaces + 1
-	end
-	entryLength = string.len(databaseEntry) - spaces
-
-	local percentageOfProximity = argumentsLength / entryLength
-
-	percentageOfProximity = string.format("%.2f",percentageOfProximity)
-
-	return percentageOfProximity
-
-end
-
-local function mergeSortMatrixDescending(matrix,keyForSorting)
-	local matrixLength = #matrix
-	local subMatrix = {}
-	for i = 1,matrixLength,1 do
-		subMatrix[i] = {}
-		subMatrix[i][1] = matrix[i]
-	end
-
-	while #subMatrix[1] < matrixLength do
-		local i = 1
-		while i <= #subMatrix do
-			local a = i
-			local b = i+1
-			if subMatrix[b] then 
-				local buffer = {}
-				local nElementsToCompare = #subMatrix[a] + #subMatrix[b]
-				while #buffer < nElementsToCompare do
-					if subMatrix[a][1] and subMatrix[b][1] then
-						if subMatrix[a][1][keyForSorting] > subMatrix[b][1][keyForSorting] then
-							table.insert(buffer,subMatrix[a][1])
-							table.remove(subMatrix[a],1)
-						else
-							table.insert(buffer,subMatrix[b][1])
-							table.remove(subMatrix[b],1)
-						end
-					else
-						if subMatrix[a][1] then 
-							table.insert(buffer,subMatrix[a][1])
-							table.remove(subMatrix[a],1)
-						end
-						if subMatrix[b][1] then 
-							table.insert(buffer,subMatrix[b][1])
-							table.remove(subMatrix[b],1)
-						end
-					end
-				end
-				subMatrix[a] = buffer
-				table.remove(subMatrix,b)
-			end
-			i = i + 1
-		end
-	end
-	local sortedMatrix = subMatrix[1]
-	return sortedMatrix
-end
-
-
-local function searchUnorderedListForExactMatchesAndReturnMatchesTable(databaseList,searchArgumentsTable)
-	local matches = {}
-
-	for key,value in pairs(databaseList) do
-		local isMatch
-		for k,searchArg in ipairs(searchArgumentsTable) do
-			if string.match(searchArg,"^-.*") then
-				local excludeWord = string.sub(searchArg,2)
-				if string.match(key,"^"..excludeWord) then
-					isMatch = false
-					break
-				end				
-			else
-				if  string.match(key,"^"..searchArg) then
-					isMatch = true
-				else
-					isMatch = false
-				end
-			end
-		end
-
-		if isMatch then
-			
-			local percentageOfProximityToArguments = calculatePercentageOfProximityToArguments(key,searchArgumentsTable)
-
-			table.insert(matches,{match = key,percentageOfProximityToArguments = percentageOfProximityToArguments})
-			matches[#matches].percentageOfProximityToArguments = percentageOfProximityToArguments
-		end
-	end
-
-
-	return matches
-end
 
 function sendCursorToEndOfText()
 	rl.active_char = rl.text.raw:len()
@@ -429,9 +445,9 @@ end
 
 function performAutocomplete(suggestion)
 	if suggestion then
-		rl.text.raw = rl.text.raw..suggestion
+		rl.text.raw = rl.text.raw..suggestion.." "
 		sendCursorToEndOfText()
-		parseInput(rl.text)
+		parseInput(rl.text.raw)
 	end
 end
 
@@ -461,12 +477,12 @@ local function appendTables(table1,table2,table2Overwritestable1)
 	return combinedTable
 end
 
-function suggestUtil(util)
+function suggestUtil(util,args)
 	local utilsAndAliases = appendTables(rl.registeredUtils,rl.aliases)
-
-	local utilMatches = searchUnorderedListForExactMatchesAndReturnMatchesTable(utilsAndAliases,{util})
-	if #utilMatches > 0 and util:len() > 0 and  rl.text.raw:match("^%g+$") then 
-		utilMatches = mergeSortMatrixDescending(utilMatches,"percentageOfProximityToArguments")
+	utilsAndAliases.default = nil
+	local utilMatches = cs.searchUnorderedListForExactMatchesAndReturnMatchesTable(utilsAndAliases,{util})
+	if #utilMatches > 0 and util:len() > 0 and rl.currentCommand.raw:match("%g+$") then --
+		utilMatches = cs.mergeSortMatrixDescending(utilMatches,"percentageOfProximityToArguments")
 
 		local suggestion = string.sub(utilMatches[1].match,string.len(util)+1)
 		rl.currentAutocomplete = suggestion
@@ -523,28 +539,31 @@ end
 local function dummyFunction()
 end
 
-local function setCurrentEnvironment(currUtil)
+function setCurrentEnvironment(currUtil)
 	local environment = currUtil or "default"
 	charFunction = appendTables(rl.registeredUtils.default.charFunction,rl.registeredUtils[environment].charFunction,true)
 	passiveFunction = rl.registeredUtils[environment].passiveFunction or dummyFunction
 	onEnterFunction = rl.registeredUtils[environment].onEnter or dummyFunction
 	entranceFunction = rl.registeredUtils[environment].entranceFunction or dummyFunction
 	executeOnExit =  rl.registeredUtils[environment].exitFunction or dummyFunction
-	switches = rl.registeredUtils[environment].switches or {}
+	-- TODO clean help
 	extendedHelp = rl.registeredUtils[environment].help
 	drawGUI = rl.registeredUtils[environment].gui or drawMainGUI
-
-	switchesDefaultVals = {}
-	for switch,defaultValue in pairs(switches) do switchesDefaultVals[switch] = defaultValue end
-
 	rl.text.tipLine = rl.registeredUtils[environment].description or ""
 	return environment
 end
 
 function changeEnvironment(newEnv) 
-	executeOnExit()
+	if rl.text.currentCommand == rl.text.commands[#rl.text.commands] then 
+		executeOnExit()
+	else
+		rl.currentCommand = rl.text.commands[rl.text.currentCommandIndex - 1]
+		executeOnExit()
+		rl.currentCommand = rl.text.commands[rl.text.currentCommandIndex]
+	end
+	
 	setCurrentEnvironment(newEnv)
-	parseInput(rl.text)
+	parseCommand(rl.currentCommand)
 	entranceFunction()		
 end
 
@@ -554,11 +573,16 @@ function launchAltGUI(altgui,...)
 	pcall(altgui,...)
 end
 
-function returnToMainLoop(returnValue)
+function returnToMainLoop(returnValue,execnow)
 	gfx.quit()
-    rl.altGUIReturn = returnValue 
+    rl.altGUIReturn = returnValue
     rl.altGUI = false 
-    initLauncherGUI("center")
+    if  execnow then 
+    	executeNowFlag = true
+    else
+    	initLauncherGUI("center")
+    end
+
     realauncherMainLoop()
 end
 
@@ -567,6 +591,7 @@ local function retrieveAltGUIReturnValue(retval)
 		rl.text.raw = rl.text.raw..retval
 		retval = nil
 		sendCursorToEndOfText()	
+		rl.forceReparse = true
 	end
 end
 
@@ -576,32 +601,47 @@ function realauncherMainLoop()
 	
 		rl.altGUIReturn = retrieveAltGUIReturnValue(rl.altGUIReturn)
 	
-		if rl.text.currChar ~= 0 or preloadedText then 
+		if rl.text.currChar ~= 0 or preloadedText or rl.forceReparse then
+			universalSwitches = {execnow = false,help = false} 
 			preloadedText = nil
+			rl.forceReparse = nil
 			typeOrExecuteChar(rl.text.currChar)
-			parseInput(rl.text)
-			checkUniversalSwitches(universalSwitches)
+			rl.text.commands = parseInput(rl.text.raw)
+			for i in ipairs(rl.text.commands) do
+				rl.text.currentCommandIndex = i
+				rl.currentCommand = rl.text.commands[i]
+				rl.currentCommand = parseCommand(rl.currentCommand)
+				checkUniversalSwitches(universalSwitches)
+			end
 		end
 			
-		if rl.text.util ~= prevUtil then
-			changeEnvironment(rl.text.util)
-			prevUtil = rl.text.util
+		if rl.currentCommand.util and rl.currentCommand.util ~= prevUtil then
+			changeEnvironment(rl.currentCommand.util)
+			prevUtil = rl.currentCommand.util
 		end
 	
 		passiveFunction()
-		if rl.text.currChar == kbInput.enter or executeNowFlag then onEnterFunction() end
+		if rl.text.currChar == kbInput.enter or executeNowFlag then 
+			for i in ipairs (rl.text.commands) do
+				rl.currentCommand = rl.text.commands[i]
+				setCurrentEnvironment(rl.currentCommand.util)
+				onEnterFunction(rl.currentCommand) 
+			end
+		end
 		
 		if not executeNowFlag then drawGUI() end -- from GUI_Library
-	
+
 		gfx.update()
-		if rl.text.currChar ~= -1 and rl.text.currChar ~= kbInput.escape and rl.text.currChar ~= kbInput.enter and not executeNowFlag then reaper.defer(realauncherMainLoop) else gfx.quit() end
+		if rl.text.currChar ~= -1 and rl.text.currChar ~= kbInput.escape and rl.text.currChar ~= kbInput.enter and not executeNowFlag and not forceExit then reaper.defer(realauncherMainLoop) else gfx.quit() end
 	end
 end 
 
 function runRealauncher(preloadedText)
-	rl = {}
+	rl = rl or {}
 	rl.text = {}
 	rl.text.raw = preloadedText or ''
+	rl.currentCommand = rl.text
+	rl.text.commands = {}
 	sendCursorToEndOfText()
 
 	local prevUtil
@@ -614,11 +654,10 @@ function runRealauncher(preloadedText)
 	setCurrentEnvironment()
 	
 	if not executeNowFlag then initLauncherGUI("center") end
-	realauncherMainLoop()
 	
 	reaper.atexit(exitRoutine)
 end
 
--- SHOW TIME! --
 
 runRealauncher(preloadedText)
+realauncherMainLoop()

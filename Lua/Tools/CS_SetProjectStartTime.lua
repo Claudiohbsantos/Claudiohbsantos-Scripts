@@ -1,7 +1,16 @@
 --[[
-@noindex
+@description Set Project Start Time (Offset)
+@version 1.0
+@author Claudiohbsantos
+@link http://claudiohbsantos.com
+@date 2018 03 08
+@about
+  # Set Project Start Time (Offset)
+  Set project start time
+  Press + or - to change to subtration  or Addition Mode. Press Spacebar to reset default timecode to zero. 
+@changelog
+  - 
 ]]--
-local help = rl.helpFilesPath.."\\timeinput.md"
 
 local leftArrow = 1818584692
 local upArrow = 30064
@@ -24,11 +33,14 @@ local persistentDefaultTimeInSeconds = nil
 local function msg(s) reaper.ShowConsoleMsg(tostring(s)..'\n') end
 
 ---------------------------------------------------------------------------------------
+
+local onSuccess
+
 local function TextBox(char)
     if not textbox_t.active_char then textbox_t.active_char = 0 end
     if not textbox_t.text        then textbox_t.text = '' end
 
-	if  -- regular input
+  if  -- regular input
     (
       ( char >= 48 -- 0
       and char <= 57) -- 9
@@ -38,55 +50,55 @@ local function TextBox(char)
     string.char(char)..
     textbox_t.text:sub(textbox_t.active_char+1)
     textbox_t.active_char = textbox_t.active_char + 1
-	end
-	
-	if char == backspace then
+  end
+  
+  if char == backspace then
     textbox_t.text = textbox_t.text:sub(0,textbox_t.active_char-1)..
     textbox_t.text:sub(textbox_t.active_char+1)
     textbox_t.active_char = textbox_t.active_char - 1
-	end
-	
-	if char == deleteKey then
+  end
+  
+  if char == deleteKey then
     textbox_t.text = textbox_t.text:sub(0,textbox_t.active_char)..
     textbox_t.text:sub(textbox_t.active_char+2)
     textbox_t.active_char = textbox_t.active_char
-	end
-	
-	if char == leftArrow then
+  end
+  
+  if char == leftArrow then
     textbox_t.active_char = textbox_t.active_char - 1
-	end
-	
-	if char == rightArrow then
+  end
+  
+  if char == rightArrow then
     textbox_t.active_char = textbox_t.active_char + 1
-	end
-	
-	if char == minus then
+  end
+  
+  if char == minus then
     minusMode = not minusMode
     resetAutoCompletedTimecode = not resetAutoCompletedTimecode
     if plusMode then 
       plusMode = false
       resetAutoCompletedTimecode = not resetAutoCompletedTimecode
   end
-	end
-	
-	if char == plus then
+  end
+  
+  if char == plus then
     plusMode = not plusMode
     resetAutoCompletedTimecode = not resetAutoCompletedTimecode
     if minusMode then 
       minusMode = false
       resetAutoCompletedTimecode = not resetAutoCompletedTimecode 
   end
-	end
-	
-	if char == spacebar and not minusMode and not plusMode then
+  end
+  
+  if char == spacebar and not minusMode and not plusMode then
     resetAutoCompletedTimecode = not resetAutoCompletedTimecode
-	end
-	
-	if textbox_t.active_char < 0 then textbox_t.active_char = 0 end
-	if textbox_t.active_char > textbox_t.text:len()  then textbox_t.active_char = textbox_t.text:len() end
-	end
-	
-	function drawModeSymbol(minusMode,plusMode)
+  end
+  
+  if textbox_t.active_char < 0 then textbox_t.active_char = 0 end
+  if textbox_t.active_char > textbox_t.text:len()  then textbox_t.active_char = textbox_t.text:len() end
+  end
+  
+  function drawModeSymbol(minusMode,plusMode)
 
   gfx.setfont(1, gui_fontname, gui_fontsize)
   gfx.x = obj_offs*1.5
@@ -95,39 +107,39 @@ local function TextBox(char)
   if minusMode then
     gfx.set(   1.0 ,0.6,0.6,  0.8,  0) -- red
     gfx.drawstr("-")
-	end
-	
-	if plusMode then
+  end
+  
+  if plusMode then
     gfx.set(   0.6,0.6,1.0,  0.8,  0) -- blue
     gfx.drawstr("+")
-	end
+  end
 end
 
 local function drawTimeInputPreview(preview)
-	gfx.setfont(1, gui_fontname, gui_fontsize)
-	
-	if textbox_t.timeArgPreview then
+  gfx.setfont(1, gui_fontname, gui_fontsize)
+  
+  if textbox_t.timeArgPreview then
         gfx.x = obj_offs*1.5 + 10
         gfx.y = obj_offs + gui_fontsize/2 - gfx.texth/2 + 3
 
-	    gfx.set(  0.5,0.5,0.5,  0.5,  0) -- grey
-	    gfx.drawstr(preview)
+      gfx.set(  0.5,0.5,0.5,  0.5,  0) -- grey
+      gfx.drawstr(preview)
 
-    	if not minusMode and not plusMode then
-  			gfx.set(   0.6,1,0.6,  0.8,  0) -- green
-    	else 
-    	 	if minusMode then
-        		gfx.set(   1.0 ,0.6,0.6,  0.8,  0) -- red  
-    		else
-        		gfx.set(   0.6,0.6,1.0,  0.8,  0) -- blue
-    		end
-		end
+      if not minusMode and not plusMode then
+        gfx.set(   0.6,1,0.6,  0.8,  0) -- green
+      else 
+        if minusMode then
+            gfx.set(   1.0 ,0.6,0.6,  0.8,  0) -- red  
+        else
+            gfx.set(   0.6,0.6,1.0,  0.8,  0) -- blue
+        end
+    end
 
-		gfx.drawstr(textbox_t.userEnteredDigits)
-		
-		textbox_t.timeArgPreview = nil
-		textbox_t.drawCursor = false	
-	end
+    gfx.drawstr(textbox_t.userEnteredDigits)
+    
+    textbox_t.timeArgPreview = nil
+    textbox_t.drawCursor = false  
+  end
 
 end
 
@@ -151,15 +163,6 @@ local function combineUserInputWithAutoComplete(arguments,zeroString)
     return newTimeString,formatedInput,autoComplete
 end
 
-
-local shortcuts = {}
-shortcuts[kbInput.interrogation] = function () viewMarkdown(help,true) end
-
-local function doShortcut(char)
-  if shortcuts[char] then
-    shortcuts[char]()
-  end
-end
 
 local function getInput(arguments,defaultTimeInSeconds)
     if arguments and defaulTimeInSeconds then
@@ -191,7 +194,6 @@ local function runTimecodeInputBox()
   textbox_t.drawCursor = true
   
   TextBox(char) -- perform typing
-  doShortcut(char)
   inputInSeconds = getInput(textbox_t.text,defaulTimeInSeconds)
 
   --  draw back
@@ -203,33 +205,25 @@ local function runTimecodeInputBox()
 
     drawModeSymbol(minusMode,plusMode)
     drawTimeInputPreview(textbox_t.timeArgPreview)
-    
-    drawHelpButton(obj_mainW,obj_mainH,obj_offs,help)
 
     if textbox_t.active_char ~= nil then
-    	alpha  = math.abs((os.clock()%1) -0.5)
-    	gfx.set(  1,1,1, alpha,  0) --rgb a mode
-    	gfx.x = obj_offs*1.5+
-    	gfx.measurestr(textbox_t.text:sub(0,textbox_t.active_char)) + 2
-    	gfx.y = obj_offs + gui_fontsize/2 - gfx.texth/2
-    	if textbox_t.drawCursor then gfx.drawstr('|') end
-  	end     
+      alpha  = math.abs((os.clock()%1) -0.5)
+      gfx.set(  1,1,1, alpha,  0) --rgb a mode
+      gfx.x = obj_offs*1.5+
+      gfx.measurestr(textbox_t.text:sub(0,textbox_t.active_char)) + 2
+      gfx.y = obj_offs + gui_fontsize/2 - gfx.texth/2
+      if textbox_t.drawCursor then gfx.drawstr('|') end
+    end     
 
-  	gfx.update()
-  	last_char = char
-  	if char ~= -1 and char ~= 27 and char ~= 13  then 
-    	reaper.defer(runTimecodeInputBox) 
-	else 
-      local execnow = true
-      if gfx.mouse_cap == 4 then
-    	 execnow = false
-      end
+    gfx.update()
+    last_char = char
+    if char ~= -1 and char ~= 27 and char ~= 13  then 
+      reaper.defer(runTimecodeInputBox) 
+  else 
       if inputInSeconds then
-        returnToMainLoop(" "..inputInSeconds,execnow)
-      else
-        returnToMainLoop()
+        onSuccess(inputInSeconds)
       end
-	end
+  end
 end 
 
 ---------------------------------------------------------------------------------------
@@ -263,8 +257,15 @@ end
 --------------------------------------------------------------------------------------
 
 function  tcInputStart(defaultTimeInSeconds)
-  initGUI(155,"Time Input")
+  initGUI(130,"Time Input")
 
   defaulTimeInSeconds = defaultTimeInSeconds or 0
   runTimecodeInputBox(defaulTimeInSeconds)
 end
+
+function onSuccess(input)
+  reaper.SNM_SetDoubleConfigVar("projtimeoffs",input)
+end
+
+local currentOffset = reaper.GetProjectTimeOffset(0,false)
+tcInputStart(currentOffset)

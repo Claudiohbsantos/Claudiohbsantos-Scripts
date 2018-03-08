@@ -1,50 +1,50 @@
-itemvolume +2
-itemvolume +2
-itemvolume +2
-itemvolume +2
-itemvolume 0
-itemvolume 1
-itemvolume -3
-itemvolume -2.3
-itemvolume -.2
-itemvolume -2.4
+go $viewMid 
+subscript /c /q "GoEndView" "go $viewEnd"
+go $viewStart
+go $viewStart
+
+go $viewMid 
+go $viewEnd 
+go $viewStart 
+go $projEnd 
+go $projStart 
+
+go $tsStart 
+go $tsEnd 
+go $tsMid 
+go $tsStart 
+go $tsEnd 
+go $tsMid 
+
+
 itemvolume 
-alias ip=itemvolume +
-itemvolume +2
-itemvolume +2
-itemvolume +2
-itemvolume +1
-itemvolume +10
-itemvolume +0
-itemvolume 0
-itemvolume 0
-subscript i=i
-itemvolume +1
-itemvolume +2
-itemvolume +3
-itemvolume +4
-itemvolume +5
-itemvolume +1
-itemvolume 0
-itemvolume 0
-alias im=itemvolume -
-itemvolume -1
-itemvolume -2
-itemvolume -3
-itemvolume +3
-itemvolume +3
-itemvolume -2
-itemvolume +2
-itemvolume 0
-itemvolume +2
-itemvolume 0
-itemvolume +1
-itemvolume +5
-itemvolume -2
-itemvolume -10
-itemvolume 123 
-keyboardCodeViewer ::
-itemvolume + 12 
-itemvolume
-itemvolume +2 ; iter
-itemvolume +2 ; itemrate 4 ;    alias /l
+itemvolume 
+go $viewMid 
+go $viewStart 
+gvp
+a
+itemvolume 
+go $viewMid 
+go $viewEnd 
+go $viewStart 
+marker I ";" Rock ";" this
+go /T  12.64
+
+go $viewStart
+go $viewStart
+go $viewStart
+subscript /c /q l "go $viewEnd"
+itemvolume 
+go $viewStart 
+go $viewEnd 
+go $viewMid 
+go $viewStart
+subscript
+subscript /q l "go $viewEnd"
+go $viewEnd
+
+
+
+go $projStart 
+go $projStart 
+go $projStart 

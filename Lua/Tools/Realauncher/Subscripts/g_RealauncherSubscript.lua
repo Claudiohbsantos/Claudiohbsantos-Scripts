@@ -15,5 +15,5 @@ local function loadRealauncher()
 end
 
 executeNowFlag = false
-preloadedText = "marker I \";\" Rock \";\" this"
+preloadedText = "g"
 loadRealauncher()
