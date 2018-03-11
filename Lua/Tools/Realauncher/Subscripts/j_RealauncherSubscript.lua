@@ -14,6 +14,6 @@ local function loadRealauncher()
 	require("CS_ReaLauncher")
 end
 executeNowFlag = true
-preloadedText = "go +[$n1*$frame]"
+preloadedText = "go -[$n1*$frame]"
 
 loadRealauncher()

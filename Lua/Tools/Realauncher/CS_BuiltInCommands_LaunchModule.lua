@@ -80,7 +80,7 @@ rl.registeredUtils.alias = {
 	}
 
 local function registerVariable(input)
-	if not rl.currentCommand.arguments then return end
+	if not input.arguments then return end
 	
 	if input.switches.l then 
 		local tableToPrint = {["User Variables"] = rl.variables.user,["Native Variables"] = rl.variables.nativeDescriptions}
@@ -88,8 +88,8 @@ local function registerVariable(input)
 		return 
 	end
 
-	if rl.currentCommand.arguments[1] ~= "" then newVar = rl.currentCommand.arguments[1] end
-	if rl.currentCommand.arguments[2] ~= "" then substitution = table.concat(rl.currentCommand.arguments," ",2) end
+	if rl.currentCommand.arguments[1] ~= "" then newVar = input.arguments[1] end
+	if rl.currentCommand.arguments[2] ~= "" then substitution = table.concat(input.arguments," ",2) end
 
 	if newVar then
 		rl.variables.user[newVar] = substitution
@@ -102,7 +102,7 @@ rl.registeredUtils.var = {
 	description = "Register, display and delete variables",
 	entranceFunction = function () rl.text.tipLine = "(variable) [value] ; if there is no value, variable will be erased" ; rl.config.subvariables = false end,
 	switches = {l = false},
-	passiveFunction = function() executeNowFlag = false end, -- stops /execnow flag from triggering
+	-- passiveFunction = function() executeNowFlag = false end, -- stops /execnow flag from triggering
 	exitFunction = function () rl.config.subvariables = true end,
 }
 

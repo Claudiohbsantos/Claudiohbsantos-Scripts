@@ -4,6 +4,7 @@
 
 local settings = {
 	projtimeoffs = {name = "Project Start Time", setter = function (newval) reaper.SNM_SetDoubleConfigVar("projtimeoffs",newval) end},
+	projgridmin = {name = "Project minimum grid division pixels", setter = function (newval) reaper.SNM_SetDoubleConfigVar("projgridmin",newval) end},
 }
 
 local function getSetSettings(input)

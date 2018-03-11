@@ -47,3 +47,8 @@ varDes.playpos = "Play position in seconds when Realauncher opened"
 
 var.curPos = reaper.GetCursorPositionEx(0) + var.projStart
 varDes.curPos = "Cursor Position"
+
+var.framerate = reaper.TimeMap_curFrameRate(0)
+varDes.framerate = "Framerate"
+var.frame = 1 / var.framerate
+varDes.frame = "Frame length in seconds"

@@ -597,9 +597,10 @@ end
 
 function realauncherMainLoop()
 	if not rl.altGUI then	
+		
 		rl.text.currChar  = gfx.getchar()
 	
-		rl.altGUIReturn = retrieveAltGUIReturnValue(rl.altGUIReturn)
+		retrieveAltGUIReturnValue(rl.altGUIReturn)
 	
 		if rl.text.currChar ~= 0 or preloadedText or rl.forceReparse then
 			universalSwitches = {execnow = false,help = false} 
@@ -628,7 +629,7 @@ function realauncherMainLoop()
 				onEnterFunction(rl.currentCommand) 
 			end
 		end
-		
+
 		if not executeNowFlag then drawGUI() end -- from GUI_Library
 
 		gfx.update()

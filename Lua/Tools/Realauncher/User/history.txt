@@ -1,50 +1,50 @@
 go $viewMid 
-subscript /c /q "GoEndView" "go $viewEnd"
-go $viewStart
-go $viewStart
-
 go $viewMid 
-go $viewEnd 
+go $viewMid 
+go $viewMid 
+ 
 go $viewStart 
-go $projEnd 
+go $start 
+go $start 
 go $projStart 
+go $projStart 
+itemrate 1
+g
 
+go $viewStart 
+go $viewEnd 
+go $viewMid 
 go $tsStart 
 go $tsEnd 
 go $tsMid 
-go $tsStart 
-go $tsEnd 
-go $tsMid 
+itemvolume /i 
+settings projgridmin 0
 
 
-itemvolume 
-itemvolume 
-go $viewMid 
-go $viewStart 
-gvp
-a
-itemvolume 
-go $viewMid 
-go $viewEnd 
-go $viewStart 
-marker I ";" Rock ";" this
-go /T  12.64
-
-go $viewStart
-go $viewStart
-go $viewStart
-subscript /c /q l "go $viewEnd"
-itemvolume 
-go $viewStart 
-go $viewEnd 
-go $viewMid 
-go $viewStart
-subscript
-subscript /q l "go $viewEnd"
-go $viewEnd
+go +[$n1*$frame]
+itemvolume -$n1 
+itemvolume -$n1 
+itemvolume -$n1 
+itemvolume -$n1 
+itemvolume -$n1 
+itemvolume -$n1 
+itemvolume +$n1 
+itemvolume +$n1 
+itemvolume +$n1 
+itemvolume +$n1 
+itemvolume +$n1 
+itemvolume +$n1 
+itemvolume +$n1 
+itemvolume -$n1 
+itemvolume -$n1 
+itemvolume -$n1 
+itemvolume -$n1 
+itemvolume -$n1 
+itemvolume -$n1 
+itemvolume -$n1 
+itemvolume +$n1 
+itemvolume +$n1 
+i
 
 
 
-go $projStart 
-go $projStart 
-go $projStart 

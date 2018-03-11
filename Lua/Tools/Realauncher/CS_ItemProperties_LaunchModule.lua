@@ -75,12 +75,12 @@ function itemPlayRate(input)
 
 	local arguments = input.arguments[1]
 	if arguments == "" or not arguments then arguments = 1 end
-	local operator,value = parseArguments(arguments)
 
 	for item in cs.selectedItems(0) do
 		for take in cs.allTakesInItem(item) do
 			local currentItemPlayRate = reaper.GetMediaItemTakeInfo_Value(take,"D_PLAYRATE")
-			local newValue = calc[operator](currentItemPlayRate,value)
+			local newValue = calcRelativeNumber(arguments,currentItemPlayRate)
+
 			reaper.SetMediaItemTakeInfo_Value(take,"D_PLAYRATE",newValue)
 		end
 	end

@@ -177,7 +177,9 @@ function cs.allTakesInItem(item)
 end
 function cs.allEnvelopes(track,take,proj)
 end
-function cs.selectedTracks()
+function cs.selectedTracks(proj)
+	local i = -1
+	return function () i = i+1 ; return reaper.GetSelectedTrack2(proj,i,true) end
 end
 function cs.selectedItems(proj)
 	local i = -1
@@ -186,6 +188,28 @@ end
 
 
 -------------------------------- GETTERS
+
+function cs.getEnvPoint(env,pIdx,opt_item)
+	local p,retval = {}
+	p.idx = pIdx
+	p.scale = reaper.GetEnvelopeScalingMode(env)
+	retval, p.relTime, p.rawVal, p.shape, p.tension, p.selected = reaper.GetEnvelopePoint(env,pIdx)
+
+	if not retval then error("Couldn't get point info. No idea why, really....") end
+	local dbStr = reaper.Envelope_FormatValue(env,p.rawVal)
+	p.dbVal = tonumber(dbStr:match("[-]?[%d%.]+)"))
+
+	if opt_item then
+		p.absTime = reaper.GetMediaItemInfo_Value(opt_item,"D_POSITION") + p.relTime
+	end
+
+	if p.scale == 1 then -- if fader scaling then
+		p.scaledVal = p.rawVal
+		p.rawVal = reaper.ScaleToEnvelopeMode(p.scale,p.scaledVal)
+	end
+	
+	return p
+end
 
 function cs.getTimeSelInfo()
 end
