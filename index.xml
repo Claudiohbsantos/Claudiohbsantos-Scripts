@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="101453266e5cb0516100fba848a87d1bad008eea" name="Claudiohbsantos Scripts">
+<index version="1" commit="ddf1419109f6efa71875b3996dafa77636d56eb2" name="Claudiohbsantos Scripts">
   <category name="Lua/Automation">
     <reapack name="CS_ConvertVolumeAutomationFadesToItemFades.lua" type="script" desc="Convert Volume Automation Fades To Item Fades">
       <metadata>
@@ -720,6 +720,23 @@ SoloXORExample
       <version name="1.0" author="Claudiohbsantos" time="2018-03-11T20:17:54Z">
         <changelog><![CDATA[- initial release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/7f27cb52a2ace901e26ed63c87830c568ca0f9d5/Lua/Tools/CS_Set%20Minimum%20Grid%20Division%20Pixels%20to%200.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Set Project Time at Cursor.lua" type="script" desc="Set Project Time at Cursor">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Set Project Time at Cursor\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Set Project Time at cursor. Press + or - to change to subtration or Addition Mode. Press Spacebar to reset default timecode to zero.\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-03-12T20:17:15Z">
+        <changelog><![CDATA[- ]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/ddf1419109f6efa71875b3996dafa77636d56eb2/Lua/Tools/CS_Set%20Project%20Time%20at%20Cursor.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Set Time Selection In.lua" type="script" desc="CS_Set Time Selection In">
