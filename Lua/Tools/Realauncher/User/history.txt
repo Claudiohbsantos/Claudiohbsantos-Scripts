@@ -1,50 +1,50 @@
-go $viewMid 
-go $viewMid 
-go $viewMid 
-go $viewMid 
- 
-go $viewStart 
-go $start 
-go $start 
 go $projStart 
-go $projStart 
-itemrate 1
-g
 
-go $viewStart 
+go $projStart 
+
+go $projStart 
+go $projStart 
+
+settings projtimeoffs 0
+go /T  60.0
+go $projStart 
+
+go $projStart 
+go $projStart 
+go $projStart 
+go $projEnd 
+go $projStart 
 go $viewEnd 
-go $viewMid 
-go $tsStart 
-go $tsEnd 
-go $tsMid 
-itemvolume /i 
-settings projgridmin 0
+go $viewStart 
+go $viewStart 
+go $projStart 
+go $projStart 
+go $projStart 
+go $projStart 
+go $projStart 
+settings projtimeoffs 0
+go $projStart 
 
+go $projStart 
+go $projStart 
 
-go +[$n1*$frame]
-itemvolume -$n1 
-itemvolume -$n1 
-itemvolume -$n1 
-itemvolume -$n1 
-itemvolume -$n1 
-itemvolume -$n1 
-itemvolume +$n1 
-itemvolume +$n1 
-itemvolume +$n1 
-itemvolume +$n1 
-itemvolume +$n1 
-itemvolume +$n1 
-itemvolume +$n1 
-itemvolume -$n1 
-itemvolume -$n1 
-itemvolume -$n1 
-itemvolume -$n1 
-itemvolume -$n1 
-itemvolume -$n1 
-itemvolume -$n1 
-itemvolume +$n1 
-itemvolume +$n1 
-i
+12
+
+go $projStart 
+go $projStart 
+go
 
 
 
+
+
+
+
+
+
+go $projStart 
+go /T 
+go /T  60.0
+
+
+marker I ";" Rock ";" this 
