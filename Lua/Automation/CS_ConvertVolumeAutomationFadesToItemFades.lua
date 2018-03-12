@@ -1,14 +1,13 @@
 --[[
-@description CS_ConvertVolumeAutomationFadesToItemFades
-@version 1.0
+@description Convert Volume Automation Fades To Item Fades
+@version 1.1
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2018 03 10
 @about
-  # CS_ConvertVolumeAutomationFadesToItemFades
+  # Convert Volume Automation Fades To Item Fades
 @changelog
-  - initial release
-@noindex
+  - Renamed
 --]]
 
 local threshold = -50
