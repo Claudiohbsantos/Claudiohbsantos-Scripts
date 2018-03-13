@@ -1,19 +1,40 @@
 --[[
 @description Convert Volume Automation Fades To Item Fades
-@version 1.1
+@version 1.21
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2018 03 10
 @about
   # Convert Volume Automation Fades To Item Fades
 @changelog
-  - Renamed
+  - Fixed cases in which there are two overlapping/very close points at the low end of the fade. 
 --]]
 
 local threshold = -50
 local timethreshold = 1
 
-function getEnvPoint(env,pIdx,opt_item)
+local cs = {}
+function cs.msg(...)
+	local indent = 0
+
+	local function printTable(table,tableName)
+		if tableName then reaper.ShowConsoleMsg(string.rep("    ",indent)..tostring(tableName)..": \n") end
+		indent = indent + 1
+		for key,tableValue in pairs(table) do
+			if type(tableValue) == "table" then
+				printTable(tableValue,key)
+			else
+				reaper.ShowConsoleMsg(string.rep("    ",indent)..tostring(key).." = "..tostring(tableValue).."\n")
+			end
+		end
+		indent = indent - 1
+	end
+
+	printTable({...})
+end
+
+
+function getEnvPoint(env,pIdx)
 	local p,retval = {}
 	p.scale = reaper.GetEnvelopeScalingMode(env)
 	p.idx = pIdx
@@ -24,40 +45,6 @@ function getEnvPoint(env,pIdx,opt_item)
 	p.dbVal = tonumber(dbStr:match("[-]?[%d%.]+"))
 	if not p.dbVal then p.dbVal = -math.huge end
 	return p
-end
-
-local function getFirst2Points(env,item)
-	local itemStart = reaper.GetMediaItemInfo_Value(item,"D_POSITION")
-	local idx = reaper.GetEnvelopePointByTime(env,timethreshold)
-	local firstPoint = getEnvPoint(env,idx)
-	local secondPoint = getEnvPoint(env,idx+1)
-	return firstPoint,secondPoint
-end	
-
-local function getLast2Points(env,t,item)
-	local itemEnd = reaper.GetMediaItemInfo_Value(item,"D_LENGTH")
-	local idx = reaper.GetEnvelopePointByTime(env,itemEnd + timethreshold)
-	local secondToLastPoint = getEnvPoint(env,idx-1)
-	local lastPoint = getEnvPoint(env,idx)
-	return secondToLastPoint,lastPoint
-end	
-
-local function pointIsAtEdge(relTime,item,threshold)
-	local iStart = reaper.GetMediaItemInfo_Value(item,"D_POSITION")
-	local iEnd = iStart + reaper.GetMediaItemInfo_Value(item,"D_LENGTH")
-	local time = relTime + iStart
-	if math.abs(time - iStart) < threshold or math.abs(time - iEnd) < threshold then
-		return true
-	end
-end
-
-local function isFade(a,b,item)
--- checks if is an increasing fade from a to b
-	if pointIsAtEdge(a.relTime,item,timethreshold) then
-		if a.dbVal < threshold and b.dbVal > a.dbVal then
-			return true
-		end
-	end
 end
 
 local function createFadeIn(endTime,item,shape)
@@ -72,30 +59,96 @@ local function createFadeOut(startTime,item,shape)
 	reaper.SetMediaItemInfo_Value(item,"C_FADEOUTSHAPE",shape)
 end
 
+local function getPointsInTimeRange(env,timeIn,timeOut)
+	local lastPointID = reaper.GetEnvelopePointByTime(env,timeOut)
+	if lastPointID then
+		local p = {}
+		local currID = lastPointID
+		while true do
+			local point = getEnvPoint(env,currID)
+			if point and point.relTime >= timeIn and point.relTime <= timeOut then 
+				table.insert(p,1,point)
+			else 
+				break
+			end
+			currID = currID - 1	
+		end
+		return p
+	end
+end
+
+local function removePointsAboveThreshold(points,max)
+	for p in pairs(points) do
+		if points[p].dbVal > max then
+			points[p] = nil
+		end
+	end
+	return points
+end
+
+local function getLargestFadeStartingAtPoints(env,points,max,highPointPosition)
+	-- highPointPosition is +1 for next point or -1 for previous point
+	local pointPairs = {}
+	for p in pairs(points) do 
+		local nextPoint = getEnvPoint(env,points[p].idx + highPointPosition)
+		if nextPoint and nextPoint.dbVal >= max then
+			delta = nextPoint.dbVal - points[p].dbVal
+			table.insert(pointPairs,{delta = delta,low = points[p], high = nextPoint})
+		end
+	end
+	if #pointPairs > 0 then
+		table.sort(pointPairs,function(a,b) return a.delta > b.delta end)
+		return pointPairs[1].low,pointPairs[1].high
+	end
+end
+
+local function getFadeIn(env,item)
+	local potentialLowPoints = getPointsInTimeRange(env,-timethreshold,timethreshold)
+	if #potentialLowPoints > 0 then
+		potentialLowPoints = removePointsAboveThreshold(potentialLowPoints,threshold)
+		local lowPoint,highPoint = getLargestFadeStartingAtPoints(env,potentialLowPoints,threshold,1)
+		if lowPoint and highPoint then
+			return lowPoint,highPoint
+		end
+	end
+end
+
+local function getFadeOut(env,item)
+	local itemLength = reaper.GetMediaItemInfo_Value(item,"D_LENGTH")
+	local potentialLowPoints = getPointsInTimeRange(env,itemLength-timethreshold,itemLength+timethreshold)
+	if #potentialLowPoints > 0 then
+		potentialLowPoints = removePointsAboveThreshold(potentialLowPoints,threshold)
+		local lowPoint,highPoint = getLargestFadeStartingAtPoints(env,potentialLowPoints,threshold,-1)
+		if lowPoint and highPoint then
+			return lowPoint,highPoint
+		end
+	end
+end
+
 local function convertVolumeEnvelopeFadesToItemFades(take,item)
 	local points = {}
 	local env = reaper.GetTakeEnvelopeByName(take,"Volume")
-	local totalPoints = reaper.CountEnvelopePoints(env)
-	
+	if env then 
+		local totalPoints = reaper.CountEnvelopePoints(env)
 
-	if totalPoints < 2 then return end
+		if totalPoints < 2 then return end
+		points[1],points[2] = getFadeIn(env,item)
+		if points[1] and points[2] then
+			local shape = 0
+			if points[1].scale == 1 then shape = 4 end -- change fade shape for fader scaling
+			createFadeIn(points[2].relTime,item,shape)
+			reaper.SetEnvelopePoint(env,points[1].idx,points[1].relTime,points[2].rawVal)
+			reaper.UpdateArrange()
+		end
 
-	points[1],points[2] = getFirst2Points(env,item)
-	if points[1] and points[2] and isFade(points[1],points[2],item) then
-		local shape = 0
-		if points[1].scale == 1 then shape = 4 end -- change fade shape for fader scaling
-		createFadeIn(points[2].relTime,item,shape)
-		reaper.SetEnvelopePoint(env,points[1].idx,points[1].relTime,points[2].rawVal)
-		reaper.UpdateArrange()
-	end
-
-	points[3],points[4] = getLast2Points(env,totalPoints,item)
-	if points[3] and points[4] and isFade(points[4],points[3],item) then
-		local shape = 0
-		if points[1].scale == 1 then shape = 4 end -- change fade shape for fader scaling
-		createFadeOut(points[3].relTime,item,shape)
-		reaper.SetEnvelopePoint(env,points[4].idx,points[4].relTime,points[3].rawVal)
-		reaper.UpdateArrange()
+		points[4],points[3] = getFadeOut(env,item)
+		if points[3] and points[4] then
+			local shape = 0
+			if points[1].scale == 1 then shape = 4 end -- change fade shape for fader scaling
+			createFadeOut(points[3].relTime,item,shape)
+			reaper.SetEnvelopePoint(env,points[4].idx,points[4].relTime,points[3].rawVal)
+			reaper.UpdateArrange()
+		end
 	end
 end
 

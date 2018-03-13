@@ -1,6 +1,3 @@
-go $projStart 
-
-go $projStart 
 
 go $projStart 
 go $projStart 
@@ -48,3 +45,6 @@ go /T  60.0
 
 
 marker I ";" Rock ";" this 
+go $projStart 
+
+go $projStart 
