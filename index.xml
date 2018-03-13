@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="ddf1419109f6efa71875b3996dafa77636d56eb2" name="Claudiohbsantos Scripts">
+<index version="1" commit="77afac05871a9f00cd1a8aa2087a0a1c77f5d527" name="Claudiohbsantos Scripts">
   <category name="Lua/Automation">
     <reapack name="CS_ConvertVolumeAutomationFadesToItemFades.lua" type="script" desc="Convert Volume Automation Fades To Item Fades">
       <metadata>
@@ -15,6 +15,10 @@
       <version name="1.1" author="Claudiohbsantos" time="2018-03-12T18:31:35Z">
         <changelog><![CDATA[- Renamed]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/101453266e5cb0516100fba848a87d1bad008eea/Lua/Automation/CS_ConvertVolumeAutomationFadesToItemFades.lua</source>
+      </version>
+      <version name="1.21" author="Claudiohbsantos" time="2018-03-13T19:37:23Z">
+        <changelog><![CDATA[- Fixed cases in which there are two overlapping/very close points at the low end of the fade. ]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/77afac05871a9f00cd1a8aa2087a0a1c77f5d527/Lua/Automation/CS_ConvertVolumeAutomationFadesToItemFades.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Reset Volume Envelope from selected Tracks.lua" type="script" desc="CS_Reset Volume Envelope from selected Tracks">
