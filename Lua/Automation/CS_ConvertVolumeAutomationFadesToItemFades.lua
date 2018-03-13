@@ -1,13 +1,13 @@
 --[[
 @description Convert Volume Automation Fades To Item Fades
-@version 1.22
+@version 1.23
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2018 03 10
 @about
   # Convert Volume Automation Fades To Item Fades
 @changelog
-  - Fixed Problem with items with fade out but no fade in
+  - Script now removes extra points in the threshold area to prevent script from chaning fade on retriggering.
 --]]
 
 local threshold = -50
@@ -137,7 +137,9 @@ local function convertVolumeEnvelopeFadesToItemFades(take,item)
 			local shape = 0
 			if points[1].scale == 1 then shape = 4 end -- change fade shape for fader scaling
 			createFadeIn(points[2].relTime,item,shape)
-			reaper.SetEnvelopePoint(env,points[1].idx,points[1].relTime,points[2].rawVal)
+			reaper.DeleteEnvelopePointRange(env,-timethreshold,timethreshold)
+			reaper.InsertEnvelopePoint(env,points[1].relTime,points[2].rawVal,points[1].shape,points[1].tension,points[1].selected)
+			reaper.InsertEnvelopePoint(env,points[2].relTime,points[2].rawVal,points[2].shape,points[2].tension,points[2].selected)
 			reaper.UpdateArrange()
 		end
 
@@ -146,7 +148,10 @@ local function convertVolumeEnvelopeFadesToItemFades(take,item)
 			local shape = 0
 			if points[3].scale == 1 then shape = 4 end --0 change fade shape for fader scaling
 			createFadeOut(points[3].relTime,item,shape)
-			reaper.SetEnvelopePoint(env,points[4].idx,points[4].relTime,points[3].rawVal)
+			local itemLength = reaper.GetMediaItemInfo_Value(item,"D_LENGTH")
+			reaper.DeleteEnvelopePointRange(env,itemLength-timethreshold,itemLength+timethreshold)
+			reaper.InsertEnvelopePoint(env,points[4].relTime,points[3].rawVal,points[4].shape,points[4].tension,points[4].selected)
+			reaper.InsertEnvelopePoint(env,points[3].relTime,points[3].rawVal,points[3].shape,points[3].tension,points[3].selected)
 			reaper.UpdateArrange()
 		end
 	end
