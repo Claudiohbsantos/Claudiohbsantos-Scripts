@@ -1,13 +1,13 @@
 --[[
 @description Convert Volume Automation Fades To Item Fades
-@version 1.21
+@version 1.22
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2018 03 10
 @about
   # Convert Volume Automation Fades To Item Fades
 @changelog
-  - Fixed cases in which there are two overlapping/very close points at the low end of the fade. 
+  - Fixed Problem with items with fade out but no fade in
 --]]
 
 local threshold = -50
@@ -144,7 +144,7 @@ local function convertVolumeEnvelopeFadesToItemFades(take,item)
 		points[4],points[3] = getFadeOut(env,item)
 		if points[3] and points[4] then
 			local shape = 0
-			if points[1].scale == 1 then shape = 4 end -- change fade shape for fader scaling
+			if points[3].scale == 1 then shape = 4 end --0 change fade shape for fader scaling
 			createFadeOut(points[3].relTime,item,shape)
 			reaper.SetEnvelopePoint(env,points[4].idx,points[4].relTime,points[3].rawVal)
 			reaper.UpdateArrange()
