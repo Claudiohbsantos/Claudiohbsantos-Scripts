@@ -14,6 +14,6 @@ local function loadRealauncher()
 	require("CS_ReaLauncher")
 end
 executeNowFlag = false
-preloadedText = "marker "
+preloadedText = "z"
 
 loadRealauncher()

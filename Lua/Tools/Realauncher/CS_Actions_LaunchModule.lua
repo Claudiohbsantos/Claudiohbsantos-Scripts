@@ -55,7 +55,6 @@ local function execAction(input)
 		execActionByID(input.arguments[1])		
 		return
 	end
-
 end
 
 rl.registeredUtils.act = {

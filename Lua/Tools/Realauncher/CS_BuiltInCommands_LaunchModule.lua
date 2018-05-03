@@ -74,8 +74,8 @@ rl.registeredUtils.alias = {
 		rl.text.tipLine = "(alias) [new substitution] ; if there is no substitution, alias will be erased" 
 		rl.config.subvariables = false
 	end,
-	switches = {l = false},
-	passiveFunction = function() executeNowFlag = false end, -- stops /execnow flag from triggering
+	switches = {l = false,n = false},
+	passiveFunction = function() executeNowFlag = false ; rl.config.subvariables = false ; if rl.currentCommand.switches and rl.currentCommand.switches.n then rl.config.subvariables = true end end, -- stops /execnow flag from triggering
 	exitFunction = function () rl.config.subvariables = true end,
 	}
 
@@ -101,8 +101,8 @@ rl.registeredUtils.var = {
 	onEnter = registerVariable,
 	description = "Register, display and delete variables",
 	entranceFunction = function () rl.text.tipLine = "(variable) [value] ; if there is no value, variable will be erased" ; rl.config.subvariables = false end,
-	switches = {l = false},
-	-- passiveFunction = function() executeNowFlag = false end, -- stops /execnow flag from triggering
+	switches = {l = false,n = false},
+	passiveFunction = function() rl.config.subvariables = false ; if rl.currentCommand.switches and rl.currentCommand.switches.n then rl.config.subvariables = true end end, -- stops /execnow flag from triggering
 	exitFunction = function () rl.config.subvariables = true end,
 }
 
@@ -251,9 +251,14 @@ rl.registeredUtils.testInputs = {onEnter = function() cs.msg(rl.currentCommand) 
 rl.registeredUtils.keyboardCodeViewer = {
 	passiveFunction = 
 		function() 
-			if rl.currentCommand.currChar ~= 0 then 
-				rl.currentCommand.tipLine = rl.currentCommand.currChar
+			if rl.text.currChar ~= 0 then 
+				rl.text.tipLine = rl.text.currChar
 			end 
 		end,
 	description = "Display typed character codes",	 
 	}
+
+rl.registeredUtils.changeCountDisplay = {
+		passiveFunction = function() rl.text.tipLine = reaper.GetProjectStateChangeCount(0) end,
+		description = "Display current Change Count",
+}

@@ -1,50 +1,50 @@
 
-go $projStart 
-go $projStart 
+keyboardCodeViewer 
+keyboardCodeViewer df
 
-settings projtimeoffs 0
-go /T  60.0
-go $projStart 
+alias 
+alias 
 
-go $projStart 
-go $projStart 
-go $projStart 
-go $projEnd 
-go $projStart 
-go $viewEnd 
+changeCountDisplay  
+changeCountDisplay 
+navmode
+navmode
+i
+itemvolume /i 
+marker 
+
+
+changeCountDisplay 
+changeCountDisplay 
+
+g
+gg
+gg
+i
+g
+g
+g
+g
 go $viewStart 
-go $viewStart 
-go $projStart 
-go $projStart 
-go $projStart 
-go $projStart 
-go $projStart 
-settings projtimeoffs 0
-go $projStart 
+g
+`
+alias /l
+go /T 6.24
 
-go $projStart 
-go $projStart 
-
-12
-
-go $projStart 
-go $projStart 
-go
-
-
-
-
-
-
-
-
-
-go $projStart 
-go /T 
-go /T  60.0
-
-
-marker I ";" Rock ";" this 
-go $projStart 
-
-go $projStart 
+go $start 
+go /T 296.0
+go /T 332.0
+go /T 350.0
+go /T 1087.0
+go /T 487.0
+go /T 517.0
+go /T 546.0
+go /T 585.0
+go /T 1730.0
+go /T 1776.0
+go /T 1879.0
+go /T 1888.0
+go /T 1907.0
+go /T 2462.0
+go /T 2485.0
+c

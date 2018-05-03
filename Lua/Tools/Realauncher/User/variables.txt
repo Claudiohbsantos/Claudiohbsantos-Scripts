@@ -1,2 +1,2 @@
-start=415.36
 n1=[60*$framerate]
+start=20.64

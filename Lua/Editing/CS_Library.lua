@@ -542,10 +542,3 @@ function cs.tableToString(tablename,table)
 
 	return str
 end
-
-function cs.setItemFXChannelNumber(item,nChannels)
-	if nChannels % 2 > 0 then nChannels = nChannels + 1 end
-	local _,chunk = reaper.GetItemStateChunk(item,"",false)
-	chunk = string.gsub(chunk,"TAKEFX_NCH %d%d?","TAKEFX_NCH "..nChannels)
-	return	reaper.SetItemStateChunk(item,chunk,false)
-end

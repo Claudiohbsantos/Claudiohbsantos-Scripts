@@ -1,5 +1,5 @@
 -- @description CS_Implode two monos into stereo
--- @version 1.3
+-- @version 1.4
 -- @author Claudiohbsantos
 -- @link http://claudiohbsantos.com
 -- @date 2017 03 27
@@ -10,8 +10,8 @@
 --   * prevents take envelope from being glue to file
 --   * keeps fades intact
 -- @changelog
---   -- Prevents take envelope from being glued
---   -- Prevents neighboring clips from having their fades altered
+--   -- Added Some error Catching to prevent errors when no items are selected.
+--   -- This is script is being made obsolete. Check the new 
 
 remove = {".wav" , ".aif", ".mp3", ".mid", ".mov", ".mp4", ".rex", ".bwf", "-glued", " glued", " render", "reversed"}
 
@@ -97,16 +97,16 @@ function extendItemToFullExtension(item)
 		reaper.Main_OnCommand(40612,0) -- extend to full length
 end
 
+
+
 reaper.Undo_BeginBlock()
-
 reaper.PreventUIRefresh(1)
-
 top = {}
 bottom = {}
-
 tot_items = reaper.CountSelectedMediaItems(0)
-
+if tot_items == 0 then return end
 firsttrack = reaper.GetMediaItemTrack(reaper.GetSelectedMediaItem(0,0))
+if not firsttrack then return end
 lasttrack = reaper.GetMediaItemTrack(reaper.GetSelectedMediaItem(0,tot_items-1))
 
 if firsttrack == lasttrack then
