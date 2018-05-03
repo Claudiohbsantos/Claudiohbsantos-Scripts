@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="005a13b5735a07b4a69301a5769563c54f9c9ab2" name="Claudiohbsantos Scripts">
+<index version="1" commit="206a3c2d1f7eaa03cc2ad02c8b6e4ddd10014c14" name="Claudiohbsantos Scripts">
   <category name="Lua/Automation">
     <reapack name="CS_ConvertVolumeAutomationFadesToItemFades.lua" type="script" desc="Convert Volume Automation Fades To Item Fades">
       <metadata>
@@ -176,6 +176,11 @@
         <changelog><![CDATA[-- Prevents take envelope from being glued
 -- Prevents neighboring clips from having their fades altered]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b66a898fe7f950750e45ad018f52149f98cafd58/Lua/Editing/CS_Implode%20two%20monos%20into%20stereo.lua</source>
+      </version>
+      <version name="1.4" author="Claudiohbsantos" time="2018-05-03T03:47:52Z">
+        <changelog><![CDATA[-- Added Some error Catching to prevent errors when no items are selected.
+-- This is script is being made obsolete. Check the new ]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/206a3c2d1f7eaa03cc2ad02c8b6e4ddd10014c14/Lua/Editing/CS_Implode%20two%20monos%20into%20stereo.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Label REV if it has been reversed.lua" type="script" desc="CS_Label REV if it has been reversed">
@@ -523,6 +528,22 @@ Multiple Selected
     </reapack>
   </category>
   <category name="Lua/Markers">
+    <reapack name="CS_Add First Marker that crosses item to the take name.lua" type="script" desc="Add First Marker that crosses item to the take name">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Add First Marker that crosses item to the take name\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-05-03T03:47:52Z">
+        <changelog><![CDATA[- ]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/206a3c2d1f7eaa03cc2ad02c8b6e4ddd10014c14/Lua/Markers/CS_Add%20First%20Marker%20that%20crosses%20item%20to%20the%20take%20name.lua</source>
+      </version>
+    </reapack>
     <reapack name="CS_Create Marker 0 - Blue.lua" type="script" desc="Create Marker 0 - Blue">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
@@ -572,6 +593,21 @@ Multiple Selected
       <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Markers/CS_Create%20Marker%200.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Create Markers at Snap Offsets.lua" type="script" desc="Create Markers at Selected Items Snap Offsets">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS_Create Markers at Snap Offsets\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-05-03T03:47:52Z">
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/206a3c2d1f7eaa03cc2ad02c8b6e4ddd10014c14/Lua/Markers/CS_Create%20Markers%20at%20Snap%20Offsets.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Create random colored region at time selection.lua" type="script" desc="CS_Create random colored region at time selection">
