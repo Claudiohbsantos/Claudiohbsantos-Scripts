@@ -1,2 +1,0 @@
-n1=[60*$framerate]
-start=20.64
