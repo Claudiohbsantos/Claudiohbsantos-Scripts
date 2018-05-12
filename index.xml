@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="0f4c5b4b33b327a40b502df2a680a7a5be84b024" name="Claudiohbsantos Scripts">
+<index version="1" commit="775522c2b83b7c8581efae84fad3f4c621426fe8" name="Claudiohbsantos Scripts">
   <category name="Lua/Automation">
     <reapack name="CS_ConvertVolumeAutomationFadesToItemFades.lua" type="script" desc="Convert Volume Automation Fades To Item Fades">
       <metadata>
@@ -528,23 +528,6 @@ Multiple Selected
     </reapack>
   </category>
   <category name="Lua/Items">
-    <reapack name="CS_DONTDOWNLOAD_REAPACKTEST.lua" type="script" desc="DONTDOWNLOAD_REAPACKTEST">
-      <metadata>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
-{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-\widowctrl\hyphauto
-
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 DONTDOWNLOAD_REAPACKTEST\par}
-}
-]]></description>
-        <link rel="website">http://claudiohbsantos.com</link>
-      </metadata>
-      <version name="0.1beta" author="Claudiohbsantos" time="2018-05-12T23:27:05Z">
-        <changelog><![CDATA[- Initial Release]]></changelog>
-        <source main="main" file="DONTDOWNLOAD_REAPACKTEST/CS_DONTDOWNLOAD_REAPACKTEST.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0f4c5b4b33b327a40b502df2a680a7a5be84b024/Lua/Items/CS_DONTDOWNLOAD_REAPACKTEST.lua</source>
-        <source file="DONTDOWNLOAD_REAPACKTEST/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0f4c5b4b33b327a40b502df2a680a7a5be84b024/Lua/Libraries/CS_Library.lua</source>
-      </version>
-    </reapack>
     <reapack name="CS_Item Disable Invert Phase.lua" type="script" desc="Item Disable Invert Phase">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
