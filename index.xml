@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="206a3c2d1f7eaa03cc2ad02c8b6e4ddd10014c14" name="Claudiohbsantos Scripts">
+<index version="1" commit="0339f8cce9665d62a14d302f16327eac6e868558" name="Claudiohbsantos Scripts">
   <category name="Lua/Automation">
     <reapack name="CS_ConvertVolumeAutomationFadesToItemFades.lua" type="script" desc="Convert Volume Automation Fades To Item Fades">
       <metadata>
@@ -527,6 +527,72 @@ Multiple Selected
       </version>
     </reapack>
   </category>
+  <category name="Lua/Items">
+    <reapack name="CS_Item Disable Invert Phase.lua" type="script" desc="Item Disable Invert Phase">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Item Disable Invert Phase\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-05-12T23:20:41Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0339f8cce9665d62a14d302f16327eac6e868558/Lua/Items/CS_Item%20Disable%20Invert%20Phase.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Item Disable LoopSource.lua" type="script" desc="Item Disable LoopSource">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Item Disable LoopSource\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-05-12T23:20:41Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0339f8cce9665d62a14d302f16327eac6e868558/Lua/Items/CS_Item%20Disable%20LoopSource.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Item Enable Invert Phase.lua" type="script" desc="Item Enable Invert Phase">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Item Enable Invert Phase\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-05-12T23:20:41Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0339f8cce9665d62a14d302f16327eac6e868558/Lua/Items/CS_Item%20Enable%20Invert%20Phase.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Item Enable LoopSource.lua" type="script" desc="Item Enable LoopSource">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Item Enable LoopSource\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-05-12T23:20:41Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0339f8cce9665d62a14d302f16327eac6e868558/Lua/Items/CS_Item%20Enable%20LoopSource.lua</source>
+      </version>
+    </reapack>
+  </category>
   <category name="Lua/Markers">
     <reapack name="CS_Add First Marker that crosses item to the take name.lua" type="script" desc="Add First Marker that crosses item to the take name">
       <metadata>
@@ -625,6 +691,70 @@ Multiple Selected
       <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Markers/CS_Create%20random%20colored%20region%20at%20time%20selection.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Place Markers at clipping points.lua" type="script" desc="Place Markers at clipping points">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Place Markers at clipping points\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-05-12T23:20:41Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0339f8cce9665d62a14d302f16327eac6e868558/Lua/Markers/CS_Place%20Markers%20at%20clipping%20points.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Place Markers at Out of Phase points.lua" type="script" desc="Place Markers at Out of Phase points">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Place Markers at Out of Phase points\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-05-12T23:20:41Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0339f8cce9665d62a14d302f16327eac6e868558/Lua/Markers/CS_Place%20Markers%20at%20Out%20of%20Phase%20points.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Remove all warning markers 998.lua" type="script" desc="Remove all warning markers (998)">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Remove all warning markers (998)\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-05-12T23:20:41Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0339f8cce9665d62a14d302f16327eac6e868558/Lua/Markers/CS_Remove%20all%20warning%20markers%20998.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Remove all warning markers 999.lua" type="script" desc="Remove all warning markers (999)">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Remove all warning markers (999)\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-05-12T23:20:41Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0339f8cce9665d62a14d302f16327eac6e868558/Lua/Markers/CS_Remove%20all%20warning%20markers%20999.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Reset Marker 0 to cursor position.lua" type="script" desc="CS_Reset Marker 0 to cursor position">
