@@ -182,12 +182,77 @@ function cs.selectedTracks(proj)
 	return function () i = i+1 ; return reaper.GetSelectedTrack2(proj,i,true) end
 end
 function cs.selectedItems(proj)
+	-- TODO: FAILS WHEN ITEMS CHANGE IN ITERATION
 	local i = -1
 	return function () i = i+1 ; return reaper.GetSelectedMediaItem(proj,i) end
 end
 
 
 -------------------------------- GETTERS
+
+function cs.getMarkerInfo(idx)
+	local marker = {}
+	retval, marker.isrgn, marker.pos, marker.rgnend, marker.name, marker.id, marker.color = reaper.EnumProjectMarkers3(0, idx)
+	if retval then
+		return marker
+	end
+end
+
+function cs.getAllMarkersInTime(inT,outT)
+	local totMarkers = reaper.CountProjectMarkers(0)
+	local markers = {}
+	for i = 0, totMarkers -1 do
+		local m = cs.getMarkerInfo(i)
+		if m.pos >= inT and m.pos <= outT then table.insert(markers,m) end
+		if m.pos > outT then break end
+	end
+	return markers
+end
+
+function cs.placeWarningMarker(msg,pos,id,minDistance,color)
+	local existingMarkers = cs.getAllMarkersInTime(pos - minDistance, pos + minDistance)
+	for i,marker in pairs(existingMarkers) do
+		if marker.id == id and marker.name == msg then
+			return
+		end
+	end
+	reaper.AddProjectMarker2(0,false,pos,0,msg,id,color)
+end
+
+function cs.isItemPhaseInverted(item)
+	local _,chunk = reaper.GetItemStateChunk(item,"",false)
+	if string.match(chunk,"VOLPAN [%d.-]+ [%d.-]+ (.)") == "-" then return true else return false end 
+end
+
+function cs.getItemInfo(item)
+	local it = {}
+
+	it.mute = reaper.GetMediaItemInfo_Value(item,"B_MUTE") 
+	it.loopsrc = reaper.GetMediaItemInfo_Value(item,"B_LOOPSRC") 
+	it.alltakesplay = reaper.GetMediaItemInfo_Value(item,"B_ALLTAKESPLAY") 
+	it.uisel = reaper.GetMediaItemInfo_Value(item,"B_UISEL") 
+	it.beatattachmode = reaper.GetMediaItemInfo_Value(item,"C_BEATATTACHMODE") 
+	it.lock = reaper.GetMediaItemInfo_Value(item,"C_LOCK") 
+	it.vol = reaper.GetMediaItemInfo_Value(item,"D_VOL") 
+	it.position = reaper.GetMediaItemInfo_Value(item,"D_POSITION") 
+	it.length = reaper.GetMediaItemInfo_Value(item,"D_LENGTH") 
+	it.snapoffset = reaper.GetMediaItemInfo_Value(item,"D_SNAPOFFSET") 
+	it.fadeinlen = reaper.GetMediaItemInfo_Value(item,"D_FADEINLEN") 
+	it.fadeoutlen = reaper.GetMediaItemInfo_Value(item,"D_FADEOUTLEN") 
+	it.fadeindir = reaper.GetMediaItemInfo_Value(item,"D_FADEINDIR") 
+	it.fadeoutdir = reaper.GetMediaItemInfo_Value(item,"D_FADEOUTDIR") 
+	it.fadeinlen_auto = reaper.GetMediaItemInfo_Value(item,"D_FADEINLEN_AUTO") 
+	it.fadeoutlen_auto = reaper.GetMediaItemInfo_Value(item,"D_FADEOUTLEN_AUTO") 
+	it.fadeinshape = reaper.GetMediaItemInfo_Value(item,"C_FADEINSHAPE") 
+	it.fadeoutshape = reaper.GetMediaItemInfo_Value(item,"C_FADEOUTSHAPE") 
+	it.groupid = reaper.GetMediaItemInfo_Value(item,"I_GROUPID") 
+	it.customcolor = reaper.GetMediaItemInfo_Value(item,"I_CUSTOMCOLOR") 
+	it.curtake = reaper.GetMediaItemInfo_Value(item,"I_CURTAKE") 
+	it.itemnumber = reaper.GetMediaItemInfo_Value(item,"IP_ITEMNUMBER") 
+
+	return it
+
+end
 
 function cs.getEnvPoint(env,pIdx,opt_item)
 	local p,retval = {}
