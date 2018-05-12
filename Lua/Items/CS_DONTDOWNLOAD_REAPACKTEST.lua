@@ -9,8 +9,8 @@
 @changelog
   - Initial Release
 @provides
-	. > DONTDOWNLOAD_REAPACKTEST/
-	../Libraries/CS_Library.lua > DONTDOWNLOAD_REAPACKTEST/
+	. > DONTDOWNLOAD_REAPACKTEST/CS_DONTDOWNLOAD_REAPACKTEST.lua
+	../Libraries/CS_Library.lua > DONTDOWNLOAD_REAPACKTEST/CS_Library.lua
 --]]
 
 local function loadCSLibrary()
