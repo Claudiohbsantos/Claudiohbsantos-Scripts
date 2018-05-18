@@ -9,10 +9,9 @@
   Go to Time input
   Press + or - to change to subtration  or Addition Mode. Press Spacebar to reset default timecode to zero. 
 @changelog
-  - Fixed plus and minus mode when timeline doesnt start at 0
+  - Updated Libraries dependencies
 @provides
   ../Libraries/TimecodeInput_Module.lua > ../Libraries/Go To Time/TimecodeInput_Module.lua  
-  ../Libraries/CS_Library.lua > ../Libraries/Go To Time/CS_Library.lua  
 --]]
 
 function msg(s) reaper.ShowConsoleMsg(tostring(s)..'\n') end
@@ -46,7 +45,6 @@ local script_path = get_script_path()
 local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\"
 package.path = package.path .. ";" .. libraryPath .. "?.lua;".. libraryPath .."Go To Time\\?.lua"
 
-local requireStatus = prequire("CS_Library")
 requireStatus = prequire("TimecodeInput_Module")
 
 if requireStatus then

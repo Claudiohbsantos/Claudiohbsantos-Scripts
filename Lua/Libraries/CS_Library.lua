@@ -12,7 +12,7 @@
 @noindex
 --]]
 
-cs = {}
+local cs = {}
 
 function cs.randomString() return os.tmpname():match("[^%.\\/]+") end 
 
@@ -35,6 +35,20 @@ function cs.doOnce(foo,...)
 	end
 end
 
+function cs.notRunningOnWindows()
+	local currOS = reaper.GetOS()
+	if currOS == "OSX32" or currOS == "OSX64" or currOS == "Other" then
+		return true
+	end
+end
+
+function cs.getMostRecentFileInFolder(path)
+	if cs.notRunningOnWindows() then return end
+	local cmd = [[cmd.exe /C "dir /b /A-D /O-D "]]..path..[[""]]
+	local fileList = reaper.ExecProcess(cmd,0)
+	local mostRecentFile = string.match(fileList,"^0\n([%g ]+)")
+	return mostRecentFile
+end
 
 function cs.msg(...)
 	local indent = 0
@@ -365,7 +379,7 @@ function cs.getClosestMarker(pos)
 	end
 end
 
-local function getClosestMarkerOrRegionPos(pos)
+function cs.getClosestMarkerOrRegionPos(pos)
 	local totalMarkers = reaper.CountProjectMarkers(0)
 
 	if totalMarkers > 0 then
@@ -389,8 +403,8 @@ local function getClosestMarkerOrRegionPos(pos)
 	end
 end
 
-local function mouseIsNearMarker(mousePos,proximity)
-	local marker= getClosestMarkerOrRegionPos(mousePos)
+function cs.mouseIsNearMarker(mousePos,proximity)
+	local marker= cs.getClosestMarkerOrRegionPos(mousePos)
 
 	if marker then
 		if cs.calculateProximityRelativeToZoom(mousePos,marker) <= proximity then
@@ -406,7 +420,7 @@ function cs.checkMouseSnappingPositions(proximity,mouse)
 		table.insert(snapPosition,reaper.GetCursorPositionEx(0))
 	end
 
-	local closeMarkerPos = mouseIsNearMarker(mouse.pos,proximity) 
+	local closeMarkerPos = cs.mouseIsNearMarker(mouse.pos,proximity) 
 	if closeMarkerPos then
 		table.insert(snapPosition,closeMarkerPos)
 	end
@@ -614,3 +628,5 @@ function cs.setItemFXChannelNumber(item,nChannels)
 	chunk = string.gsub(chunk,"TAKEFX_NCH %d%d?","TAKEFX_NCH "..nChannels)
 	return	reaper.SetItemStateChunk(item,chunk,false)
 end
+
+return cs

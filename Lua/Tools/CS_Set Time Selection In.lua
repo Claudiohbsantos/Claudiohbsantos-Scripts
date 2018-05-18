@@ -1,6 +1,6 @@
 --[[
 @description CS_Set Time Selection In
-@version 1.71
+@version 1.72
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -8,10 +8,9 @@
   # CS_Set Time Selection In
   Set Time Selection In point via time input
 @changelog
-  - Fixed plus and minus mode when timeline doesnt start at 0
+  - Updated Libraries dependencies
 @provides
   ../Libraries/TimecodeInput_Module.lua > ../Libraries/Set Time Selection In/TimecodeInput_Module.lua  
-  ../Libraries/CS_Library.lua > ../Libraries/Set Time Selection In/CS_Library.lua
 --]]
 
 function get_script_path()
@@ -50,7 +49,6 @@ local script_path = get_script_path()
 local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\"
 package.path = package.path .. ";" .. libraryPath .. "?.lua;".. libraryPath .."Go To Time\\?.lua"
 
-local requireStatus = prequire("CS_Library")
 requireStatus = prequire("TimecodeInput_Module")
 
 if requireStatus then

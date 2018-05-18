@@ -1,6 +1,6 @@
 --[[
 @description CS_Set Time Selection Out
-@version 1.71
+@version 1.72
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -8,7 +8,7 @@
   # CS_Set Time Selection Out
   Set time selection out via time input
 @changelog
-  - Fixed plus and minus mode when timeline doesnt start at 0
+  - Updated Library loading. Shouldn't affect operation in any way.
 @provides
   ../Libraries/TimecodeInput_Module.lua > ../Libraries/Set Time Selection Out/TimecodeInput_Module.lua
   ../Libraries/CS_Library.lua > ../Libraries/Set Time Selection Out/CS_Library.lua
@@ -45,7 +45,6 @@ local script_path = get_script_path()
 local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\"
 package.path = package.path .. ";" .. libraryPath .. "?.lua;".. libraryPath .."Go To Time\\?.lua"
 
-local requireStatus = prequire("CS_Library")
 requireStatus = prequire("TimecodeInput_Module")
 
 if requireStatus then
