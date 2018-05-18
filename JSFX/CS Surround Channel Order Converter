@@ -1,0 +1,81 @@
+desc:CS Surround Channel Order Converter
+
+slider1:0<0,2,1{L;C;R;Ls;Rs;LFE (Film),L;R;C;LFE;Ls;Rs (SMPTE/ITU),L;R;Ls;Rs;C;LFE (DTS)}>Input
+
+slider2:0<0,2,1{L;C;R;Ls;Rs;LFE (Film),L;R;C;LFE;Ls;Rs (SMPTE/ITU),L;R;Ls;Rs;C;LFE (DTS)}>Output
+
+////////////////////////////////////////////////////////////////////////////////
+
+@slider
+input = slider1;
+output = slider2;
+
+////////////////////////////////////////////////////////////////////////////////
+
+@sample
+tmp1 = spl(0);
+tmp2 = spl(1);
+tmp3 = spl(2);
+tmp4 = spl(3);
+tmp5 = spl(4);
+tmp6 = spl(5);
+
+// Film to SMPTE
+(input == 0 && output == 1) ? (
+	spl(0) = tmp1;
+	spl(1) = tmp3;
+	spl(2) = tmp2;
+	spl(3) = tmp6;
+	spl(4) = tmp4;
+	spl(5) = tmp5;
+);
+
+// Film to DTS
+(input == 0 && output == 2) ? (
+	spl(0) = tmp1;
+	spl(1) = tmp3;
+	spl(2) = tmp4;
+	spl(3) = tmp5;
+	spl(4) = tmp2;
+	spl(5) = tmp6;
+);
+
+// SMPTE to Film
+(input == 1 && output == 0) ? (
+	spl(0) = tmp1;
+	spl(1) = tmp3;
+	spl(2) = tmp2;
+	spl(3) = tmp5;
+	spl(4) = tmp6;
+	spl(5) = tmp4;
+);
+
+// SMPTE to DTS
+(input == 1 && output == 2) ? (
+	spl(0) = tmp1;
+	spl(1) = tmp2;
+	spl(2) = tmp5;
+	spl(3) = tmp6;
+	spl(4) = tmp3;
+	spl(5) = tmp4;
+);
+
+// DTS to Film
+(input == 2 && output == 0) ? (
+	spl(0) = tmp1;
+	spl(1) = tmp5;
+	spl(2) = tmp2;
+	spl(3) = tmp3;
+	spl(4) = tmp4;
+	spl(5) = tmp6;
+);
+
+// DTS to SMPTE 
+(input == 2 && output == 1) ? (
+	spl(0) = tmp1;
+	spl(1) = tmp2;
+	spl(2) = tmp5;
+	spl(3) = tmp6;
+	spl(4) = tmp3;
+	spl(5) = tmp4;
+);
