@@ -1,0 +1,83 @@
+// @description CS Surround LFE Send
+// @version 1.0
+// @author Claudiohbsantos
+// @link http://claudiohbsantos.com
+// @date 2018 05 19
+// @about
+//   # CS Surround LFE Send
+// @changelog
+//   - Initial Release 
+
+desc:CS Surround LFE Send
+
+in_pin:1
+in_pin:2
+in_pin:3
+in_pin:4
+in_pin:5
+in_pin:6
+
+out_pin:1
+out_pin:2
+out_pin:3
+out_pin:4
+out_pin:5
+out_pin:6
+
+
+slider1:1<0,2,1{L;C;R;Ls;Rs;LFE (Film),L;R;C;LFE;Ls;Rs (SMPTE/ITU),L;R;Ls;Rs;C;LFE (DTS)}>Input Format
+
+slider2:-120<-120,12,1>L
+slider3:-120<-120,12,1>R
+slider4:-120<-120,12,1>C
+slider5:0<-120,12,1>LFE
+slider6:-120<-120,12,1>Ls
+slider7:-120<-120,12,1>Rs
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+@slider
+format = slider1;
+
+(format == 0) ? (
+	l = 0;
+	c = 1;
+	r = 2;
+	ls = 3;
+	rs = 4;
+	lfe = 5;
+);
+
+(format == 1) ? (
+	l = 0;
+	c = 2;
+	r = 1;
+	ls = 4;
+	rs = 5;
+	lfe = 3;
+);
+
+(format == 2) ? (
+	l = 0;
+	c = 4;
+	r = 1;
+	ls = 2;
+	rs = 3;
+	lfe = 5;
+);
+
+adj_l = (2^(slider2/6));
+adj_c = (2^(slider4/6));
+adj_r = (2^(slider3/6));
+adj_ls = (2^(slider6/6));
+adj_rs = (2^(slider7/6));
+adj_lfe = (2^(slider5/6));
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+@sample
+tmplfe = spl(lfe);
+spl(lfe) = spl(l)*adj_l + spl(r)*adj_r + spl(c)*adj_c + spl(ls)*adj_ls + spl(rs)*adj_rs + tmplfe*adj_lfe;
+ 

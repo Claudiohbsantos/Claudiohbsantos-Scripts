@@ -82,6 +82,11 @@ function cs.prequire(...)
     return nil
 end
 
+function cs.shittyUndo()
+	reaper.Main_OnCommand(40706,0)
+	reaper.Main_OnCommand(40707,0)
+end
+
 function cs.readProjFileToTable(projFile)
 	local f = assert(io.open(projFile,"r"))
 	local projectChunks = {}
@@ -176,6 +181,21 @@ end
 
 -------------------------------- ITERATORS
 
+function cs.allItems(proj)
+	local itemGUIDS = {}
+	for i = 0,  reaper.CountMediaItems(proj) - 1 do
+		table.insert(itemGUIDS, reaper.BR_GetMediaItemGUID(reaper.GetMediaItem(proj,i)))
+	end
+	return function () 
+			while #itemGUIDS > 0 do
+				local item = reaper.BR_GetMediaItemByGUID(0, table.remove(itemGUIDS,1)) 
+				if item then
+					return  item
+				end
+			end
+		end
+end
+
 function cs.allTracks(proj)
 	local i = -1
 	return function () i = i+1 ;return reaper.GetTrack(proj,i) end
@@ -195,14 +215,35 @@ function cs.selectedTracks(proj)
 	local i = -1
 	return function () i = i+1 ; return reaper.GetSelectedTrack2(proj,i,true) end
 end
-function cs.selectedItems(proj)
-	-- TODO: FAILS WHEN ITEMS CHANGE IN ITERATION
-	local i = -1
-	return function () i = i+1 ; return reaper.GetSelectedMediaItem(proj,i) end
+function cs.selectedItems()
+	-- local c = 0
+	local selItemsGUIDs = {}
+	for i = 0, reaper.CountSelectedMediaItems(0) - 1 do
+		table.insert(selItemsGUIDs, reaper.BR_GetMediaItemGUID(reaper.GetSelectedMediaItem(0,i)))
+	end
+	return function () 
+			while #selItemsGUIDs > 0 do
+				local item = reaper.BR_GetMediaItemByGUID(0, table.remove(selItemsGUIDs,1)) 
+				if item then
+					return  item
+				end
+			end
+		end
 end
 
 
 -------------------------------- GETTERS
+
+function cs.getTracksByName(name)
+	local tracks = {}
+	for track in cs.allTracks(0) do
+		local _,trackName = reaper.GetSetMediaTrackInfo_String(track,"P_NAME","",false)
+		if trackName == name then
+			table.insert(tracks,track)
+		end
+	end
+	return tracks
+end
 
 function cs.getMarkerInfo(idx)
 	local marker = {}
@@ -441,6 +482,60 @@ function cs.checkMouseSnappingPositions(proximity,mouse)
 end
 
 ------------------------ Utilities
+function cs.stickyFalseClosure()
+-- returns true until it receives a false, then always returns false no matter the input
+	local notFalseYet = true
+	return function (input) if notFalseYet and input then return input else notFalseYet = false end end
+end
+
+function cs.duplicateTrack(track)
+	local trackIDX = reaper.GetMediaTrackInfo_Value(track,"IP_TRACKNUMBER") - 1
+	reaper.InsertTrackAtIndex(trackIDX + 1,true)
+	
+	local copy = reaper.GetTrack(0,trackIDX + 1)
+	local origTrackDepth = reaper.GetMediaTrackInfo_Value(track,"I_FOLDERDEPTH")
+	if origTrackDepth < 0 then
+		reaper.SetMediaTrackInfo_Value(track,"I_FOLDERDEPTH", 0 )
+		-- reaper.SetMediaTrackInfo_Value(copy,"I_FOLDERDEPTH", - (reaper.GetTrackDepth(track)) )
+		reaper.SetMediaTrackInfo_Value(copy,"I_FOLDERDEPTH", origTrackDepth )
+	end
+
+	return copy
+end
+
+function cs.getTrackItemsAtPosition(track,position)
+	local nItems = reaper.GetTrackNumMediaItems(track)
+	local items = {}
+	for i=0, nItems - 1 do
+		local it = reaper.GetTrackMediaItem(track,i)
+		local pos = reaper.GetMediaItemInfo_Value(it,"D_POSITION")
+		local finish = reaper.GetMediaItemInfo_Value(it,"D_LENGTH") + pos
+		if pos <= position and finish >= position then
+			table.insert(items,it)
+		end
+		if pos > position then break end
+	end	
+
+	return items
+end
+
+function cs.getTrackItemsAtRange(track,posIn,posOut)
+	local nItems = reaper.GetTrackNumMediaItems(track)
+	local items = {}
+	for i=0, nItems - 1 do
+		local it = reaper.GetTrackMediaItem(track,i)
+		local pos = reaper.GetMediaItemInfo_Value(it,"D_POSITION")
+		local finish = reaper.GetMediaItemInfo_Value(it,"D_LENGTH") + pos
+
+		if (pos <= posIn and finish >= posIn) or (pos >= posIn and pos <= posOut) then
+			table.insert(items,it)
+		end
+
+		if pos > posOut then break end
+	end	
+
+	return items
+end
 
 function cs.strHasValue(str)
 	if str and str ~= "" then

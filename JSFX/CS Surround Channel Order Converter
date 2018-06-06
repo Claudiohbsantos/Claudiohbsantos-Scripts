@@ -1,3 +1,14 @@
+// @description Surround Channel Order Converter
+// @version 1.0
+// @author Claudiohbsantos
+// @link http://claudiohbsantos.com
+// @date 2018 05 18
+// @about
+//   # Surround Channel Order Converter
+// @changelog
+//   - Initial Release 
+
+
 desc:CS Surround Channel Order Converter
 
 slider1:0<0,2,1{L;C;R;Ls;Rs;LFE (Film),L;R;C;LFE;Ls;Rs (SMPTE/ITU),L;R;Ls;Rs;C;LFE (DTS)}>Input

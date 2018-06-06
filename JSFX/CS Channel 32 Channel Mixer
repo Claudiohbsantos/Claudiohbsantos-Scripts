@@ -1,4 +1,16 @@
-desc:CS 32 Channel volume mixer 
+// @description CS Channel 32 Channel Mixer
+// @version 1.0
+// @author Claudiohbsantos
+// @link http://claudiohbsantos.com
+// @date 2018 05 18
+// @about
+//   # CS Channel 32 Channel Mixer
+// @changelog
+//   - Initial Release 
+
+desc:CS Channel 32 Channel Mixer
+
+
 
 slider1:0<-120,12,1>ch 1 Volume (dB)
 slider2:0<-120,12,1>ch 2 Volume (dB)

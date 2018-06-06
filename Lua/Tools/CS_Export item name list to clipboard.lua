@@ -1,16 +1,16 @@
 --[[
-@description Export item source list to clipboard
-@version 1.1
+@description Export item name list to TXT
+@version 1.0
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
-@date 2018 05 17
+@date 2018 06 04
 @about
-  # Export item source list to clipboard
+  # Export item name list to TXT
 @changelog
-  - corrected name
+  - Initial Release
 @provides
-	. > CS_Export item source list to clipboard/CS_Export item source list to clipboard.lua
-	../Libraries/CS_Library.lua > CS_Export item source list to clipboard/CS_Library.lua  
+	. > CS_Export item name list to clipboard/CS_Export item name list to clipboard.lua
+	../Libraries/CS_Library.lua > CS_Export item name list to clipboard/CS_Library.lua  
 --]]
 
 
@@ -39,17 +39,16 @@ local cs = loadFromFolder("CS_Library")
 ---------------------------------------------------------------
 
 local function main()
-	local filelist = {}
+	local nameList = {}
 	for item in cs.selectedItems(0) do
 		local take = reaper.GetActiveTake(item)
 		if not take then break end
-		local source = reaper.GetMediaItemTake_Source(take)
-		local sourceName = reaper.GetMediaSourceFileName(source,"")
-		if sourceName and sourceName ~= "" then
-			table.insert(filelist,sourceName)
+		local _,takeName = reaper.GetSetMediaItemTakeInfo_String(take,"P_NAME","",false)
+		if takeName and takeName ~= "" then
+			table.insert(nameList,takeName)
 		end
 	end
-	if #filelist > 0 then reaper.CF_SetClipboard(table.concat(filelist,"\n")) end
+	if #nameList > 0 then reaper.CF_SetClipboard(table.concat(nameList,"\n")) end
 end
 
 ---------------------------------------------------------------
@@ -62,6 +61,6 @@ reaper.Undo_BeginBlock2(0)
 	main()
 -- end
 
-reaper.Undo_EndBlock2(0,"Export item source list to clipboard",0)
+reaper.Undo_EndBlock2(0,"Export item name list to clipboard",0)
 reaper.PreventUIRefresh(-1)
 reaper.UpdateArrange()

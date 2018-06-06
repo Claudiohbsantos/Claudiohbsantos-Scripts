@@ -1,16 +1,16 @@
 --[[
-@description Export item source list to clipboard
-@version 1.1
+@description Select All item with same custom color as selected item
+@version 1.0
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
-@date 2018 05 17
+@date 2018 05 21
 @about
-  # Export item source list to clipboard
+  # Select All item with same custom color as selected item
 @changelog
-  - corrected name
+  - Initial Release
 @provides
-	. > CS_Export item source list to clipboard/CS_Export item source list to clipboard.lua
-	../Libraries/CS_Library.lua > CS_Export item source list to clipboard/CS_Library.lua  
+	. > CS_Select All item with same custom color as selected item/CS_Select All item with same custom color as selected item.lua
+	../Libraries/CS_Library.lua > CS_Select All item with same custom color as selected item/CS_Library.lua  
 --]]
 
 
@@ -39,17 +39,19 @@ local cs = loadFromFolder("CS_Library")
 ---------------------------------------------------------------
 
 local function main()
-	local filelist = {}
-	for item in cs.selectedItems(0) do
-		local take = reaper.GetActiveTake(item)
-		if not take then break end
-		local source = reaper.GetMediaItemTake_Source(take)
-		local sourceName = reaper.GetMediaSourceFileName(source,"")
-		if sourceName and sourceName ~= "" then
-			table.insert(filelist,sourceName)
-		end
+	if reaper.CountSelectedMediaItems(0) ~= 1 then reaper.ShowMessageBox("Please select a single item for reference","ERROR",0) ; return end
+	local refItem = reaper.GetSelectedMediaItem(0,0)
+	local refColor = reaper.GetMediaItemInfo_Value(refItem,"I_CUSTOMCOLOR")
+	-- cs.msg(refColor)
+
+	reaper.SelectAllMediaItems(0,false)
+	for i=0,reaper.CountMediaItems(0) - 1 do
+		local item = reaper.GetMediaItem(0,i)
+		if reaper.GetMediaItemInfo_Value(item,"I_CUSTOMCOLOR") == refColor then
+			reaper.SetMediaItemSelected(item,true)
+		end	
 	end
-	if #filelist > 0 then reaper.CF_SetClipboard(table.concat(filelist,"\n")) end
+
 end
 
 ---------------------------------------------------------------
@@ -62,6 +64,6 @@ reaper.Undo_BeginBlock2(0)
 	main()
 -- end
 
-reaper.Undo_EndBlock2(0,"Export item source list to clipboard",0)
+reaper.Undo_EndBlock2(0,"Select All item with same custom color as selected item",1)
 reaper.PreventUIRefresh(-1)
 reaper.UpdateArrange()
