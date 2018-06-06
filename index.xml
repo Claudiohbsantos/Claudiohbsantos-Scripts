@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="d6697b40790e6e4ba3e34fb88ec1cb7927a32d9f" name="Claudiohbsantos Scripts">
+<index version="1" commit="157d98ba38901791da03f824bcebad47cf0a89ab" name="Claudiohbsantos Scripts">
   <category name="Lua/Automation">
     <reapack name="CS_ConvertVolumeAutomationFadesToItemFades.lua" type="script" desc="Convert Volume Automation Fades To Item Fades">
       <metadata>
@@ -644,15 +644,38 @@ Multiple Selected
         <source file="CS_Item Enable LoopSource/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/f3e4b6d691e244983a90f6ff85380d01cae59900/Lua/Libraries/CS_Library.lua</source>
       </version>
     </reapack>
-  </category>
-  <category name="Lua/Libraries">
-    <reapack name="TextInput_Module.lua" type="script" desc="Search tracks">
+    <reapack name="CS_Select All item with same custom color as selected item.lua" type="script" desc="Select All item with same custom color as selected item">
       <metadata>
-        <link rel="website">http://forum.cockos.com/member.php?u=70694</link>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Select All item with same custom color as selected item\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
       </metadata>
-      <version name="1.0" author="mpl" time="2018-05-18T23:51:39Z">
-        <changelog><![CDATA[+ init release]]></changelog>
-        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/d6697b40790e6e4ba3e34fb88ec1cb7927a32d9f/Lua/Libraries/TextInput_Module.lua</source>
+      <version name="1.0" author="Claudiohbsantos" time="2018-06-06T14:35:51Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main" file="CS_Select All item with same custom color as selected item/CS_Select All item with same custom color as selected item.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/157d98ba38901791da03f824bcebad47cf0a89ab/Lua/Items/CS_Select%20All%20item%20with%20same%20custom%20color%20as%20selected%20item.lua</source>
+        <source file="CS_Select All item with same custom color as selected item/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/157d98ba38901791da03f824bcebad47cf0a89ab/Lua/Libraries/CS_Library.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Select all items with same number of channels.lua" type="script" desc="Select all items with same number of channels">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Select all items with same number of channels\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-06-06T14:35:51Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main" file="CS_Select all items with same number of channels/CS_Select all items with same number of channels.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/157d98ba38901791da03f824bcebad47cf0a89ab/Lua/Items/CS_Select%20all%20items%20with%20same%20number%20of%20channels.lua</source>
+        <source file="CS_Select all items with same number of channels/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/157d98ba38901791da03f824bcebad47cf0a89ab/Lua/Libraries/CS_Library.lua</source>
       </version>
     </reapack>
   </category>
@@ -875,6 +898,12 @@ SoloXORExample
         <changelog><![CDATA[- Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/ca06bed8cfb4885dddd64ed6ed5c96a7f19256d3/Lua/Playback/CS_SoloXOR_Across_Projects.lua</source>
       </version>
+      <version name="1.1" author="Claudiohbsantos" time="2018-06-06T14:35:51Z">
+        <changelog><![CDATA[- Fixed error when no tracks are selected
+- removed undo point
+- unsolo all if no track is selected]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/157d98ba38901791da03f824bcebad47cf0a89ab/Lua/Playback/CS_SoloXOR_Across_Projects.lua</source>
+      </version>
     </reapack>
   </category>
   <category name="Lua/Recording">
@@ -918,13 +947,30 @@ SoloXORExample
     </reapack>
   </category>
   <category name="Lua/Tools">
-    <reapack name="CS_Export item source list to clipboard.lua" type="script" desc="Export item source list to TXT">
+    <reapack name="CS_Export item name list to clipboard.lua" type="script" desc="Export item name list to TXT">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
 \widowctrl\hyphauto
 
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Export item source list to TXT\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Export item name list to TXT\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-06-06T14:35:51Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main" file="CS_Export item name list to clipboard/CS_Export item name list to clipboard.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/157d98ba38901791da03f824bcebad47cf0a89ab/Lua/Tools/CS_Export%20item%20name%20list%20to%20clipboard.lua</source>
+        <source file="CS_Export item name list to clipboard/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/157d98ba38901791da03f824bcebad47cf0a89ab/Lua/Libraries/CS_Library.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Export item source list to clipboard.lua" type="script" desc="Export item source list to clipboard">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Export item source list to clipboard\par}
 }
 ]]></description>
         <link rel="website">http://claudiohbsantos.com</link>
@@ -933,6 +979,11 @@ SoloXORExample
         <changelog><![CDATA[- Initial Release]]></changelog>
         <source main="main" file="CS_Export item source list to TXT/CS_Export item source list to TXT.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/d6697b40790e6e4ba3e34fb88ec1cb7927a32d9f/Lua/Tools/CS_Export%20item%20source%20list%20to%20clipboard.lua</source>
         <source file="CS_Export item source list to TXT/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/d6697b40790e6e4ba3e34fb88ec1cb7927a32d9f/Lua/Libraries/CS_Library.lua</source>
+      </version>
+      <version name="1.1" author="Claudiohbsantos" time="2018-06-06T14:35:51Z">
+        <changelog><![CDATA[- corrected name]]></changelog>
+        <source main="main" file="CS_Export item source list to clipboard/CS_Export item source list to clipboard.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/157d98ba38901791da03f824bcebad47cf0a89ab/Lua/Tools/CS_Export%20item%20source%20list%20to%20clipboard.lua</source>
+        <source file="CS_Export item source list to clipboard/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/157d98ba38901791da03f824bcebad47cf0a89ab/Lua/Libraries/CS_Library.lua</source>
       </version>
     </reapack>
     <reapack name="CS_GoToTime.lua" type="script" desc="CS_Go To Time">
@@ -1269,6 +1320,23 @@ SoloXORExample
       <version name="1.0" author="Claudiohbsantos" time="2018-05-18T23:51:39Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
         <source main="main" file="CS_Show FX Chain for item or Track depending on mouse context/CS_Show FX Chain for item or Track depending on mouse context.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/d6697b40790e6e4ba3e34fb88ec1cb7927a32d9f/Lua/View/CS_Show%20FX%20Chain%20for%20item%20or%20Track%20depending%20on%20mouse%20context.lua</source>
+      </version>
+    </reapack>
+    <reapack name="CS_Toggle Item or Track Volume Envelope Visible depending on mouse context.lua" type="script" desc="Toggle Item or Track Volume Envelope Visible depending on mouse context">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Toggle Item or Track Volume Envelope Visible depending on mouse context\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.0" author="Claudiohbsantos" time="2018-06-06T14:35:51Z">
+        <changelog><![CDATA[- Initial Release]]></changelog>
+        <source main="main" file="CS_Toggle Item or Track Volume Envelope Visible depending on mouse context/CS_Toggle Item or Track Volume Envelope Visible depending on mouse context.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/157d98ba38901791da03f824bcebad47cf0a89ab/Lua/View/CS_Toggle%20Item%20or%20Track%20Volume%20Envelope%20Visible%20depending%20on%20mouse%20context.lua</source>
+        <source file="CS_Toggle Item or Track Volume Envelope Visible depending on mouse context/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/157d98ba38901791da03f824bcebad47cf0a89ab/Lua/Libraries/CS_Library.lua</source>
       </version>
     </reapack>
   </category>
