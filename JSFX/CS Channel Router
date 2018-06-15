@@ -1,14 +1,12 @@
-// @description CS Channel Router
-// @version 1.0
-// @author Claudiohbsantos
-// @link http://claudiohbsantos.com
-// @date 2018 05 18
-// @about
-//   # CS Channel Router
-// @changelog
-//   - Initial Release 
-
 desc:CS Channel Router
+version: 1.0
+author: Claudiohbsantos
+link: http://claudiohbsantos.com
+date: 2018 05 18
+about:
+ # CS Channel Router
+changelog:
+ - Initial Release 
 
 
 

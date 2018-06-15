@@ -81,7 +81,7 @@ function setSnapOffset()
 			reaper.Main_OnCommand(40936,0) -- normalize
 			reaper.Main_OnCommand(40836,0) -- go to closest transient in item
 			reaper.Main_OnCommand(40541,0) -- set snap offset to cursor
-			reaper.Main_OnCommand(40936,0) -- unnormalize
+			reaper.Main_OnCommand(40938,0) -- unnormalize
 			return
 		end
 	end	
@@ -90,7 +90,7 @@ function setSnapOffset()
 	reaper.SetMediaItemSelected(mouseItem,true)
 	reaper.Main_OnCommand(40936,0) -- normalize
 	reaper.Main_OnCommand(40836,0) -- go to closest transient in item
-	reaper.Main_OnCommand(40936,0) -- unnormalize
+	reaper.Main_OnCommand(40938,0) -- unnormalize
 	reaper.Main_OnCommand(40541,0) -- set snap offset to cursor
 	return
 end

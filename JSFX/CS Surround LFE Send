@@ -1,14 +1,13 @@
-// @description CS Surround LFE Send
-// @version 1.0
-// @author Claudiohbsantos
-// @link http://claudiohbsantos.com
-// @date 2018 05 19
-// @about
-//   # CS Surround LFE Send
-// @changelog
-//   - Initial Release 
-
 desc:CS Surround LFE Send
+version: 1.0
+author: Claudiohbsantos
+link: http://claudiohbsantos.com
+date: 2018 05 18
+about:
+ # CS Surround LFE Send
+changelog:
+ - Initial Release 
+
 
 in_pin:1
 in_pin:2
