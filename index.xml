@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="7e3f24c6792a3b903a8c37e346718204e133b016" name="Claudiohbsantos Scripts">
+<index version="1" commit="d29f782d18f2b644b18a1d4aa442570cd6bfdbd5" name="Claudiohbsantos Scripts">
   <category name="JSFX">
     <reapack name="CS Channel 32 Channel Mixer.jsfx" type="effect" desc="CS Channel 32 Channel Mixer">
       <metadata>
@@ -47,6 +47,22 @@
       <version name="1.1" author="Claudiohbsantos" time="2018-07-02T20:59:21Z">
         <changelog><![CDATA[- Initial Release ]]></changelog>
         <source>https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/7e3f24c6792a3b903a8c37e346718204e133b016/JSFX/CS%20LR%20to%20Center%20Channel%20Send%20(Ch%203%20Mixer).jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="CS Stereo Phase Meter.jsfx" type="effect" desc="CS Stereo Phase Meter">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 CS Stereo Phase Meter\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.2" author="Claudiohbsantos" time="2018-07-02T21:00:25Z">
+        <changelog><![CDATA[- Initial Release ]]></changelog>
+        <source>https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/d29f782d18f2b644b18a1d4aa442570cd6bfdbd5/JSFX/CS%20Stereo%20Phase%20Meter.jsfx</source>
       </version>
     </reapack>
     <reapack name="CS Surround Channel Order Converter.jsfx" type="effect" desc="CS Surround Channel Order Converter">
