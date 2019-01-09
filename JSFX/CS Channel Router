@@ -1,0 +1,156 @@
+desc:CS Channel Router
+version: 1.1
+author: Claudiohbsantos
+link: http://claudiohbsantos.com
+date: 2018 05 18
+about:
+ # CS Channel Router
+changelog:
+ - Initial Release 
+
+
+
+slider1:0<0,64,1{none,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64}>Channel Input
+slider2:0<0,64,1{none,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64}>Channel Output
+
+// in_pin:input 1
+// in_pin:input 2
+// in_pin:input 3
+// in_pin:input 4
+// in_pin:input 5
+// in_pin:input 6
+// in_pin:input 7
+// in_pin:input 8
+// in_pin:input 9
+// in_pin:input 10
+// in_pin:input 11
+// in_pin:input 12
+// in_pin:input 13
+// in_pin:input 14
+// in_pin:input 15
+// in_pin:input 16
+// in_pin:input 17
+// in_pin:input 18
+// in_pin:input 19
+// in_pin:input 20
+// in_pin:input 21
+// in_pin:input 22
+// in_pin:input 23
+// in_pin:input 24
+// in_pin:input 25
+// in_pin:input 26
+// in_pin:input 27
+// in_pin:input 28
+// in_pin:input 29
+// in_pin:input 30
+// in_pin:input 31
+// in_pin:input 32
+// in_pin:input 33
+// in_pin:input 34
+// in_pin:input 35
+// in_pin:input 36
+// in_pin:input 37
+// in_pin:input 38
+// in_pin:input 39
+// in_pin:input 40
+// in_pin:input 41
+// in_pin:input 42
+// in_pin:input 43
+// in_pin:input 44
+// in_pin:input 45
+// in_pin:input 46
+// in_pin:input 47
+// in_pin:input 48
+// in_pin:input 49
+// in_pin:input 50
+// in_pin:input 51
+// in_pin:input 52
+// in_pin:input 53
+// in_pin:input 54
+// in_pin:input 55
+// in_pin:input 56
+// in_pin:input 57
+// in_pin:input 58
+// in_pin:input 59
+// in_pin:input 60
+// in_pin:input 61
+// in_pin:input 62
+// in_pin:input 63
+// in_pin:input 64
+
+// out_pin:output 1
+// out_pin:output 2
+// out_pin:output 3
+// out_pin:output 4
+// out_pin:output 5
+// out_pin:output 6
+// out_pin:output 7
+// out_pin:output 8
+// out_pin:output 9
+// out_pin:output 10
+// out_pin:output 11
+// out_pin:output 12
+// out_pin:output 13
+// out_pin:output 14
+// out_pin:output 15
+// out_pin:output 16
+// out_pin:output 17
+// out_pin:output 18
+// out_pin:output 19
+// out_pin:output 20
+// out_pin:output 21
+// out_pin:output 22
+// out_pin:output 23
+// out_pin:output 24
+// out_pin:output 25
+// out_pin:output 26
+// out_pin:output 27
+// out_pin:output 28
+// out_pin:output 29
+// out_pin:output 30
+// out_pin:output 31
+// out_pin:output 32
+// out_pin:output 33
+// out_pin:output 34
+// out_pin:output 35
+// out_pin:output 36
+// out_pin:output 37
+// out_pin:output 38
+// out_pin:output 39
+// out_pin:output 40
+// out_pin:output 41
+// out_pin:output 42
+// out_pin:output 43
+// out_pin:output 44
+// out_pin:output 45
+// out_pin:output 46
+// out_pin:output 47
+// out_pin:output 48
+// out_pin:output 49
+// out_pin:output 50
+// out_pin:output 51
+// out_pin:output 52
+// out_pin:output 53
+// out_pin:output 54
+// out_pin:output 55
+// out_pin:output 56
+// out_pin:output 57
+// out_pin:output 58
+// out_pin:output 59
+// out_pin:output 60
+// out_pin:output 61
+// out_pin:output 62
+// out_pin:output 63
+// out_pin:output 64
+
+////////////////////////////////////////////////////////////////////////////////
+
+@slider
+inL = slider1 - 1;
+outL = slider2 - 1;
+
+////////////////////////////////////////////////////////////////////////////////
+
+@sample
+(inL >= 0 ) ? ( tmpL = spl(inL); spl(inL) = 0;) : ( tmpL = 0;); 
+(outL >= 0) ? (spl(outL) = tmpL;);

@@ -1,0 +1,142 @@
+desc:CS Channel 32 Channel Mixer
+version: 1.1
+author: Claudiohbsantos
+link: http://claudiohbsantos.com
+date: 2018 05 18
+about:
+ # CS Channel 32 Channel Mixer
+changelog:
+ - Initial Release 
+
+
+
+slider1:0<-120,12,1>ch 1 Volume (dB)
+slider2:0<-120,12,1>ch 2 Volume (dB)
+slider3:0<-120,12,1>ch 3 Volume (dB)
+slider4:0<-120,12,1>ch 4 Volume (dB)
+slider5:0<-120,12,1>ch 5 Volume (dB)
+slider6:0<-120,12,1>ch 6 Volume (dB)
+slider7:0<-120,12,1>ch 7 Volume (dB)
+slider8:0<-120,12,1>ch 8 Volume (dB)
+slider9:0<-120,12,1>ch 9 Volume (dB)
+slider10:0<-120,12,1>ch 10 Volume (dB)
+slider11:0<-120,12,1>ch 11 Volume (dB)
+slider12:0<-120,12,1>ch 12 Volume (dB)
+slider13:0<-120,12,1>ch 13 Volume (dB)
+slider14:0<-120,12,1>ch 14 Volume (dB)
+slider15:0<-120,12,1>ch 15 Volume (dB)
+slider16:0<-120,12,1>ch 16 Volume (dB)
+slider17:0<-120,12,1>ch 17 Volume (dB)
+slider18:0<-120,12,1>ch 18 Volume (dB)
+slider19:0<-120,12,1>ch 19 Volume (dB)
+slider20:0<-120,12,1>ch 20 Volume (dB)
+slider21:0<-120,12,1>ch 21 Volume (dB)
+slider22:0<-120,12,1>ch 22 Volume (dB)
+slider23:0<-120,12,1>ch 23 Volume (dB)
+slider24:0<-120,12,1>ch 24 Volume (dB)
+slider25:0<-120,12,1>ch 25 Volume (dB)
+slider26:0<-120,12,1>ch 26 Volume (dB)
+slider27:0<-120,12,1>ch 27 Volume (dB)
+slider28:0<-120,12,1>ch 28 Volume (dB)
+slider29:0<-120,12,1>ch 29 Volume (dB)
+slider30:0<-120,12,1>ch 30 Volume (dB)
+slider31:0<-120,12,1>ch 31 Volume (dB)
+slider32:0<-120,12,1>ch 32 Volume (dB)
+
+// https://forum.cockos.com/showthread.php?t=61733
+// desc: volume
+// slider1:1<0,1,0.01>Trim
+
+// @slider
+// adj1 = slider1;
+// doseek=1;
+
+// @block
+// doseek ? (
+// dadj=(adj1-adj1_s)/samplesblock;
+// doseek=0;
+// );(
+// dadj=0;
+// adj1_s=adj1;
+// );
+
+// @sample
+// spl0=spl0*adj1_s;
+// spl1=spl1*adj1_s;
+// adj1_s+=dadj;
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+@slider
+
+adj1 = (2^(slider1/6));
+adj2 = (2^(slider2/6));
+adj3 = (2^(slider3/6));
+adj4 = (2^(slider4/6));
+adj5 = (2^(slider5/6));
+adj6 = (2^(slider6/6));
+adj7 = (2^(slider7/6));
+adj8 = (2^(slider8/6));
+adj9 = (2^(slider9/6));
+adj10 = (2^(slider10/6));
+adj11 = (2^(slider11/6));
+adj12 = (2^(slider12/6));
+adj13 = (2^(slider13/6));
+adj14 = (2^(slider14/6));
+adj15 = (2^(slider15/6));
+adj16 = (2^(slider16/6));
+adj17 = (2^(slider17/6));
+adj18 = (2^(slider18/6));
+adj19 = (2^(slider19/6));
+adj20 = (2^(slider20/6));
+adj21 = (2^(slider21/6));
+adj22 = (2^(slider22/6));
+adj23 = (2^(slider23/6));
+adj24 = (2^(slider24/6));
+adj25 = (2^(slider25/6));
+adj26 = (2^(slider26/6));
+adj27 = (2^(slider27/6));
+adj28 = (2^(slider28/6));
+adj29 = (2^(slider29/6));
+adj30 = (2^(slider30/6));
+adj31 = (2^(slider31/6));
+adj32 = (2^(slider32/6));
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+@sample
+spl(0) = spl(0)*adj1;
+spl(1) = spl(1)*adj2;
+spl(2) = spl(2)*adj3;
+spl(3) = spl(3)*adj4;
+spl(4) = spl(4)*adj5;
+spl(5) = spl(5)*adj6;
+spl(6) = spl(6)*adj7;
+spl(7) = spl(7)*adj8;
+spl(8) = spl(8)*adj9;
+spl(9) = spl(9)*adj10;
+spl(10) = spl(10)*adj11;
+spl(11) = spl(11)*adj12;
+spl(12) = spl(12)*adj13;
+spl(13) = spl(13)*adj14;
+spl(14) = spl(14)*adj15;
+spl(15) = spl(15)*adj16;
+spl(16) = spl(16)*adj17;
+spl(17) = spl(17)*adj18;
+spl(18) = spl(18)*adj19;
+spl(19) = spl(19)*adj20;
+spl(20) = spl(20)*adj21;
+spl(21) = spl(21)*adj22;
+spl(22) = spl(22)*adj23;
+spl(23) = spl(23)*adj24;
+spl(24) = spl(24)*adj25;
+spl(25) = spl(25)*adj26;
+spl(26) = spl(26)*adj27;
+spl(27) = spl(27)*adj28;
+spl(28) = spl(28)*adj29;
+spl(29) = spl(29)*adj30;
+spl(30) = spl(30)*adj31;
+spl(31) = spl(31)*adj32;
