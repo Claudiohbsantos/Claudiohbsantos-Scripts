@@ -1,5 +1,4 @@
 --[[
-@noindex
 @description Select all active takes with take volume below threshold
 @version 1.1
 @author Claudiohbsantos
