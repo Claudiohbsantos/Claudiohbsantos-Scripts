@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="d29f782d18f2b644b18a1d4aa442570cd6bfdbd5" name="Claudiohbsantos Scripts">
+<index version="1" commit="ddd79eb7b2fdaa1b6dfb3077881014b660562019" name="Claudiohbsantos Scripts">
   <category name="JSFX">
     <reapack name="CS Channel 32 Channel Mixer.jsfx" type="effect" desc="CS Channel 32 Channel Mixer">
       <metadata>
@@ -1041,75 +1041,6 @@ SoloXORExample
       <version name="1.0" author="Claudiohbsantos" time="2017-04-09T02:15:35Z">
         <changelog><![CDATA[- Initial Release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/a82b380cac8c744b0748aca9a7430633b3beb7f3/Lua/Selection/CS_Extend%20Track%20Selection%20to%20Track%20under%20Mouse.lua</source>
-      </version>
-    </reapack>
-    <reapack name="CS_Select all items with take fx.lua" type="script" desc="Select all items with take fx">
-      <metadata>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
-{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-\widowctrl\hyphauto
-
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Select all items with take fx\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Select all items with take fx on active take\par}
-}
-]]></description>
-        <link rel="website">http://claudiohbsantos.com</link>
-      </metadata>
-      <version name="1.0" author="Claudiohbsantos" time="2018-07-02T17:26:36Z">
-        <changelog><![CDATA[- Initial Release]]></changelog>
-        <source main="main" file="CS_Select all items with take fx/CS_Select all items with take fx.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/84099c5826fe0244209edb3b594f9d157dde2bb2/Lua/Selection/CS_Select%20all%20items%20with%20take%20fx.lua</source>
-        <source file="CS_Select all items with take fx/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/84099c5826fe0244209edb3b594f9d157dde2bb2/Lua/Libraries/CS_Library.lua</source>
-      </version>
-    </reapack>
-    <reapack name="CS_Select all items without take fx.lua" type="script" desc="Select all items without take fx">
-      <metadata>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
-{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-\widowctrl\hyphauto
-
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Select all items without take fx\par}
-}
-]]></description>
-        <link rel="website">http://claudiohbsantos.com</link>
-      </metadata>
-      <version name="1.0" author="Claudiohbsantos" time="2018-07-02T17:26:36Z">
-        <changelog><![CDATA[- Initial Release]]></changelog>
-        <source main="main" file="CS_Select all items without take fx/CS_Select all items without take fx.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/84099c5826fe0244209edb3b594f9d157dde2bb2/Lua/Selection/CS_Select%20all%20items%20without%20take%20fx.lua</source>
-        <source file="CS_Select all items without take fx/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/84099c5826fe0244209edb3b594f9d157dde2bb2/Lua/Libraries/CS_Library.lua</source>
-      </version>
-    </reapack>
-    <reapack name="CS_Unselect all items with take fx.lua" type="script" desc="Unselect all items with take fx">
-      <metadata>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
-{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-\widowctrl\hyphauto
-
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Unselect all items with take fx\par}
-}
-]]></description>
-        <link rel="website">http://claudiohbsantos.com</link>
-      </metadata>
-      <version name="1.0" author="Claudiohbsantos" time="2018-07-02T17:26:36Z">
-        <changelog><![CDATA[- Initial Release]]></changelog>
-        <source main="main" file="CS_Unselect all items with take fx/CS_Unselect all items with take fx.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/84099c5826fe0244209edb3b594f9d157dde2bb2/Lua/Selection/CS_Unselect%20all%20items%20with%20take%20fx.lua</source>
-        <source file="CS_Unselect all items with take fx/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/84099c5826fe0244209edb3b594f9d157dde2bb2/Lua/Libraries/CS_Library.lua</source>
-      </version>
-    </reapack>
-    <reapack name="CS_Unselect all items without take fx.lua" type="script" desc="Unselect all items without take fx">
-      <metadata>
-        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
-{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
-\widowctrl\hyphauto
-
-{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Unselect all items without take fx\par}
-}
-]]></description>
-        <link rel="website">http://claudiohbsantos.com</link>
-      </metadata>
-      <version name="1.0" author="Claudiohbsantos" time="2018-07-02T17:26:36Z">
-        <changelog><![CDATA[- Initial Release]]></changelog>
-        <source main="main" file="CS_Unselect all items without take fx/CS_Unselect all items without take fx.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/84099c5826fe0244209edb3b594f9d157dde2bb2/Lua/Selection/CS_Unselect%20all%20items%20without%20take%20fx.lua</source>
-        <source file="CS_Unselect all items without take fx/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/84099c5826fe0244209edb3b594f9d157dde2bb2/Lua/Libraries/CS_Library.lua</source>
       </version>
     </reapack>
   </category>
