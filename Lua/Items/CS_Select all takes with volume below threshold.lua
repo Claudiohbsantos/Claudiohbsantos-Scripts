@@ -1,7 +1,7 @@
 --[[
 @noindex
 @description Select all active takes with take volume below threshold
-@version 1.0
+@version 1.1
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2019 04 17
