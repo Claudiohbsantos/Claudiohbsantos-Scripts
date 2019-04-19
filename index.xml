@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="ecec2559110cce576d5a23b6a19314176c0b21ef" name="Claudiohbsantos Scripts">
+<index version="1" commit="ce744f62047426bab1d0e58060e3fcdd2c268795" name="Claudiohbsantos Scripts">
   <category name="JSFX">
     <reapack name="CS Channel 32 Channel Mixer.jsfx" type="effect" desc="CS Channel 32 Channel Mixer">
       <metadata>
@@ -789,6 +789,9 @@ Multiple Selected
       </metadata>
       <version name="1.1" author="Claudiohbsantos" time="2019-04-17T22:18:14Z">
         <source main="main">https://gitea.clsantos.me/claudio/ReaperScripts/raw/ecec2559110cce576d5a23b6a19314176c0b21ef/Lua/Items/CS_Select%20all%20takes%20with%20volume%20below%20threshold.lua</source>
+      </version>
+      <version name="1.2" author="Claudiohbsantos" time="2019-04-19T21:11:28Z">
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/ce744f62047426bab1d0e58060e3fcdd2c268795/Lua/Items/CS_Select%20all%20takes%20with%20volume%20below%20threshold.lua</source>
       </version>
     </reapack>
   </category>
