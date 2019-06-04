@@ -1,5 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="ce744f62047426bab1d0e58060e3fcdd2c268795" name="Claudiohbsantos Scripts">
+<index version="1" commit="405f20ca9d824047614d544de3cec083e2852ff0" name="Claudiohbsantos Scripts">
+  <category name="DBManager">
+    <reapack name="Reapack_Header.lua" type="script" desc="DBManager">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 Database manager GUI for Reaper Media Explorer. Uses DBAssistant to make changes - https://github.com/Claudiohbsantos/DBAssistant . The executable will be automatically downloaded upon installation. Depends on JS Reascript API and Lokasenna GUI Library v2.\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="0.4beta" author="Claudiohbsantos" time="2019-06-04T02:06:46Z">
+        <changelog><![CDATA[DBManager v0.4
+FEATURES
+    - Check reaper version and quit if unsupported
+    - Warn to download JS API
+    - Warn to download Lokasenna GUI library
+    - Add version number to Help menu
+BUGS
+    - Error when having spaces on DBAssistant path
+    - Glitches when opening and closing multiple subwindows
+    - User settings wiped when quiting with user picker dialog open
+    - Error when trying to rename without any selected DBs 
+    - Esc was triggering Ctrl+[
+    - Double click to rename disabled due to bug that prevents typing when double clicking twice
+IMPROVEMENTS
+    - Separated Developement of DBManager and DBAssistant for ease of maintenance
+    - Lokasenna GUI is now added as a dependency instead of bundled (access to bugfixes)
+DEVELOPED WITH
+    - Reaper 5.978
+    - JS Reascript API 0.987
+    - Lokasenna GUI Library 2.16.6
+DBAssistant v0.3.1
+FEATURES
+    - Extracts all fields of metadata from BEXT, iXML, ID3, exif and vorbis tags.
+    - New metadata extractor without external dependencies
+IMPROVEMENTS
+    - DBAssistant doesn't depend on config.json anymore
+    - .ogg, .flac, .aif and .wv formats are now recognized
+    - Avoid newlines on verbose logging
+    - More steps are logged to file]]></changelog>
+        <source main="main" file="DBManager.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/405f20ca9d824047614d544de3cec083e2852ff0/DBManager/DBManager.lua</source>
+        <source file="lua_modules/json.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/405f20ca9d824047614d544de3cec083e2852ff0/DBManager/lua_modules/json.lua</source>
+        <source file="reascript_modules/DBM_popups.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/405f20ca9d824047614d544de3cec083e2852ff0/DBManager/reascript_modules/DBM_popups.lua</source>
+        <source file="reascript_modules/DBM_helper.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/405f20ca9d824047614d544de3cec083e2852ff0/DBManager/reascript_modules/DBM_helper.lua</source>
+        <source file="reascript_modules/DBM_GUI.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/405f20ca9d824047614d544de3cec083e2852ff0/DBManager/reascript_modules/DBM_GUI.lua</source>
+        <source file="reascript_modules/DBM_actions.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/405f20ca9d824047614d544de3cec083e2852ff0/DBManager/reascript_modules/DBM_actions.lua</source>
+        <source file="Documentation/MediaDB_Notes.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/405f20ca9d824047614d544de3cec083e2852ff0/DBManager/Documentation/MediaDB_Notes.md</source>
+        <source file="Documentation/ReaperFileList_CheatSheet.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/405f20ca9d824047614d544de3cec083e2852ff0/DBManager/Documentation/ReaperFileList_CheatSheet.md</source>
+        <source file="Documentation/configTemplate.json">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/405f20ca9d824047614d544de3cec083e2852ff0/DBManager/Documentation/configTemplate.json</source>
+        <source file="changelog.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/405f20ca9d824047614d544de3cec083e2852ff0/DBManager/changelog.md</source>
+        <source platform="windows" file="dbassistant.exe">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.1/dbassistant.exe</source>
+        <source file="dbassistant_changelog.md">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.1/changelog.md</source>
+      </version>
+    </reapack>
+  </category>
   <category name="JSFX">
     <reapack name="CS Channel 32 Channel Mixer.jsfx" type="effect" desc="CS Channel 32 Channel Mixer">
       <metadata>
