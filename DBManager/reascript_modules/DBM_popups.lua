@@ -149,7 +149,7 @@ end
 function exportDBsWindow.ok()
     local newLib = GUI.Val("inputbox")
     local dest = GUI.Val("destbox")
-    GUI.elms.exportDial:clsoe()
+    GUI.elms.exportDial:close()
     GUI.elms.userlist:redraw()
     return newLib , dest
 end
@@ -209,6 +209,7 @@ function userPicker.open(setFunc)
         h = 280,
         z_set = {49,50},
         caption = "User",
+        noclose = true,         
         })
 
     GUI.New("users", "Radio", {
@@ -571,7 +572,7 @@ function addWindow.open(addFunc)
         -- TODO: Fix preview fo fullpath subdir
         local intro = "dest: "
 
-        local user = "\\"..dbm.user
+        local user = "\\".. (dbm.user or '')
 
         local subdir 
         if GUI.Val("subdirName") ~= "" then subdir = "\\"..GUI.Val("subdirName") end
@@ -615,8 +616,6 @@ function addWindow.addClick()
     
     return add
 end
-
-
 
 function showGeneralMenu()
     gfx.x = GUI.mouse.x

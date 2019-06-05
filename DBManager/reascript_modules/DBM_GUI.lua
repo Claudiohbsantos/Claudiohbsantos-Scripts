@@ -49,7 +49,6 @@ GUI.x, GUI.y, GUI.w, GUI.h = 0, 0, 416, 670
 GUI.anchor, GUI.corner = "mouse", "C"
 
 loadLuaModule("DBM_popups")
-if not dbm.user then dbm.act.setUser() end
 
 dbm.ui = {}
 dbm.ui.menubar = {
@@ -73,7 +72,7 @@ dbm.ui.menubar = {
                 {"MasterDB: "..dbm.config.masterDB,dbm.act.chooseNewMasterDBPath},
             }},
             {title = "Help", options = {
-                {"#DBManager Version: 0.4", foo}
+                {"#DBManager Version: 0.5beta", foo}
             }}
         }
 
@@ -321,3 +320,5 @@ end
 
 GUI.Init()
 GUI.Main()
+
+if not dbm.user then dbm.act.setUser() end

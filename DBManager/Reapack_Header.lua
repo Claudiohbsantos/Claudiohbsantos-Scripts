@@ -1,7 +1,7 @@
 --[[
 @metapackage true
 @description DBManager
-@version 0.4beta
+@version 0.5beta
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2019 06 03
