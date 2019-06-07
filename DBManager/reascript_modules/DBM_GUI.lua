@@ -62,7 +62,6 @@ dbm.ui.menubar = {
             {title = "DB", options = {
                 {"Add SFX to Selected DBs",dbm.act.importSFX},
                 {"Clean Duplicate Entries in Selected DBs",dbm.act.cleanDuplicates},
-                -- TODO implement export DBs
                 {"Export DBs for portable use",dbm.act.exportDBs},
             }},
             {title = "Options", options = {
@@ -70,9 +69,12 @@ dbm.ui.menubar = {
                 {"Library: "..dbm.config.library,dbm.act.chooseNewLibraryPath},
                 {"Databases: "..dbm.config.databases,dbm.act.chooseNewDatabasesPath},
                 {"MasterDB: "..dbm.config.masterDB,dbm.act.chooseNewMasterDBPath},
+                {"Import Configuration File", importConfigFile}
             }},
             {title = "Help", options = {
-                {"#DBManager Version: 0.5beta", foo}
+                {"#DBManager Version: 0.6beta", foo},
+                {"Show DBAssistant version", dbm.act.showDBAVersion}
+                -- ADD Dependencies list
             }}
         }
 

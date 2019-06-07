@@ -87,6 +87,10 @@ function dbaExec(command)
     return output
 end
 
+function act.showDBAVersion()
+    dbaExec("-V")
+end
+
 function getFirstSelectedIndex()
     local sel = GUI.Val("userlist")
     local first

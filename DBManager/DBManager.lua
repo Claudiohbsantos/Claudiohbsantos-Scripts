@@ -23,6 +23,8 @@ function loadLuaModule(...)
     -- return nil
 end
 
+
+
 local function checkDependencies()
     local reaperVersion = tonumber(reaper.GetAppVersion():match("[%d%.]+"))
     if reaperVersion < 5.978 then 
@@ -47,12 +49,20 @@ local function checkDependencies()
         return true
     end
 
-    if not reaper.HasExtState("Lokasenna_GUI", "lib_path_v2") then
-        reaper.MB("This script depends on the Lokasenna GUI Library, which seems to be missing or unconfigured. Please install it using Reapack and run the \"Set Lokasenna_GUI v2 library path.lua\" script","Error",0)
+    local GUI_path = reaper.GetExtState("Lokasenna_GUI", "lib_path_v2")
+    if not GUI_path or GUI_path == "" or not reaper.file_exists(GUI_path .. "Core.lua") then
+        reaper.MB("This script depends on the Lokasenna GUI Library, which seems to be missing or misconfigured. Please install it using Reapack and run the \"Set Lokasenna_GUI v2 library path.lua\" script","Error",0)
         if reaper.APIExists("ReaPack_BrowsePackages") then
             reaper.ReaPack_BrowsePackages("Lokasenna GUI library v2 for Lua")
         end
         return true
+    end
+    
+    local GUI_ReaPackage = reaper.ReaPack_GetOwner(GUI_path .. "Core.lua")
+    _,_,_,_,_,_,GUI_ver = reaper.ReaPack_GetEntryInfo(GUI_ReaPackage)
+    local GUI_major,GUI_minor,GUI_patch = GUI_ver:match("(%d+)%.(%d+)%.(%d+)")
+    if tonumber(GUI_major) ~= 2 or tonumber(GUI_minor) < 16 or tonumber(GUI_patch) < 6 then
+        reaper.MB("This script was tested with Lokasenna GUI Library version 2.16.6, and you seem to be running an older version of the library. It is recommended that you update to the latest version","Error",0)
     end
 end
 
@@ -191,33 +201,67 @@ local function getUserDBListIndexedFrom1(inisection)
 	return dbs
 end
 
+
+function importConfigFile()
+    local configFile = selectFiles(false, "config\0*.json\0\0",get_script_path())
+    if not configFile then return end
+
+    local retval,config = pcall(readJsonFile,configFile)
+    if not retval then 
+        reaper.MB("Failed to read selected config file","ERROR",0) 
+        return 
+    end
+    
+    writeJsonFile(json.stringify(config),dbm.configPath)
+    if not reaper.file_exists(dbm.configPath) then 
+        reaper.MB("Failed to write imported config file","ERROR",0)
+        return
+    end
+
+    dbm.config = config
+
+    if dbm.ui then dbm.ui.menubar[3].options[2][1] = "Library: ".. dbm.config.library end
+    if dbm.ui then dbm.ui.menubar[3].options[3][1] = "Databases: ".. dbm.config.databases end
+    if dbm.ui then dbm.ui.menubar[3].options[4][1] = "MasterDB: ".. dbm.config.masterDB end
+
+    return config
+end
+
 local function getConfig()
     dbm.configPath = get_script_path().."config.json"
     local retval,config = pcall(readJsonFile,dbm.configPath)
 
     if not retval then
-        dbm.config = {}
-        reaper.MB("config.json couldn't be found in the script path. Let's create a new config file","Setup",0)
-        reaper.MB("Please pick a Sound Library Path","Setup",0)
-        dbm.act.chooseNewLibraryPath()
-        reaper.MB("Please pick a Database Folder Path","Setup",0) 
-        dbm.act.chooseNewDatabasesPath()
-        reaper.MB("Please pick a Master Database. This will receive all sfx added to any other db","Setup",0)
-        dbm.act.chooseNewMasterDBPath()
-        dbm.act.defineUsers()
-        config = readJsonFile(dbm.configPath)
+        local wantsToImport = reaper.MB("config.json couldn't be found in the script path.\nWould you like to import a config file?","DBManager",4)
+        if wantsToImport == 6 then 
+            config = importConfigFile() 
+            error("Couldn't import config file.")
+        else
+            dbm.config = {}
+            reaper.MB("Let's create a new config file","Setup",0)
+            reaper.MB("Please pick a Sound Library Path","Setup",0)
+            dbm.act.chooseNewLibraryPath()
+            reaper.MB("Please pick a Database Folder Path","Setup",0) 
+            dbm.act.chooseNewDatabasesPath()
+            reaper.MB("Please pick a Master Database. This will receive all sfx added to any other db","Setup",0)
+            dbm.act.chooseNewMasterDBPath()
+            dbm.act.defineUsers()
+            config = readJsonFile(dbm.configPath)
+        end
     end
+
     return config
 end
 
 ----------------
 local reaper = reaper
 
+setEnv()
+loadLuaModule("DBM_helper")
+
 local shouldAbort = checkDependencies()
 
 if not shouldAbort then 
-    setEnv()
-    loadLuaModule("DBM_helper")
     json = loadLuaModule("json")
 
     dbm = {}
