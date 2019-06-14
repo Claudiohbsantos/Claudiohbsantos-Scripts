@@ -1,3 +1,7 @@
+# DBManager v0.7beta
+
+- Includes DBAssistant 0.3.3
+
 # DBManager v0.6beta
 
 ## FEATURES
