@@ -1,3 +1,8 @@
+# DBManager v0.8beta
+
+- Includes DBAssistant 0.3.4
+- fixed parent detection
+
 # DBManager v0.7beta
 
 - Includes DBAssistant 0.3.3

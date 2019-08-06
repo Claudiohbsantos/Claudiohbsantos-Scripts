@@ -139,7 +139,8 @@ local function getParents(i)
     local lvl = measureIndentationLvl(i)
     local parents = {}
     for n = i - 1, 1, -1 do
-        if measureIndentationLvl(n) ~= lvl and measureIndentationLvl(n) ~= lvl - 1 then break end
+        if lvl < 0 then break end
+        if dbm.userDbs[i].name == "=========================================" then break end
         if measureIndentationLvl(n) == lvl - 1 then table.insert(parents,n) ; lvl = lvl -1 end
     end
     return parents
