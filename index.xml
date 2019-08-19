@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="6dc17e8197e268d588130e5912773274516c4e34" name="Claudiohbsantos Scripts">
+<index version="1" commit="b813a54c3fbac492f8a8f59eb577e7ff5b47ba34" name="Claudiohbsantos Scripts">
   <category name="DBManager">
     <reapack name="Reapack_Header.lua" type="script" desc="DBManager">
       <metadata>
@@ -135,19 +135,45 @@ Bugs:
         <source platform="windows" file="dbassistant.exe">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.3/dbassistant.exe</source>
         <source file="dbassistant_changelog.md">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.3/changelog.md</source>
       </version>
-      <version name="0.8beta" author="Claudiohbsantos" time="2019-08-06T16:44:58Z">
+      <version name="0.8beta" author="Claudiohbsantos" time="2019-08-06T17:19:06Z">
         <changelog><![CDATA[- Includes DBAssistant 0.3.4
 - fixed parent detection]]></changelog>
-        <source main="main" file="DBManager.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/6dc17e8197e268d588130e5912773274516c4e34/DBManager/DBManager.lua</source>
-        <source file="lua_modules/json.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/6dc17e8197e268d588130e5912773274516c4e34/DBManager/lua_modules/json.lua</source>
-        <source file="reascript_modules/DBM_popups.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/6dc17e8197e268d588130e5912773274516c4e34/DBManager/reascript_modules/DBM_popups.lua</source>
-        <source file="reascript_modules/DBM_helper.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/6dc17e8197e268d588130e5912773274516c4e34/DBManager/reascript_modules/DBM_helper.lua</source>
-        <source file="reascript_modules/DBM_GUI.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/6dc17e8197e268d588130e5912773274516c4e34/DBManager/reascript_modules/DBM_GUI.lua</source>
-        <source file="reascript_modules/DBM_actions.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/6dc17e8197e268d588130e5912773274516c4e34/DBManager/reascript_modules/DBM_actions.lua</source>
-        <source file="Documentation/MediaDB_Notes.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/6dc17e8197e268d588130e5912773274516c4e34/DBManager/Documentation/MediaDB_Notes.md</source>
-        <source file="Documentation/ReaperFileList_CheatSheet.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/6dc17e8197e268d588130e5912773274516c4e34/DBManager/Documentation/ReaperFileList_CheatSheet.md</source>
-        <source file="Documentation/configTemplate.json">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/6dc17e8197e268d588130e5912773274516c4e34/DBManager/Documentation/configTemplate.json</source>
-        <source file="changelog.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/6dc17e8197e268d588130e5912773274516c4e34/DBManager/changelog.md</source>
+        <source main="main" file="DBManager.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1ee7e10bc0c68452259b7e01aa0a681e21abe78b/DBManager/DBManager.lua</source>
+        <source file="lua_modules/json.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1ee7e10bc0c68452259b7e01aa0a681e21abe78b/DBManager/lua_modules/json.lua</source>
+        <source file="reascript_modules/DBM_popups.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1ee7e10bc0c68452259b7e01aa0a681e21abe78b/DBManager/reascript_modules/DBM_popups.lua</source>
+        <source file="reascript_modules/DBM_helper.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1ee7e10bc0c68452259b7e01aa0a681e21abe78b/DBManager/reascript_modules/DBM_helper.lua</source>
+        <source file="reascript_modules/DBM_GUI.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1ee7e10bc0c68452259b7e01aa0a681e21abe78b/DBManager/reascript_modules/DBM_GUI.lua</source>
+        <source file="reascript_modules/DBM_actions.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1ee7e10bc0c68452259b7e01aa0a681e21abe78b/DBManager/reascript_modules/DBM_actions.lua</source>
+        <source file="Documentation/MediaDB_Notes.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1ee7e10bc0c68452259b7e01aa0a681e21abe78b/DBManager/Documentation/MediaDB_Notes.md</source>
+        <source file="Documentation/ReaperFileList_CheatSheet.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1ee7e10bc0c68452259b7e01aa0a681e21abe78b/DBManager/Documentation/ReaperFileList_CheatSheet.md</source>
+        <source file="Documentation/configTemplate.json">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1ee7e10bc0c68452259b7e01aa0a681e21abe78b/DBManager/Documentation/configTemplate.json</source>
+        <source file="changelog.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/1ee7e10bc0c68452259b7e01aa0a681e21abe78b/DBManager/changelog.md</source>
+        <source platform="windows" file="dbassistant.exe">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.4/dbassistant.exe</source>
+        <source file="dbassistant_changelog.md">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.4/changelog.md</source>
+      </version>
+      <version name="0.81beta" author="Claudiohbsantos" time="2019-08-19T20:24:11Z">
+        <changelog><![CDATA[# DBManager v0.81beta
+
+## BUGS
+
+- error when searching without making selection
+- false error dialogue when importing config file
+- mismatched references  on list after save
+- fixed preview copy destination on import sfx window
+
+## IMPROVEMENTS
+
+- Single popup for new DB creation]]></changelog>
+        <source main="main" file="DBManager.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b813a54c3fbac492f8a8f59eb577e7ff5b47ba34/DBManager/DBManager.lua</source>
+        <source file="lua_modules/json.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b813a54c3fbac492f8a8f59eb577e7ff5b47ba34/DBManager/lua_modules/json.lua</source>
+        <source file="reascript_modules/DBM_popups.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b813a54c3fbac492f8a8f59eb577e7ff5b47ba34/DBManager/reascript_modules/DBM_popups.lua</source>
+        <source file="reascript_modules/DBM_helper.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b813a54c3fbac492f8a8f59eb577e7ff5b47ba34/DBManager/reascript_modules/DBM_helper.lua</source>
+        <source file="reascript_modules/DBM_GUI.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b813a54c3fbac492f8a8f59eb577e7ff5b47ba34/DBManager/reascript_modules/DBM_GUI.lua</source>
+        <source file="reascript_modules/DBM_actions.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b813a54c3fbac492f8a8f59eb577e7ff5b47ba34/DBManager/reascript_modules/DBM_actions.lua</source>
+        <source file="Documentation/MediaDB_Notes.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b813a54c3fbac492f8a8f59eb577e7ff5b47ba34/DBManager/Documentation/MediaDB_Notes.md</source>
+        <source file="Documentation/ReaperFileList_CheatSheet.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b813a54c3fbac492f8a8f59eb577e7ff5b47ba34/DBManager/Documentation/ReaperFileList_CheatSheet.md</source>
+        <source file="Documentation/configTemplate.json">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b813a54c3fbac492f8a8f59eb577e7ff5b47ba34/DBManager/Documentation/configTemplate.json</source>
+        <source file="changelog.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b813a54c3fbac492f8a8f59eb577e7ff5b47ba34/DBManager/changelog.md</source>
         <source platform="windows" file="dbassistant.exe">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.4/dbassistant.exe</source>
         <source file="dbassistant_changelog.md">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.4/changelog.md</source>
       </version>

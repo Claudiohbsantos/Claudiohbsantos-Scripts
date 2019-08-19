@@ -223,7 +223,7 @@ end
 
 function act.createDB()
     local function createDBFile(fileName,dir) 
-        if not fileName then return end
+        if not fileName or not dir then return end
 
         -- FIXME make mac conditional
         local path = dir .. "\\" .. fileName
@@ -237,10 +237,8 @@ function act.createDB()
     end
 
     createUndoPoint()
-    local dir = selectAFolder(dbm.config.databases)
-    if not dir then return end
 
-    inputWindow.open('','DB File Name','DB File name',createDBFile,dir)
+    newDBWindow.open('','Create new DB',createDBFile)
 end
 
 function act.sep()
@@ -266,12 +264,12 @@ end
 
 function act.save()
     createDBFile(getLocalDBPath()..[[\separator.ReaperFileList]])
-    dbm.userDbs = table.shift(dbm.userDbs,-1)
-    for n,entry in pairs(dbm.userDbs) do
+    local saveCopy = table.shift(dbm.userDbs,-1)
+    for n,entry in pairs(saveCopy) do
         dbm.ini.reaper_explorer["ShortcutT"..n] = entry.name
         dbm.ini.reaper_explorer["Shortcut"..n] = getRelPath(entry.ref)
     end
-    dbm.ini.reaper_explorer['NbShortcuts'] = #dbm.userDbs + 1
+    dbm.ini.reaper_explorer['NbShortcuts'] = #saveCopy + 1
     writeINIFileFromTable(dbm.ini)
     reaper.ShowMessageBox("Reaper.ini saved. Please restart reaper to see changes","Saved",0)
 end
@@ -438,6 +436,7 @@ function act.search()
     end
 
     local function goToSearchResult(i)
+        if not i then return end 
         local t = matches.i[i]
         GUI.Val("userlist",{[t] = true})
         scrollToShowEntry(t)

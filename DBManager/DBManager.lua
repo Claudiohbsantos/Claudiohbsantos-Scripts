@@ -194,8 +194,8 @@ local function getUserDBListIndexedFrom1(inisection)
 	local dbs = {}
 	for i,name in pairs(names) do
 		dbs[i] = {name = names[i],ref = getAbsPath(refs[i])}
-	end
-
+    end
+    
 	dbs = table.shift(dbs,1)
 
 	return dbs
@@ -235,7 +235,6 @@ local function getConfig()
         local wantsToImport = reaper.MB("config.json couldn't be found in the script path.\nWould you like to import a config file?","DBManager",4)
         if wantsToImport == 6 then 
             config = importConfigFile() 
-            error("Couldn't import config file.")
         else
             dbm.config = {}
             reaper.MB("Let's create a new config file","Setup",0)

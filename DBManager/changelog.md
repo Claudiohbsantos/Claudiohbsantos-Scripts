@@ -1,3 +1,16 @@
+# DBManager v0.81beta
+
+## BUGS
+
+- error when searching without making selection
+- false error dialogue when importing config file
+- mismatched references  on list after save
+- fixed preview copy destination on import sfx window
+
+## IMPROVEMENTS
+
+- Single popup for new DB creation
+
 # DBManager v0.8beta
 
 - Includes DBAssistant 0.3.4

@@ -50,6 +50,14 @@ function table.removeDups(t)
     return t
 end
 
+-- function table.copy(t)
+--     local copy = {}
+--     for key,val in pairs(t) do
+--         copy[key] = val
+--     end
+--     return copy
+-- end
+
 -- function table.reverse(list)
 --     local newTable = {}
 --     for i=#list,1,-1 do

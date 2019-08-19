@@ -69,6 +69,98 @@ function inputWindow.ok()
     return txt
 end
 
+newDBWindow = {}
+function newDBWindow.open(placeholder,title,okfunc)
+    GUI.New("newDBDial", "Window", {
+        z = 20,
+        x = (GUI.w - 400)/2,
+        y = (GUI.h - 150)/2,
+        w = 400,
+        h = 250,
+        z_set = {19,20},
+        caption = title,
+        })
+    
+    GUI.New("dbName", "Textbox", {
+        z = 19,
+        x = (400 - 360)/2,
+        y = 0,
+        w = 360,
+        h = 30,
+        caption = 'DB File name',
+        cap_pos = "top"
+        })
+    GUI.elms.newDBDial:adjustelm(GUI.elms.dbName)
+
+    GUI.New("dbPath", "Textbox", {
+        z = 19,
+        x = (400 - 360)/2,
+        y = 61,
+        w = 360,
+        h = 30,
+        caption = 'DB Path',
+        cap_pos = "top",
+        })
+    GUI.elms.newDBDial:adjustelm(GUI.elms.dbPath)
+    GUI.Val("dbPath",dbm.config.databases)
+        
+    GUI.New("dbPathPick", "Button", {
+        z = 19,
+        x = (400 - 60) / 2,
+        y = 101,
+        w = 60,
+        h = 20,
+        caption = "Choose",
+        font = 2,
+        col_txt = "txt",
+        col_fill = "elm_frame",
+        func = function() GUI.Val("dbPath",selectAFolder()) end
+    })
+    GUI.elms.newDBDial:adjustelm(GUI.elms.dbPathPick)    
+
+    GUI.New("inputokbtn", "Button", {
+        z = 19,
+        x = (400 - 36)/2,
+        y = 141,
+        w = 36,
+        h = 24,
+        caption = "Ok",
+        font = 3,
+        col_txt = "txt",
+        col_fill = "elm_frame",
+        func = function() okfunc(newDBWindow.ok()) end
+    })
+    GUI.elms.newDBDial:adjustelm(GUI.elms.inputokbtn)
+
+    function GUI.elms.dbName:ontype()
+        GUI.Textbox.ontype(self)
+        if GUI.char == 13 then -- enter
+            GUI.elms.inputokbtn:exec()
+        end
+    end
+    
+    function GUI.elms.newDBDial:onopen()
+        GUI.elms.dbName.focus = true
+        GUI.Val("dbName",(placeholder or ""))
+        GUI.elms.dbName.caret = placeholder:len()
+    end
+
+    function GUI.elms.newDBDial:onclose()
+        GUI.elms.dbName:delete()
+        GUI.elms.userlist:redraw()
+    end
+
+    GUI.elms.newDBDial:open()
+
+end
+function newDBWindow.ok()
+    local txt = GUI.Val("dbName")
+    local dir = GUI.Val("dbPath")
+    GUI.elms.newDBDial:close()
+    GUI.elms.userlist:redraw()
+    return txt, dir
+end
+
 exportDBsWindow = {}
 function exportDBsWindow.open(placeholder,okfunc)
 
@@ -570,24 +662,37 @@ function addWindow.open(addFunc)
 
     function updateAddPreview()
         -- TODO: Fix preview fo fullpath subdir
-        local intro = "dest: "
+        if not GUI.Val("copyToLib") then GUI.Val("PreviewFrame","source files won't be copied") ; return end
 
-        local user = "\\".. (dbm.user or '')
+        local intro = "source files will be copied to:\n"
 
-        local subdir 
-        if GUI.Val("subdirName") ~= "" then subdir = "\\"..GUI.Val("subdirName") end
+        local lib = dbm.config.library
+        local subdir = ""
+        local user
+        if GUI.Val("subdirName") ~= "" then 
+            subdir = GUI.Val("subdirName")
+            if subdir:match("^/") or subdir:match("^%a:") then 
+                lib = "" 
+            else
+                subdir = "\\"..subdir 
+            end
+        else
+            subdir = nil
+            user = "\\".. (dbm.user or '')
+        end
 
         local subTrack
-        if GUI.Val("addSources") == 1 and GUI.Val("tracksAsSubs") then subTrack = '\\TrackName' ; user = "" end 
+        if GUI.Val("sourceTabs") == 1 and GUI.Val("tracksAsSubs") then subTrack = '\\[TrackName]' ; user = "" end 
 
         local dirname = ""
-        if GUI.Val("addSources") == 2 and GUI.Val("dirPath") ~= "" then
+        if GUI.Val("sourceTabs") == 2 and GUI.Val("dirPath") ~= "" then
             dirname = GUI.Val("dirPath"):match("[^\\/]+$")
             if dirname then dirname = "\\"..dirname else dirname = "" end
             user = ""
         end   
 
-        local destination = dbm.config.library..(subdir or user)..(subTrack or '')..dirname
+        local destination = lib..(subdir or user)..(subTrack or '')..dirname
+
         GUI.Val("PreviewFrame",intro..destination)
     end
     
