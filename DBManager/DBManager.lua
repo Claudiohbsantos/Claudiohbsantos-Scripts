@@ -6,11 +6,27 @@ function get_script_path()
         local info = debug.getinfo(1,'S');
         local script_path = info.source:match[[^@?(.*[\/])[^\/]-$]]
         return script_path
-end 
+end
 
-local function setEnv()
-    package.path = package.path .. ";" .. get_script_path() .. "lua_modules\\?.lua"
-    package.path = package.path .. ";" .. get_script_path() .. "reascript_modules\\?.lua"
+local function getPlatform()
+    local osp = {}
+    local currOS = reaper.GetOS()
+	if currOS == "OSX32" or currOS == "OSX64"  then
+        osp.os = "osx"
+        osp.sep = "/"
+        return osp
+    elseif currOS == "Win32" or currOS == "Win64" then
+        osp.os = "win"
+        osp.sep = "\\"
+        return osp
+    end
+    -- Linux
+    return false
+end
+
+local function setEnv(env)
+    package.path = package.path .. ";" .. get_script_path() .. "lua_modules"..env.sep.."?.lua"
+    package.path = package.path .. ";" .. get_script_path() .. "reascript_modules"..env.sep.."?.lua"
     package.path = package.path .. ";" .. get_script_path() .. "?.lua"
 end
 
@@ -172,14 +188,14 @@ end
 
 function getLocalDBPath()
     local iniPath = reaper.get_ini_file()
-    local resourcesDir = string.match(iniPath,"(.+)".."\\".."REAPER.ini$") or string.match(iniPath,"(.+)".."\\".."reaper.ini$")
-    local localDBPath = resourcesDir.."\\".."MediaDB"
+    local resourcesDir = string.match(iniPath,"(.+)"..osp.sep.."REAPER.ini$") or string.match(iniPath,"(.+)"..osp.sep.."reaper.ini$")
+    local localDBPath = resourcesDir..osp.sep.."MediaDB"
     return localDBPath
 end
 
 function getAbsPath(ref)
 	if string.find(ref,"[\\/]") then return ref end -- is absolute already
-	return getLocalDBPath().."\\"..ref
+	return getLocalDBPath()..osp.sep..ref
 end
 
 function getRelPath(ref)
@@ -255,25 +271,28 @@ end
 ----------------
 local reaper = reaper
 
-setEnv()
-loadLuaModule("DBM_helper")
+osp = getPlatform()
+if osp then 
+    setEnv(osp)
+    loadLuaModule("DBM_helper")
 
-local shouldAbort = checkDependencies()
+    local shouldAbort = checkDependencies()
 
-if not shouldAbort then 
-    json = loadLuaModule("json")
+    if not shouldAbort then 
+        json = loadLuaModule("json")
 
-    dbm = {}
-    dbm.ini = storeINIFileInTable()
-    dbm.userDbs = getUserDBListIndexedFrom1(dbm.ini.reaper_explorer)
-    dbm.undoHistory = {}
+        dbm = {}
+        dbm.ini = storeINIFileInTable()
+        dbm.userDbs = getUserDBListIndexedFrom1(dbm.ini.reaper_explorer)
+        dbm.undoHistory = {}
 
-    dbm.act = loadLuaModule("DBM_actions")
-    dbm.config = getConfig()
-    dbm.user = getUser()
+        dbm.act = loadLuaModule("DBM_actions")
+        dbm.config = getConfig()
+        dbm.user = getUser()
 
-    dbm.loopFunctions = {}
-    loadLuaModule("DBM_GUI")
+        dbm.loopFunctions = {}
+        loadLuaModule("DBM_GUI")
+    end
+else
+    reaper.MB("DBManager doesn't work on Linux, sorry.","ERROR",0)
 end
--- TODO: error loading config
--- TODO: refs and name linking

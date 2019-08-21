@@ -674,20 +674,20 @@ function addWindow.open(addFunc)
             if subdir:match("^/") or subdir:match("^%a:") then 
                 lib = "" 
             else
-                subdir = "\\"..subdir 
+                subdir = osp.sep..subdir 
             end
         else
             subdir = nil
-            user = "\\".. (dbm.user or '')
+            user = osp.sep.. (dbm.user or '')
         end
 
         local subTrack
-        if GUI.Val("sourceTabs") == 1 and GUI.Val("tracksAsSubs") then subTrack = '\\[TrackName]' ; user = "" end 
+        if GUI.Val("sourceTabs") == 1 and GUI.Val("tracksAsSubs") then subTrack = osp.sep..'[TrackName]' ; user = "" end 
 
         local dirname = ""
         if GUI.Val("sourceTabs") == 2 and GUI.Val("dirPath") ~= "" then
             dirname = GUI.Val("dirPath"):match("[^\\/]+$")
-            if dirname then dirname = "\\"..dirname else dirname = "" end
+            if dirname then dirname = osp.sep..dirname else dirname = "" end
             user = ""
         end   
 

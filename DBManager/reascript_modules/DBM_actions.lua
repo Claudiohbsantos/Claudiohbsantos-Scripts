@@ -82,9 +82,19 @@ end
 function dbaExec(command)
     local executable = [["]]..get_script_path()..[[dbassistant"]]
 
-    local cmd = [[/C "]]..executable..[[ ]]..command..[[ & pause"]]
-    local output = reaper.BR_Win32_ShellExecute("open","cmd.exe", cmd, get_script_path(), 1)
-    return output
+    if osp.os == "win" then
+        local cmd = [[/C "]]..executable..[[ ]]..command..[[ & pause"]]
+        local output = reaper.BR_Win32_ShellExecute("open","cmd.exe", cmd, get_script_path(), 1)
+        return output
+    elseif osp.os == "osx" then
+        local cmdIN = "/bin/sh --c 'open -n -a Terminal ".. get_script_path() .. osp.sep .. "osx_launchers" .. osp.sep
+        local cmdOUT = "'"
+
+        if command:match("^-V") then reaper.ExecuteProcess(cmdIN.. "osx_version.sh" ..cmdOUT,0) end
+        if command:match("^add") then reaper.ExecuteProcess(cmdIN.. "osx_add.sh" ..cmdOUT,0) end
+        if command:match("^export") then reaper.ExecuteProcess(cmdIN.. "osx_export.sh" ..cmdOUT,0) end
+        if command:match("^deduplicate") then reaper.ExecuteProcess(cmdIN.. "osx_deduplicate.sh" ..cmdOUT,0) end
+    end
 end
 
 function act.showDBAVersion()
@@ -226,7 +236,7 @@ function act.createDB()
         if not fileName or not dir then return end
 
         -- FIXME make mac conditional
-        local path = dir .. "\\" .. fileName
+        local path = dir .. osp.sep .. fileName
         if not string.find(path,"%.ReaperFileList$") then path = path..".ReaperFileList" end
         local name = string.match(path,"[\\/]([^\\/]+)%.ReaperFileList")
 
@@ -702,7 +712,7 @@ function act.importSFX()
                 local _,trackName = reaper.GetSetMediaTrackInfo_String(track,"P_NAME","",false)
                 if addOpts.trackSubs and string.find(trackName,"%w") then 
                     if subdir ~= "" then 
-                        subdir = subdir .. "\\" .. trackName 
+                        subdir = subdir .. osp.sep .. trackName 
                     else
                         subdir = trackName 
                     end

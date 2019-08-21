@@ -1,3 +1,8 @@
+# DBManager 0.9alpha
+
+- Added mac compatibility
+- Includes DBAssistant 0.3.5
+
 # DBManager v0.81beta
 
 ## BUGS
