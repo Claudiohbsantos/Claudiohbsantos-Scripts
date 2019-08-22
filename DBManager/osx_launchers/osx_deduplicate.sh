@@ -1,5 +1,5 @@
-#! /bin/sh
+#! /bin/bash
 
-DIR=$(dirname $BASH_SOURCE)/..
+DIR=$(dirname "$BASH_SOURCE")/..
 
-$DIR/dbassistant deduplicate $DIR/tempFile_DBAssistantFromReaper.json
+"$DIR/dbassistant" deduplicate $DIR/tempFile_DBAssistantFromReaper.json

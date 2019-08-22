@@ -1,5 +1,5 @@
-#! /bin/sh
+#! /bin/bash
 
-DIR=$(dirname $BASH_SOURCE)/..
+DIR=$(dirname "$BASH_SOURCE")/..
 
-$DIR/dbassistant export $DIR/tempFile_DBAssistantFromReaper.json
+"$DIR/dbassistant" export $DIR/tempFile_DBAssistantFromReaper.json

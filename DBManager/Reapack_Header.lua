@@ -1,17 +1,16 @@
 --[[
 @metapackage true
 @description DBManager
-@version 0.9alpha
+@version 0.91alpha
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
-@date 2019 08 21
+@date 2019 08 22
 @about
     Database manager GUI for Reaper Media Explorer.
     Uses DBAssistant to make changes - https://github.com/Claudiohbsantos/DBAssistant . The executable will be automatically downloaded upon installation. 
     Depends on JS Reascript API and Lokasenna GUI Library v2.
 @changelog
-    - Added mac compatibility
-    - Includes DBAssistant 0.3.5
+    - mac compatibility fixes
 @provides
     [main] DBManager.lua > DBManager.lua
     [nomain] lua_modules/json.lua > lua_modules/json.lua

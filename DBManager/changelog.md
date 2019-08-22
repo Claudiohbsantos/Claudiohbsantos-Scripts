@@ -1,3 +1,7 @@
+# DBManager 0.91alpha
+
+- mac compatibility fixes
+
 # DBManager 0.9alpha
 
 - Added mac compatibility

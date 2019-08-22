@@ -14,10 +14,12 @@ local function getPlatform()
 	if currOS == "OSX32" or currOS == "OSX64"  then
         osp.os = "osx"
         osp.sep = "/"
+        osp.explorerSectionName = "reaper_sexplorer"
         return osp
     elseif currOS == "Win32" or currOS == "Win64" then
         osp.os = "win"
         osp.sep = "\\"
+        osp.explorerSectionName = "reaper_explorer"
         return osp
     end
     -- Linux
@@ -283,7 +285,7 @@ if osp then
 
         dbm = {}
         dbm.ini = storeINIFileInTable()
-        dbm.userDbs = getUserDBListIndexedFrom1(dbm.ini.reaper_explorer)
+        dbm.userDbs = getUserDBListIndexedFrom1(dbm.ini[osp.explorerSectionName])
         dbm.undoHistory = {}
 
         dbm.act = loadLuaModule("DBM_actions")

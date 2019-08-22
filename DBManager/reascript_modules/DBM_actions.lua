@@ -79,6 +79,14 @@ function scrollToShowEntry(i)
     if i > bottom then GUI.elms.userlist.wnd_y = i-GUI.elms.userlist.wnd_h+1 end
 end
 
+local function setOSXExecPermissions()
+    reaper.ExecProcess("/bin/sh -c 'chmod +x \"" ..get_script_path() .. "osx_launchers" .. osp.sep .. "osx_version.sh\"'",0)
+    reaper.ExecProcess("/bin/sh -c 'chmod +x \"" ..get_script_path() .. "osx_launchers" .. osp.sep .. "osx_add.sh\"'",0)
+    reaper.ExecProcess("/bin/sh -c 'chmod +x \"" ..get_script_path() .. "osx_launchers" .. osp.sep .. "osx_export.sh\"'",0)
+    reaper.ExecProcess("/bin/sh -c 'chmod +x \"" ..get_script_path() .. "osx_launchers" .. osp.sep .. "osx_deduplicate.sh\"'",0)
+    reaper.ExecProcess("/bin/sh -c 'chmod +x \"" ..get_script_path() .. "dbassistant\"'",0)
+end
+
 function dbaExec(command)
     local executable = [["]]..get_script_path()..[[dbassistant"]]
 
@@ -87,13 +95,14 @@ function dbaExec(command)
         local output = reaper.BR_Win32_ShellExecute("open","cmd.exe", cmd, get_script_path(), 1)
         return output
     elseif osp.os == "osx" then
-        local cmdIN = "/bin/sh --c 'open -n -a Terminal ".. get_script_path() .. osp.sep .. "osx_launchers" .. osp.sep
-        local cmdOUT = "'"
+        setOSXExecPermissions()
+        local cmdIN = "/bin/sh -c 'open -n -a Terminal \"".. get_script_path() .. "osx_launchers" .. osp.sep
+        local cmdOUT = "\"'"
 
-        if command:match("^-V") then reaper.ExecuteProcess(cmdIN.. "osx_version.sh" ..cmdOUT,0) end
-        if command:match("^add") then reaper.ExecuteProcess(cmdIN.. "osx_add.sh" ..cmdOUT,0) end
-        if command:match("^export") then reaper.ExecuteProcess(cmdIN.. "osx_export.sh" ..cmdOUT,0) end
-        if command:match("^deduplicate") then reaper.ExecuteProcess(cmdIN.. "osx_deduplicate.sh" ..cmdOUT,0) end
+        if command:match("^-V") then reaper.ExecProcess(cmdIN.. "osx_version.sh" ..cmdOUT,0) end
+        if command:match("^add") then reaper.ExecProcess(cmdIN.. "osx_add.sh" ..cmdOUT,0) end
+        if command:match("^export") then reaper.ExecProcess(cmdIN.. "osx_export.sh" ..cmdOUT,0) end
+        if command:match("^deduplicate") then reaper.ExecProcess(cmdIN.. "osx_deduplicate.sh" ..cmdOUT,0) end
     end
 end
 

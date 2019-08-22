@@ -72,7 +72,7 @@ dbm.ui.menubar = {
                 {"Import Configuration File", importConfigFile}
             }},
             {title = "Help", options = {
-                {"#DBManager Version: 0.81beta", foo},
+                {"#DBManager Version: 0.91alpha", foo},
                 {"Show DBAssistant version", dbm.act.showDBAVersion}
                 -- ADD Dependencies list
             }}
