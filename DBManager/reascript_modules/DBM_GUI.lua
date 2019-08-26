@@ -69,10 +69,13 @@ dbm.ui.menubar = {
                 {"Library: "..dbm.config.library,dbm.act.chooseNewLibraryPath},
                 {"Databases: "..dbm.config.databases,dbm.act.chooseNewDatabasesPath},
                 {"MasterDB: "..dbm.config.masterDB,dbm.act.chooseNewMasterDBPath},
-                {"Import Configuration File", importConfigFile}
+                {"Import Configuration File", importConfigFile},
+                {"|Open Library path on Explorer/Finder",dbm.act.openLibPathInExplorer},
+                {"Open Database path on Explorer/Finder",dbm.act.openDatabasePathInExplorer}
             }},
             {title = "Help", options = {
-                {"#DBManager Version: 0.91alpha", foo},
+                {"Help Files", dbm.act.showHelp},
+                {"#DBManager Version: 1.0", foo},
                 {"Show DBAssistant version", dbm.act.showDBAVersion}
                 -- ADD Dependencies list
             }}
@@ -150,8 +153,9 @@ function loop()
     end
 end
 
+dbm.loopFunctions.disableEsc = function () GUI.escape_bypass = true end
 GUI.escape_bypass = true
-GUI.fonts[5] = {'Arial', 8, 'b'}
+
 GUI.func = loop
 GUI.freq = 0
 

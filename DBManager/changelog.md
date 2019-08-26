@@ -1,3 +1,14 @@
+# DBManager 1.0
+- Feature: Unsaved Warning
+- mac compatibility fixes
+- handle fresh reaper installation 
+- Feature: Convert slashes on export
+- Feature: Export preview
+- Include DBAssistant v0.3.6
+- Menu options to open library and database folders on explorer/finder
+- Feature: Help Files
+- Feature: Option to ignore already existing files in directory
+
 # DBManager 0.91alpha
 
 - mac compatibility fixes

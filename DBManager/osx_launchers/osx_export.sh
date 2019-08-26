@@ -2,4 +2,6 @@
 
 DIR=$(dirname "$BASH_SOURCE")/..
 
-"$DIR/dbassistant" export $DIR/tempFile_DBAssistantFromReaper.json
+"$DIR/dbassistant" export "$DIR/tempFile_DBAssistantFromReaper.json"
+
+exit 0

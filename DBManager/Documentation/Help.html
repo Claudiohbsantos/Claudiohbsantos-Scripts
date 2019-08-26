@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Help.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family:  "Meiryo", "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+</head>
+<body>
+<h1 id="dbmanager-help">DBManager Help</h1>
+<h2 id="about">About</h2>
+<p>DBManager is a tool designed to help organize and maintain Reaper Media Explorer Databases. It can help you import and export databases, add sounds to multiple databases at once and perform basic maintenance tasks such as removing duplicates and redirecting paths to a new location in the event of a library move.</p>
+<h2 id="core-reaper-database-mechanics">Core Reaper Database mechanics</h2>
+<p>Reaper databases are lists of files stored in plain text format. The software uses the .ReaperFileList extension to identify databases and it stores metadata and basic file information along with the filepath for fast searching.</p>
+<p>Reaper stores a list of database files to include in the media explorer sidebar in the reaper.ini configuration file, under the reaper_explorer/reaper_sexplorer section. There it references each database usingthe following format:</p>
+<pre class="hljs"><code><div>Shotcut[n]=pathToDB.ReaperFileList
+ShortcutT[n]=nameOfDBONSidebar
+</div></code></pre>
+<p>[n] = index of the database in the media explorer list. Determines ordering
+pathToDB.ReaperFileLIst = path to database file. Can be relative if file is inside the MediaDB folder in the Reaper resources path. Otherwise accepts a full path that can point to network shares or any other valid location.
+nameOfDBOnSidebar = name to be displayed on the Media Explorer list.</p>
+<p>Reaper reads this section of the ini when it first opens the media explorer, and then keeps it in memory. Any changes made to this list after it's been stored in memory won't be visible until reaper re-starts.</p>
+<p>The database entries themselves follow the following format:</p>
+<pre class="hljs"><code><div>PATH &quot;directory path for auto scans without trailing slash&quot;
+FILE &quot;filePath&quot; size 0 secondsFrom1970
+DATA &quot;t:Title&quot; &quot;d:Description&quot; &quot;a:Artist&quot; &quot;b:Album&quot; &quot;y:Year&quot; &quot;g:Genre&quot; &quot;u:Custom tag&quot; &quot;c:Comment&quot;
+</div></code></pre>
+<p>The only field that can be edited from within Media Explorer is the &quot;Custom Tag&quot;, all others represent static metadata tags embedded on the sound files.</p>
+<p>The most important thing to note in the way the database system works is the fact that every database entry is completely independent from the others and from all other databases. That means duplicate entries can be created on the same list. It also means that if you delete an entry from one database it will not be automatically removed from other databases that may contain that entry.</p>
+<p>Since filepaths are also written in absolute form the database files are not cross-platform since unix and windows systems use different path naming standards.</p>
+<h2 id="dbassistant">DBAssistant</h2>
+<p>DBAssistant is a command line utility bundled with DBManager that handles all the file operations and the scanning of files to be added to databases. It was written to work as the backend for the DBManager and accepts most of it's commands parameters in a json format. It can also be used manually from the command line though. For more information on how to do that please check the help page on DBAssistant by running dbassistant.exe --help (or dbassistant --help if you are on a unix system).</p>
+<h3 id="metadata-extraction">Metadata extraction</h3>
+<p>DBAssistant extracts metadata from sound files in order to add tags to the database entry. It is capable of extracting the following types of metadata:</p>
+<p>bext
+RIFF-INFO
+ixml
+id3 tags
+exif
+vorbis</p>
+<p>It will attempt to read all of these tags and fill the metadata fields with the first applicable tag found. Since the use of different tags is very non standardized among different sound effects and sample library producers DBAssistant accepts different tags for the same field, using an arbitrary hierarchy to determine the most appropriate entry. For example, the &quot;Artist&quot; field for an entry might be filled with any of the following, stopping at the first tag found:</p>
+<p>INFO - IART
+INFO - IENG
+iXML - MediaArtist
+iXML - AudioSoundEditor
+iXML - AudioActor
+iXML - AudioSoundMixer
+ID3, Exif or Vorbis - artist</p>
+<p>The &quot;Comment&quot; field on the database is used to record the user that added the entry to the database and ignores the read metadata completely.</p>
+<h2 id="configuration">Configuration</h2>
+<p>DBManager uses a json config file to store it's user configurations. On startup it looks for a file named &quot;config.json&quot; on the same directory as DBManager.lua. If it can't find one it will prompt the user to import or generate a configuration. The json file contains the following fields:</p>
+<pre class="hljs"><code><div>{
+    &quot;library&quot;: &quot;string pathToDirectory&quot;,
+    &quot;masterDB&quot;: &quot;string pathToDatabase&quot;,
+    &quot;users&quot;: [&quot;array&quot;,&quot;of&quot;,&quot;usernames&quot;],
+    &quot;databases&quot;: &quot;string pathToDirectory&quot;
+}
+</div></code></pre>
+<ul>
+<li>library: this should point to the root directory of the sound library where most sound files should be stored. It is used to determine where files will be copied to when added to the library, as a destination for the history logs of additions and the origin path when exporting databases for portable use.</li>
+<li>databases: this should point to the directory where you would like to store the .ReaperFileList database files. It is used mostly as a convenient default path for new databases.</li>
+<li>users: this is a list of users to be displayed in the user selector inside DBManager. When sounds are added to a library the user responsible is recorded on the &quot;Comments&quot; field of metadata. The user name is also used to determine where files should be copied to in the absence of any user selected subdirectories.</li>
+<li>masterDB: this points to a .ReaperFileList database file that should be used as a &quot;master&quot; database. By default all additions to any database are also added to the masterDB so it is possible to search for all sounds in the media explorer using this database. This behaviour can be overriden in the Add SFX dialog.</li>
+</ul>
+<p>A template of the config file can be found in the Documentation folder in the DBManager script folder.</p>
+<h2 id="interface">Interface</h2>
+<h3 id="saving-changes-to-ini">Saving changes to .ini</h3>
+<p>Changes that affect the reaper.ini are not instantly saved to the file. Any changes that add/remove or alter the list of databases or the paths to their respective .ReaperFileList files affect the .ini and therefore need to be saved before taking effect. The save option can be found on the &quot;File -&gt; Save Changes to Profile&quot; menu option. DBManager displays a warning on the top right corner when there are unsaved changes.</p>
+<p><img src="images/unsavedWarning.png" alt="unsavedWarning"></p>
+<h3 id="search">Search</h3>
+<p>The Search bar can be found at the bottom of the interface. Use it to search for databases in long lists</p>
+<h3 id="keyboard-shortcuts">Keyboard Shortcuts</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">Shortcut</th>
+<th style="text-align:center">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right"><kbd>Esc</kbd></td>
+<td style="text-align:center">(With subwindow open) Close dialogue</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Ctrl</kbd>+<kbd>Z</kbd></td>
+<td style="text-align:center">Undo</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd></td>
+<td style="text-align:center">Redo</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Ctrl</kbd>+<kbd>X</kbd></td>
+<td style="text-align:center">Cut Shortcuts</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Ctrl</kbd>+<kbd>V</kbd></td>
+<td style="text-align:center">Paste Shortcuts</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Spacebar</kbd></td>
+<td style="text-align:center">Add Separator</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Tab</kbd></td>
+<td style="text-align:center">Indent Shortcut</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Shift</kbd>+<kbd>Tab</kbd></td>
+<td style="text-align:center">Remove Indentation from Shortcut</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>F2</kbd></td>
+<td style="text-align:center">Rename Shortcut</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Del</kbd> or <kbd>Backspace</kbd></td>
+<td style="text-align:center">Delete Shortcuts</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>\</kbd></td>
+<td style="text-align:center">Select Adjacent Shortcuts of same Indentation</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>[</kbd></td>
+<td style="text-align:center">Select Immediate Parent</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Ctrl</kbd>+<kbd>[</kbd></td>
+<td style="text-align:center">Select All Parents</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>]</kbd></td>
+<td style="text-align:center">Select Children</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Ctrl</kbd>+<kbd>N</kbd></td>
+<td style="text-align:center">Create New DB</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Ctrl</kbd>+<kbd>I</kbd></td>
+<td style="text-align:center">Import SFX to selected DBs</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>↑</kbd></td>
+<td style="text-align:center">Select previous shortcut(s)</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>↓</kbd></td>
+<td style="text-align:center">Select next shortcut(s)</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Shift</kbd>+<kbd>↑</kbd></td>
+<td style="text-align:center">Expand selection up</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Shift</kbd>+<kbd>↓</kbd></td>
+<td style="text-align:center">Expand selection down</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Ctrl</kbd>+<kbd>↑</kbd></td>
+<td style="text-align:center">Move selected shortcuts up</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Ctrl</kbd>+<kbd>↓</kbd></td>
+<td style="text-align:center">Move selected shortcuts down</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Esc</kbd></td>
+<td style="text-align:center">(Shortcut List Focused) Shrink selection</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Enter</kbd></td>
+<td style="text-align:center">(Search Bar Focused) Perform Search</td>
+</tr>
+</tbody>
+</table>
+<h2 id="shortcuts">Shortcuts</h2>
+<p>The sidebar of the Media Explorer contains a list of Shortcuts. Each points to either a path or to a database. Search is optimized in databases.</p>
+<p>Each Shortcut consists of a name, which is displayed in Media Explorer, and a path. The path can be relative when pointing to a database inside the MediaDB folder in the Reaper Resources path or an absolute path to a folder or .ReaperFileList file.</p>
+<h3 id="importing-database-files">Importing Database Files</h3>
+<p>You can import existing database files into your list by selecting &quot;File -&gt; Import Database Files&quot;. The imported database will be named after the database file name. It can then be renamed with f2 or &quot;right click -&gt; rename shortcut&quot;</p>
+<h3 id="importingexporting-shortcuts">Importing/Exporting Shortcuts</h3>
+<p>DBManager can export groups of shortcuts that can be later imported by DBManager. This can be used to create different sets of Shortcuts for different purposes, to share shortcut lists with other people in the same studio or as a way of backing up your shortcuts. To do so go to &quot;File -&gt; Export Selected Shortcuts&quot;.</p>
+<p>In order to import the shortcut bundle you can either &quot;Import Shortcut Bundle (Replace All)&quot;, which will replace your list with the imported one, or &quot;Import Shortcut Bundle (Insert)&quot;, which will insert the imported shortcuts underneath the selected point in the list.</p>
+<h3 id="editing-shortcut-list">Editing Shortcut list</h3>
+<p>The list of shortcuts can be edited using the keyboard or the mouse. Shortcuts can be:</p>
+<ul>
+<li>Moved up and down using <kbd>Ctrl</kbd>+<kbd>↑</kbd> and <kbd>Ctrl</kbd>+<kbd>↓</kbd></li>
+<li>Cut and Pasted using <kbd>Ctrl</kbd>+<kbd>X</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd></li>
+<li>Deleted using <kbd>Delete</kbd> or <kbd>Backspace</kbd></li>
+<li>Renamed USING <kbd>f2</kbd></li>
+<li>Actions can be undone/redone using <kbd>Ctrl</kbd>+<kbd>z</kbd> and <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>z</kbd></li>
+<li>Separators can be added with <kbd>Spacebar</kbd>. Separators are simply shortcuts pointing to an empty database with the name &quot;=========================================&quot;, which looks like a horizontal separator</li>
+</ul>
+<h3 id="pointing-shortcuts-to-new-path-or-db">Pointing Shortcuts to new path or DB</h3>
+<p><img src="images/redirectPath.png" alt="changePath"></p>
+<p>Right clicking a shortcut will give you the option to change the path/database it points to.</p>
+<h3 id="shortcut-hierarchy-aka-folders">Shortcut Hierarchy (a.k.a folders)</h3>
+<p><img src="images/folders.png" alt="folders"></p>
+<p>DBManager artifially creates hierarchies between databases using indentation. In the example above &quot;Wood&quot; and &quot;Metal&quot; are children of &quot;Impacts&quot;, which is itself a child of &quot;SFX&quot;. These relationships are used when adding sounds to the databases. When adding sounds to a child database you can opt to also add it to all of it's parents. Keep in mind this is an arbitrary feature of DBManager that is in no way embedded into the databases. When adding sounds from Media Explorer itself it will completely ignore all relationships between databases since it doesn't recognize the naming pattern.</p>
+<p>Parent/Child relationships can also be used to create complex selections while editing the shortcut list. Right click a database to see the possible selections.</p>
+<h3 id="creating-new-database">Creating new Database</h3>
+<p><img src="images/CreateNewDialog.png" alt="newDatabase"></p>
+<p>New Databases can be created by selecting a spot in the list and pressing <kbd>Ctrl</kbd>+<kbd>N</kbd>. In the Dialogue above the first input box requires the name desired for the new database file and shortcut and the second determines where the file will be created. If a file with the chosen name already exists in the target directory a number sufix will be added to it to ensure uniqueness.</p>
+<h2 id="database-operations">Database Operations</h2>
+<h3 id="adding-sounds-to-database">Adding Sounds to Database</h3>
+<p><img src="images/addDialog.png" alt="addingSounds"></p>
+<p>Adding sounds to databases is one of the main features of DBManager. It can be used to add sounds from your timeline or from a specific directory in the file system to one or more databases at once.</p>
+<h4 id="adding-sounds-from-the-timeline">Adding sounds from the timeline</h4>
+<p>With DBManager open you can select one or more clips from the Reaper timeline and add them to databases. By default the sound files won't be glued or renamed on import so what will be added is actually the source of the clip. If you wish to trim the sound added to what the clip currently encompasses on the timeline don't forget to first glue/render the clips in order to create new sources.</p>
+<p>DBManager is capable of renaming sources on import though. To do so specify a new name on the &quot;Rename&quot; box and imported files will be renamed accordingly. In order to prevent conflict a numeral sufix will be added to the files, resulting in:</p>
+<pre class="hljs"><code><div>newName.wav
+newName_01.wav
+newname_02.wav
+...
+</div></code></pre>
+<p>Track names on the timeline can also be used as subdirectories for more complex library organization. Clips will then be placed in subdirectories in the library matching the track names that contained them in the timeline.</p>
+<h4 id="adding-sounds-from-a-directory">Adding sounds from a directory</h4>
+<p>When adding sounds from a directory DBManager will scan the given directory and attempt to add all sound files found in the directory and recursively in any subdirectories. When copied to the library the folder structure will be maintained so a similar directory will be found in the library containing only sound files.</p>
+<h4 id="subdirs-and-user-folders">Subdirs and user folders</h4>
+<p>When adding sounds you can specify a subdirectory in which to copy the files inside the library through the &quot;Subdir&quot; input box. In the absence of a subdirectory specified like this or through the option &quot;Use track names as subdirectories&quot; sounds will be added to a folder named after the user currently using DBManager (as specified in Options).</p>
+<p>This only changes the way filename conflicts will be handled. Files copied into the user folder will always be copied with a sufix for uniqueness in case of name conflict. Files copied into subdirectories on the other hand will not be copied if a file with the same name already exists in the subdirectory and the option &quot;Ignore files that are already in destination folder&quot; is selected.</p>
+<h3 id="removing-duplicates-from-database">Removing Duplicates from Database</h3>
+<p>DBManager can filter databases to remove duplicate entries. To do so select one or more databases and run &quot;DB -&gt; Clean Duplicate Entries in Selected DBs&quot;. This will find entries with identical paths and remove redundant ones. Keep in mind the metadata will be ignored so if two entries differ only on metadata one of them will be removed regardless</p>
+<h3 id="exporting-databases">Exporting Databases</h3>
+<p><img src="images/ExportDialog.png" alt="export"></p>
+<p>Databases can be exported and have their library redirected to a new path. This can be useful when moving sound libraries to a new location or when moving libraries to external hard drives for portable use. In order to export databases you should select one or more databases and press &quot;DB -&gt; Export DBs for portable use&quot;.</p>
+<p>The first input box &quot;New Lib Path&quot; should receive the new path for the directory containing the sound library.</p>
+<p>The second box, &quot;Export to&quot;, expects a path in which to save the new database files and the dbmjson shortcuts bundle file.</p>
+<p>The checkbox allows you to convert all backslashes (windows path delimitor) to forward slashes (unix or windows path delimitors). This is useful when using the functionality to convert databases from windows to be used on a Mac for example.</p>
+<p>Once exported you will find an exportedDBS.dbmjson file containing a list of shortcuts that can be imported into another reaper profile thorugh DBManager. All the referenced DBs will be found inside a DBs folder with their paths adjusted accordingly.</p>
+<h3 id="copying-entries-from-one-database-to-another">Copying entries from one database to another</h3>
+<p>Entries in one database can be appended to one or more other databases using DBmanager. To do so first copy the database you would like to add to the others using &quot;Right Click -&gt; Copy contents of DBs&quot;, then select one or more databases that should have the entries added to and &quot;Right Click -&gt; Append copied contents to DBs&quot;</p>
+<h3 id="renaming-database-files">Renaming Database files</h3>
+<p>Database files can be renamed to match the shortcut name with the action &quot;Right Click -&gt; Rename Database File&quot;.</p>
+
+</body>
+</html>

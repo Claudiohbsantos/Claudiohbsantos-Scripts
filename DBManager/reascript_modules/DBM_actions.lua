@@ -136,14 +136,31 @@ local function countSelected()
     return count
 end
 
+local function getUniquePath(path)
+    if reaper.file_exists(path) then
+        local pathname, sufix, ext = path:match("(.+)_(%d*)(%..+)$")
+        if not (pathname and sufix and ext) then
+            pathname, ext = path:match("(.+)(%.%w+)$")
+            sufix = 0
+        end
+        newPath = pathname .. "_" .. (math.floor(sufix + 1)) .. ext
+        return getUniquePath(newPath)
+    else
+        return path
+    end
+end
+
 local function createDBFile(path)
+    local path = getUniquePath(path)
     local dbFile = io.open(path,"w")
     dbFile:write("")
     dbFile:close()
+    return path
 end
 
 local function insertEntry(name,ref,i)
     table.insert(dbm.userDbs,i,{name = name, ref = ref})
+    unsavedWarning.show()
 end
 
 local function measureIndentationLvl(i)
@@ -168,8 +185,8 @@ end
 -- TODO check for existing db
 local function newDB(name,path,t)
     if name and name:match("[^%s]") then
-        createDBFile(path)
-        insertEntry(name,path,t)
+        local ref = createDBFile(path)
+        insertEntry(name,ref,t)
         GUI.Val("userlist",{[t] = true})
     end
 end
@@ -197,6 +214,7 @@ function act.moveUp()
         end
     end
     GUI.Val("userlist",newSel)
+    unsavedWarning.show()
 end
 
 function act.moveDown()
@@ -220,6 +238,7 @@ function act.moveDown()
         end
     end
     GUI.Val("userlist",newSel)
+    unsavedWarning.show()
 end
 
 function act.del()
@@ -238,19 +257,24 @@ function act.del()
         i = i+1
     end
     GUI.Val("userlist",{})
+    unsavedWarning.show()
 end
 
 function act.createDB()
     local function createDBFile(fileName,dir) 
         if not fileName or not dir then return end
 
-        -- FIXME make mac conditional
         local path = dir .. osp.sep .. fileName
         if not string.find(path,"%.ReaperFileList$") then path = path..".ReaperFileList" end
         local name = string.match(path,"[\\/]([^\\/]+)%.ReaperFileList")
 
-        local t = getFirstSelectedIndex() + 1
-        if not t then t = #dbm.userDbs + 1 end
+        local firstSel = getFirstSelectedIndex()
+        local t
+        if firstSel then 
+            t = firstSel + 1 
+        else
+            t = #dbm.userDbs + 1
+        end
 
         newDB(name,path,t)
     end
@@ -279,17 +303,22 @@ function act.sep()
     end
 
     GUI.Val("userlist",sel)
+    unsavedWarning.show()
 end
 
 function act.save()
-    createDBFile(getLocalDBPath()..[[\separator.ReaperFileList]])
+    local sepPath = getLocalDBPath()..[[\separator.ReaperFileList]]
+    if not reaper.file_exists(sepPath) then
+        createDBFile(sepPath)
+    end
     local saveCopy = table.shift(dbm.userDbs,-1)
     for n,entry in pairs(saveCopy) do
-        dbm.ini.reaper_explorer["ShortcutT"..n] = entry.name
-        dbm.ini.reaper_explorer["Shortcut"..n] = getRelPath(entry.ref)
+        dbm.ini[osp.explorerSectionName]["ShortcutT"..n] = entry.name
+        dbm.ini[osp.explorerSectionName]["Shortcut"..n] = getRelPath(entry.ref)
     end
-    dbm.ini.reaper_explorer['NbShortcuts'] = #saveCopy + 1
+    dbm.ini[osp.explorerSectionName]['NbShortcuts'] = #saveCopy + 1
     writeINIFileFromTable(dbm.ini)
+    unsavedWarning.hide()
     reaper.ShowMessageBox("Reaper.ini saved. Please restart reaper to see changes","Saved",0)
 end
 
@@ -309,11 +338,14 @@ function act.cut()
         i = i+1
     end
     GUI.Val("userlist",{})
+    unsavedWarning.show()
 end
 
 function act.paste()
     createUndoPoint()
-    local t = getFirstSelectedIndex() + 1
+    local first = getFirstSelectedIndex()
+    local t 
+    if first then t = first + 1 end
     if not t then reaper.ShowMessageBox("Please select a position under which to paste","ERROR",0) ; return end
 
     local newSel = {}
@@ -334,6 +366,7 @@ function act.addIndentation()
             entry.name =  "------"..entry.name
         end
     end
+    unsavedWarning.show()
 end
 
 function act.removeIndentation()
@@ -344,6 +377,7 @@ function act.removeIndentation()
             entry.name = entry.name:match("^%-%-%-%-%-%-(.+)") or entry.name 
         end
     end
+    unsavedWarning.show()
 end
 
 function act.rename()
@@ -351,6 +385,7 @@ function act.rename()
     local function renameDB(newName,i)
         dbm.userDbs[i].name = newName
         GUI.Val("userlist",{[i] = true})
+        unsavedWarning.show()
     end
 
     local t = getFirstSelectedIndex()
@@ -461,7 +496,7 @@ function act.search()
         scrollToShowEntry(t)
     end
 
-    listPicker.open("Search results: "..#matches,false,matches.names,goToSearchResult)
+    listPicker.open("Search results: "..#matches.names,false,matches.names,goToSearchResult)
 end
 
 function act.chooseNewRef(i,pickFolder)
@@ -472,11 +507,15 @@ function act.chooseNewRef(i,pickFolder)
     else
         path = selectFiles(false,"Reaper DB files\0*.ReaperFileList\0\0",dbm.config.databases)
     end
-    if path then dbm.userDbs[i].ref = path end
+    if path then 
+        dbm.userDbs[i].ref = path
+        unsavedWarning.show() 
+    end
 end
 
 function act.exportShortcuts()
-    local path = selectFiles(false, "DBManager Json\0*.dbmjson\0\0",dbm.config.databases)
+
+    local retval, path = reaper.JS_Dialog_BrowseForSaveFile("Export Shortcuts", dbm.config.databases, "", "DBManager Json\0*.dbmjson\0\0")
     if not path then return end
     if not path:match("%.dbmjson$") then path = path..".dbmjson" end
 
@@ -514,6 +553,7 @@ function act.importShortcuts(replace)
     end
 
     GUI.elms.userlist:redraw()
+    unsavedWarning.show()
 end
 
 function act.setUser()
@@ -622,6 +662,7 @@ function act.importDB()
     for i=1,#dbPath do
         newSel[t+i-1] = true
     end
+    unsavedWarning.show() 
     GUI.Val("userlist",newSel)
 end
 
@@ -640,8 +681,13 @@ function act.renameDBFile()
                 if reaper.file_exists(newRef) then 
                     reaper.MB(newRef.." already exists","ERROR",0) 
                 else
-                    reaper.ExecProcess([[cmd.exe /C "move "]]..entry.ref..[[" "]]..newRef..[[""]],0)
+                    if osp.os == "win" then
+                        reaper.ExecProcess([[cmd.exe /C "move "]]..entry.ref..[[" "]]..newRef..[[""]],0)
+                    elseif osp.os == "osx" then
+                        reaper.ExecProcess([[/bin/sh -c 'mv "]]..entry.ref..[[" "]]..newRef..[["']],0)
+                    end
                     entry.ref = newRef
+                    unsavedWarning.show()
                 end
             end
         end
@@ -683,6 +729,7 @@ function act.importSFX()
         addTable.user = dbm.user
         addTable.list = {}
         addTable.shouldCopyToLib = addOpts.copyToLib or false
+        addTable.ignoreExistingFiles = addOpts.ignoreExistingFiles or false
 
         local dbs = {}
         local sel = GUI.Val("userlist")
@@ -760,12 +807,13 @@ function act.cleanDuplicates()
 end
 
 function act.exportDBs()
-    function export(newLib,dest)
+    function export(newLib,dest,convertSlashes)
         local export = {}
 
         export.newLib =  newLib
         export.currentLib =  dbm.config.library
         export.destination =  dest
+        export.forceMacSlashes = convertSlashes
     
         export.dbList = {}
         local sel = GUI.Val("userlist")
@@ -781,6 +829,18 @@ function act.exportDBs()
     if countSelected() == 0 then reaper.MB('No DBs Selected','ERROR',0) ; return end
 
     exportDBsWindow.open("",export)
+end
+
+function act.openLibPathInExplorer()
+    reaper.CF_LocateInExplorer(dbm.config.library)
+end
+function act.openDatabasePathInExplorer()
+    reaper.CF_LocateInExplorer(dbm.config.databases)
+end
+
+function act.showHelp()
+    local helpFile = get_script_path() .. "Documentation" .. osp.sep .. "Help.html"
+    reaper.CF_ShellExecute(helpFile)
 end
 
 return act

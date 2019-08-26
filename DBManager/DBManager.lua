@@ -285,15 +285,19 @@ if osp then
 
         dbm = {}
         dbm.ini = storeINIFileInTable()
-        dbm.userDbs = getUserDBListIndexedFrom1(dbm.ini[osp.explorerSectionName])
-        dbm.undoHistory = {}
+        if dbm.ini[osp.explorerSectionName] then 
+            dbm.userDbs = getUserDBListIndexedFrom1(dbm.ini[osp.explorerSectionName])
+            dbm.undoHistory = {}
 
-        dbm.act = loadLuaModule("DBM_actions")
-        dbm.config = getConfig()
-        dbm.user = getUser()
+            dbm.act = loadLuaModule("DBM_actions")
+            dbm.config = getConfig()
+            dbm.user = getUser()
 
-        dbm.loopFunctions = {}
-        loadLuaModule("DBM_GUI")
+            dbm.loopFunctions = {}
+            loadLuaModule("DBM_GUI")
+        else
+            reaper.MB("It seems media explorer has never been opened on this installation of Reaper. Please open media explorer and close reaper once before continuing.","ERROR",0)
+        end
     end
 else
     reaper.MB("DBManager doesn't work on Linux, sorry.","ERROR",0)

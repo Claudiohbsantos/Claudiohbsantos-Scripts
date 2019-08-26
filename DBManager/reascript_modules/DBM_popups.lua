@@ -1,6 +1,26 @@
 --[[
 @noindex
 --]]
+GUI.fonts[5] = {'monospace', 12, 'b'}
+GUI.New("unsavedWarning","Label", {
+    z = 6,
+    x = 305,
+    y = 5,
+    caption = "[unsaved changes]",
+    color = "yellow",
+    bg = "elm_frame",
+    font = 5
+})
+unsavedWarning = {}
+function unsavedWarning.show()
+    GUI.elms.unsavedWarning.z = 4
+    GUI.elms.unsavedWarning:redraw()
+end
+function unsavedWarning.hide()
+    GUI.elms.unsavedWarning.z = 6
+    GUI.elms.unsavedWarning:redraw()
+end
+
 
 inputWindow = {}
 function inputWindow.open(placeholder,title,caption,okfunc, ...)
@@ -169,7 +189,7 @@ function exportDBsWindow.open(placeholder,okfunc)
         x = (GUI.w - 400)/2,
         y = (GUI.h - 250)/2,
         w = 400,
-        h = 250,
+        h = 370,
         z_set = {29,30},
         caption = "Export DBs",
         })
@@ -177,7 +197,7 @@ function exportDBsWindow.open(placeholder,okfunc)
     GUI.New("inputbox", "Textbox", {
         z = 29,
         x = (400 - 360)/2,
-        y = 31,
+        y = 0,
         w = 360,
         h = 30,
         caption = "New Lib Path:",
@@ -187,7 +207,7 @@ function exportDBsWindow.open(placeholder,okfunc)
     GUI.New("destbox", "Textbox", {
         z = 29,
         x = (400 - 360)/2,
-        y = 86,
+        y = 58,
         w = 360,
         h = 30,
         caption = "Export to:",
@@ -197,7 +217,7 @@ function exportDBsWindow.open(placeholder,okfunc)
     GUI.New("destpick", "Button", {
         z = 29,
         x = (400 - 60)/2,
-        y = 123,
+        y = 94,
         w = 60,
         h = 20,
         caption = "Choose",
@@ -207,11 +227,51 @@ function exportDBsWindow.open(placeholder,okfunc)
         func = function() GUI.Val("destbox",selectAFolder()) end
     })
 
+    GUI.New("convertSlashesBox", "Checklist", {
+        z = 29,
+        x = 75,
+        y = 120,
+        w = 145,
+        h = 35,
+        caption = "",
+        optarray = {'Convert "\\" to "/" (mac compatible)'},
+        dir = "v",
+        pad = 10,
+        font_a = 2,
+        font_b = 3,
+        col_txt = "txt",
+        col_fill = "elm_fill",
+        bg = "wnd_bg",
+        frame = false,
+        shadow = false,
+        swap = nil,
+        opt_size = 20
+    })
+
+    GUI.New("ExportPreviewFrame","Frame", {
+        z = 29,
+        x = 4,
+        y = 165,
+        w = 390,
+        h = 80,
+        shadow = false,
+        fill = false,
+        color = "elm_bg",
+        bg = "elm_bg",
+        round = 0,
+        text = "",
+        txt_indent = 2,
+        txt_pad = 0,
+        pad = 8,
+        font = 4,
+        col_txt = "cyan",
+    })
+    GUI.elms.exportDial:adjustelm(GUI.elms.ExportPreviewFrame)
 
     GUI.New("inputokbtn", "Button", {
         z = 29,
         x = (400 - 36)/2,
-        y = 171,
+        y = 250,
         w = 36,
         h = 24,
         caption = "Ok",
@@ -232,18 +292,32 @@ function exportDBsWindow.open(placeholder,okfunc)
     GUI.elms.exportDial:adjustelm(GUI.elms.inputbox)
     GUI.elms.exportDial:adjustelm(GUI.elms.destbox)
     GUI.elms.exportDial:adjustelm(GUI.elms.destpick)
+    GUI.elms.exportDial:adjustelm(GUI.elms.convertSlashesBox)
     GUI.elms.inputbox.focus = true
     GUI.Val("inputbox",(placeholder or ""))
     GUI.elms.inputbox.caret = placeholder:len()
-
+    
     GUI.elms.exportDial:open()
+
+    function updateExportPreview()
+        local current = '"'..dbm.config.library..osp.sep.."User"..osp.sep.."Subdir"..osp.sep..'file.wav" will be exported as:\n'
+        local newSep 
+        if GUI.Val("convertSlashesBox") then newSep = "/" else newSep = osp.sep end
+        local newLib = GUI.Val("inputbox") .. newSep .. "User" .. newSep .. "Subdir" .. newSep .. 'file.wav"'
+
+        GUI.Val("ExportPreviewFrame",current..newLib)
+    end
+    
+    dbm.loopFunctions.updateExportPreview = updateExportPreview
 end
 function exportDBsWindow.ok()
     local newLib = GUI.Val("inputbox")
     local dest = GUI.Val("destbox")
+    local convertSlashes = GUI.Val("convertSlashesBox")
+    dbm.loopFunctions.updateExportPreview = nil
     GUI.elms.exportDial:close()
     GUI.elms.userlist:redraw()
-    return newLib , dest
+    return newLib , dest , convertSlashes
 end
 
 listPicker = {}
@@ -352,9 +426,9 @@ function addWindow.open(addFunc)
     GUI.New("addDial", "Window", {
         z = 60,
         x = (GUI.w - 400)/2,
-        y = (GUI.h - 430)/2,
+        y = (GUI.h - 470)/2,
         w = 400,
-        h = 450,
+        h = 470,
         z_set = {54,55,56,57,58,59,60},
         caption = 'Add SFX',
     })
@@ -362,7 +436,7 @@ function addWindow.open(addFunc)
     GUI.New("sourceTabs","Tabs",{
         z = 58,
         x = 4,
-        y = -5,
+        y = 0,
         tab_w = 90,
         tab_h = 30,
         opts = {"Selected Items","Directory"},
@@ -371,7 +445,7 @@ function addWindow.open(addFunc)
     GUI.New("tabsBG","Frame",{
         z = 59,
         x = 4,
-        y = -5,
+        y = 0,
         w = 390,
         h = 30,
         shadow = false,
@@ -619,10 +693,32 @@ function addWindow.open(addFunc)
     })
     GUI.elms.addDial:adjustelm(GUI.elms.copyToLib)
 
+    GUI.New("ignoreExistingFiles", "Checklist", {
+        z = 58,
+        x = 20,
+        y = 286,
+        w = 145,
+        h = 35,
+        caption = "",
+        optarray = {"Ignore files that are already in destination folder"},
+        dir = "v",
+        pad = 10,
+        font_a = 2,
+        font_b = 3,
+        col_txt = "txt",
+        col_fill = "elm_fill",
+        bg = "wnd_bg",
+        frame = false,
+        shadow = false,
+        swap = nil,
+        opt_size = 20
+    })
+    GUI.elms.addDial:adjustelm(GUI.elms.ignoreExistingFiles)
+
     GUI.New("PreviewFrame","Frame", {
         z = 58,
         x = 4,
-        y = 301,
+        y = 331,
         w = 390,
         h = 78,
         shadow = false,
@@ -642,7 +738,7 @@ function addWindow.open(addFunc)
     GUI.New("AddButton", "Button", {
         z = 59,
         x = (400 - 80)/2,
-        y = 383,
+        y = 413,
         w = 80,
         h = 24,
         caption = "ADD",
@@ -710,6 +806,7 @@ function addWindow.addClick()
     if GUI.Val("addToParents") then add.addToParents = true end
     if GUI.Val("addToMaster") then add.addToMaster = true end
     if GUI.Val("copyToLib") then add.copyToLib = true end
+    if GUI.Val("ignoreExistingFiles") then add.ignoreExistingFiles = true end
 
     if add.isDir and add.dirPath == "" then reaper.MB("Please Select a Directory","ERROR",0) ; return nil end
     if add.isSelItems and reaper.CountSelectedMediaItems(0) == 0 then reaper.MB("Please Select Items in the session","ERROR",0) ; return nil end

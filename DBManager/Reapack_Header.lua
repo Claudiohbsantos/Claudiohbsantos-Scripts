@@ -1,16 +1,24 @@
 --[[
 @metapackage true
 @description DBManager
-@version 0.91alpha
+@version 1.0
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
-@date 2019 08 22
+@date 2019 08 26
 @about
-    Database manager GUI for Reaper Media Explorer.
+    DBManager is a tool designed to help organize and maintain Reaper Media Explorer Databases. It can help you import and export databases, add sounds to multiple databases at once and perform basic maintenance tasks such as removing duplicates and redirecting paths to a new location in the event of a library move.
     Uses DBAssistant to make changes - https://github.com/Claudiohbsantos/DBAssistant . The executable will be automatically downloaded upon installation. 
     Depends on JS Reascript API and Lokasenna GUI Library v2.
 @changelog
+    - Feature: Unsaved Warning
     - mac compatibility fixes
+    - handle fresh reaper installation 
+    - Feature: Convert slashes on export
+    - Feature: Export preview
+    - Include DBAssistant v0.3.6
+    - Menu options to open library and database folders on explorer/finder
+    - Feature: Help Files
+    - Feature: Option to ignore already existing files in directory
 @provides
     [main] DBManager.lua > DBManager.lua
     [nomain] lua_modules/json.lua > lua_modules/json.lua
@@ -18,11 +26,13 @@
     [nomain] reascript_modules/DBM_helper.lua > reascript_modules/DBM_helper.lua
     [nomain] reascript_modules/DBM_GUI.lua > reascript_modules/DBM_GUI.lua
     [nomain] reascript_modules/DBM_actions.lua > reascript_modules/DBM_actions.lua
-    Documentation/* > Documentation/
+    Documentation/Help.html > Documentation/Help.html
+    Documentation/images/* > Documentation/images/
+    Documentation/configTemplate.json > Documentation/configTemplate.json
     changelog.md > changelog.md
-    [windows] dbassistant.exe https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.5/dbassistant.exe
-    [darwin] dbassistant https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.5/dbassistant
-    dbassistant_changelog.md https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.5/changelog.md
+    [windows] dbassistant.exe https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.6/dbassistant.exe
+    [darwin] dbassistant https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.6/dbassistant
+    dbassistant_changelog.md https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.6/changelog.md
     [darwin] osx_launchers/osx_add.sh > osx_launchers/osx_add.sh 
     [darwin] osx_launchers/osx_deduplicate.sh > osx_launchers/osx_deduplicate.sh 
     [darwin] osx_launchers/osx_export.sh > osx_launchers/osx_export.sh 
