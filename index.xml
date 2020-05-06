@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="d936b4d742c982fe11818dea85b09906c07f7165" name="Claudiohbsantos Scripts">
+<index version="1" commit="eff90deacc5845065ea200a225aad4a70b954b52" name="Claudiohbsantos Scripts">
   <category name="JSFX">
     <reapack name="CS Channel 32 Channel Mixer.jsfx" type="effect" desc="CS Channel 32 Channel Mixer">
       <metadata>
@@ -1153,6 +1153,11 @@ SoloXORExample
         <changelog><![CDATA[- MacOS compatible paths]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/095feae006a460ea581fe1d0860fa78b246acd7a/Lua/Tools/CS_GoToTime.lua</source>
         <source file="../Libraries/Go To Time/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/095feae006a460ea581fe1d0860fa78b246acd7a/Lua/Libraries/TimecodeInput_Module.lua</source>
+      </version>
+      <version name="2.1" author="Claudiohbsantos" time="2020-05-06T01:08:43Z">
+        <changelog><![CDATA[- Corrected download path from git]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/eff90deacc5845065ea200a225aad4a70b954b52/Lua/Tools/CS_GoToTime.lua</source>
+        <source file="../Libraries/Go To Time/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/eff90deacc5845065ea200a225aad4a70b954b52/Lua/Libraries/TimecodeInput_Module.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Set Minimum Grid Division Pixels to 0.lua" type="script" desc="Set Minimum Grid Division Pixels to 0">
