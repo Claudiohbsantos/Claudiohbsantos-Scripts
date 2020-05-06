@@ -1,15 +1,15 @@
 --[[
 @description CS_Go To Time
-@version 1.999
+@version 2.0
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
-@date 2017 06 13
+@date 2020 05 05
 @about
   # CS_Go To Time
   Go to Time input
   Press + or - to change to subtration  or Addition Mode. Press Spacebar to reset default timecode to zero. 
 @changelog
-  - Updated Libraries dependencies
+  - MacOS compatible paths
 @provides
   ../Libraries/TimecodeInput_Module.lua > ../Libraries/Go To Time/TimecodeInput_Module.lua  
 --]]
@@ -42,8 +42,8 @@ function prequire(...)
 end
 
 local script_path = get_script_path()
-local libraryPath = string.match(script_path,"(.*\\).*\\$").."Libraries\\"
-package.path = package.path .. ";" .. libraryPath .. "?.lua;".. libraryPath .."Go To Time\\?.lua"
+local libraryPath = string.match(script_path,"(.*[\\/]).*[\\/]$").."Libraries/"
+package.path = package.path .. ";" .. libraryPath .. "?.lua;".. libraryPath .."Go To Time/?.lua"
 
 requireStatus = prequire("TimecodeInput_Module")
 

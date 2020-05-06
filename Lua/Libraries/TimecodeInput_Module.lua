@@ -1,6 +1,6 @@
 --[[
 @description TimecodeInput_Module
-@version 2.3
+@version 3
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2017 06 13
@@ -8,7 +8,7 @@
   # TimecodeInput_Module
   Timecode Input Module for other scripts.
 @changelog
-  - Removed From Listing
+  - Removed CS_Library dependency
 @noindex
 --]]
 ---------------------------------------------------------------------------------------
@@ -161,9 +161,18 @@ function combineUserInputWithAutoComplete(arguments,zeroString)
     return newTimeString,formatedInput,autoComplete
 end
 
+function getEditCurInfo(proj)
+	local editCurInfo = {}
+	editCurInfo.projOffset = reaper.GetProjectTimeOffset(proj,false)
+	editCurInfo.relPosition = reaper.GetCursorPositionEx(proj)
+	editCurInfo.absPosition = editCurInfo.relPosition + editCurInfo.projOffset 
+	editCurInfo.posString = reaper.format_timestr_pos(editCurInfo.relPosition,"",-1)
+	return editCurInfo
+end
+
 function getInput(arguments,defaultTimeInSeconds)
     if arguments and defaulTimeInSeconds then
-        local posInfo = cs.getEditCurInfo(0)
+        local posInfo = getEditCurInfo(0)
         local zeroString = string.gsub(posInfo.posString,"%d","0")
         local autocompletedDigits = resetAutoCompletedTimecode and zeroString or posInfo.posString
         local newTimeString,userInputString,autoCompletedToDisplay = combineUserInputWithAutoComplete(arguments,autocompletedDigits)
