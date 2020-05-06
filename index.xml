@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="095feae006a460ea581fe1d0860fa78b246acd7a" name="Claudiohbsantos Scripts">
+<index version="1" commit="d936b4d742c982fe11818dea85b09906c07f7165" name="Claudiohbsantos Scripts">
   <category name="DBManager">
     <reapack name="Reapack_Header.lua" type="script" desc="DBManager">
       <metadata>
@@ -1409,7 +1409,7 @@ SoloXORExample
         <source file="../Libraries/Go To Time/TimecodeInput_Module.lua">https://gitea.clsantos.me/claudio/ReaperScripts/raw/095feae006a460ea581fe1d0860fa78b246acd7a/Lua/Libraries/TimecodeInput_Module.lua</source>
       </version>
     </reapack>
-    <reapack name="CS_Set Minimum Grid Division Pixels to 0.lua" type="script" desc="CS_Set Minimum Grid Division Pixels to 0">
+    <reapack name="CS_Set Minimum Grid Division Pixels to 0.lua" type="script" desc="Set Minimum Grid Division Pixels to 0">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
@@ -1424,6 +1424,10 @@ SoloXORExample
       <version name="1.0" author="Claudiohbsantos" time="2018-03-11T20:17:54Z">
         <changelog><![CDATA[- initial release]]></changelog>
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/7f27cb52a2ace901e26ed63c87830c568ca0f9d5/Lua/Tools/CS_Set%20Minimum%20Grid%20Division%20Pixels%20to%200.lua</source>
+      </version>
+      <version name="1.0.1" author="Claudiohbsantos" time="2019-12-23T11:00:26Z">
+        <changelog><![CDATA[fix behavior with SWS 2.11]]></changelog>
+        <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/0ce3eeefc0385febbfca8774693a25eb733079fd/Lua/Tools/CS_Set%20Minimum%20Grid%20Division%20Pixels%20to%200.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Set Project Time at Cursor.lua" type="script" desc="Set Project Time at Cursor">
