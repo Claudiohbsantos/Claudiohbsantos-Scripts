@@ -1,6 +1,6 @@
 --[[
 @description CS_Go To Time
-@version 2.0
+@version 2.1
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2020 05 05
@@ -9,7 +9,7 @@
   Go to Time input
   Press + or - to change to subtration  or Addition Mode. Press Spacebar to reset default timecode to zero. 
 @changelog
-  - MacOS compatible paths
+  - Corrected download path from git
 @provides
   ../Libraries/TimecodeInput_Module.lua > ../Libraries/Go To Time/TimecodeInput_Module.lua  
 --]]
