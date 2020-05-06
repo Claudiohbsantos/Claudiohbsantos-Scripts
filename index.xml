@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="994c99bdc55e664b61f07e12fd6a349414d60a82" name="Claudiohbsantos Scripts">
+<index version="1" commit="095feae006a460ea581fe1d0860fa78b246acd7a" name="Claudiohbsantos Scripts">
   <category name="DBManager">
     <reapack name="Reapack_Header.lua" type="script" desc="DBManager">
       <metadata>
@@ -1402,6 +1402,11 @@ SoloXORExample
         <source main="main">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b083dfe521d222fd6d3d5e212423ec784a620082/Lua/Tools/CS_GoToTime.lua</source>
         <source file="../Libraries/Go To Time/TimecodeInput_Module.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b083dfe521d222fd6d3d5e212423ec784a620082/Lua/Libraries/TimecodeInput_Module.lua</source>
         <source file="../Libraries/Go To Time/CS_Library.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/b083dfe521d222fd6d3d5e212423ec784a620082/Lua/Libraries/CS_Library.lua</source>
+      </version>
+      <version name="2.0" author="Claudiohbsantos" time="2020-05-06T00:54:27Z">
+        <changelog><![CDATA[- MacOS compatible paths]]></changelog>
+        <source main="main">https://gitea.clsantos.me/claudio/ReaperScripts/raw/095feae006a460ea581fe1d0860fa78b246acd7a/Lua/Tools/CS_GoToTime.lua</source>
+        <source file="../Libraries/Go To Time/TimecodeInput_Module.lua">https://gitea.clsantos.me/claudio/ReaperScripts/raw/095feae006a460ea581fe1d0860fa78b246acd7a/Lua/Libraries/TimecodeInput_Module.lua</source>
       </version>
     </reapack>
     <reapack name="CS_Set Minimum Grid Division Pixels to 0.lua" type="script" desc="CS_Set Minimum Grid Division Pixels to 0">
