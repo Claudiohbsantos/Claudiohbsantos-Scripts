@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="4b11437d21080f2fd3531c19dbc6854ada64be76" name="Claudiohbsantos Scripts">
+<index version="1" commit="bf4b8cc6ddae73ceae682b44498d5a59faa28ddb" name="Claudiohbsantos Scripts">
   <category name="DBManager">
     <reapack name="Reapack_Header.lua" type="script" desc="DBManager">
       <metadata>
@@ -30,6 +30,32 @@
         <source platform="darwin" file="osx_launchers/osx_deduplicate.sh">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/osx_launchers/osx_deduplicate.sh</source>
         <source platform="darwin" file="osx_launchers/osx_export.sh">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/osx_launchers/osx_export.sh</source>
         <source platform="darwin" file="osx_launchers/osx_version.sh">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/osx_launchers/osx_version.sh</source>
+      </version>
+      <version name="1.12" author="Claudiohbsantos" time="2020-05-07T16:02:24Z">
+        <changelog><![CDATA[- Bug: crash when attempting to paste/import shortcuts without a selected db on list]]></changelog>
+        <source main="main" file="DBManager.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/DBManager.lua</source>
+        <source file="lua_modules/json.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/lua_modules/json.lua</source>
+        <source file="reascript_modules/DBM_popups.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/reascript_modules/DBM_popups.lua</source>
+        <source file="reascript_modules/DBM_helper.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/reascript_modules/DBM_helper.lua</source>
+        <source file="reascript_modules/DBM_GUI.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/reascript_modules/DBM_GUI.lua</source>
+        <source file="reascript_modules/DBM_actions.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/reascript_modules/DBM_actions.lua</source>
+        <source file="Documentation/Help.html">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/Documentation/Help.html</source>
+        <source file="Documentation/images/CreateNewDialog.png">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/Documentation/images/CreateNewDialog.png</source>
+        <source file="Documentation/images/ExportDialog.png">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/Documentation/images/ExportDialog.png</source>
+        <source file="Documentation/images/Interface.png">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/Documentation/images/Interface.png</source>
+        <source file="Documentation/images/addDialog.png">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/Documentation/images/addDialog.png</source>
+        <source file="Documentation/images/folders.png">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/Documentation/images/folders.png</source>
+        <source file="Documentation/images/redirectPath.png">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/Documentation/images/redirectPath.png</source>
+        <source file="Documentation/images/unsavedWarning.png">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/Documentation/images/unsavedWarning.png</source>
+        <source file="Documentation/configTemplate.json">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/Documentation/configTemplate.json</source>
+        <source file="changelog.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/changelog.md</source>
+        <source platform="windows" file="dbassistant.exe">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.6/dbassistant.exe</source>
+        <source platform="darwin" file="dbassistant">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.6/dbassistant</source>
+        <source file="dbassistant_changelog.md">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.6/changelog.md</source>
+        <source platform="darwin" file="osx_launchers/osx_add.sh">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/osx_launchers/osx_add.sh</source>
+        <source platform="darwin" file="osx_launchers/osx_deduplicate.sh">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/osx_launchers/osx_deduplicate.sh</source>
+        <source platform="darwin" file="osx_launchers/osx_export.sh">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/osx_launchers/osx_export.sh</source>
+        <source platform="darwin" file="osx_launchers/osx_version.sh">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/bf4b8cc6ddae73ceae682b44498d5a59faa28ddb/DBManager/osx_launchers/osx_version.sh</source>
       </version>
     </reapack>
   </category>
