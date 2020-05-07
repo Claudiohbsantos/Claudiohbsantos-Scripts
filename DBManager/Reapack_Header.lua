@@ -1,7 +1,7 @@
 --[[
 @metapackage true
 @description DBManager
-@version 1.1
+@version 1.12
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
 @date 2020 05 07
@@ -19,6 +19,7 @@
     [nomain] reascript_modules/DBM_GUI.lua > reascript_modules/DBM_GUI.lua
     [nomain] reascript_modules/DBM_actions.lua > reascript_modules/DBM_actions.lua
     Documentation/Help.html > Documentation/Help.html
+    Documentation/images/* > Documentation/images/
     Documentation/configTemplate.json > Documentation/configTemplate.json
     changelog.md > changelog.md
     [windows] dbassistant.exe https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.6/dbassistant.exe
