@@ -345,7 +345,11 @@ function act.paste()
     createUndoPoint()
     local first = getFirstSelectedIndex()
     local t 
-    if first then t = first + 1 end
+    if first then 
+        t = first + 1 
+    else
+        t = #dbm.userDbs + 1
+    end
     if not t then reaper.ShowMessageBox("Please select a position under which to paste","ERROR",0) ; return end
 
     local newSel = {}

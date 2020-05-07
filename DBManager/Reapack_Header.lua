@@ -1,24 +1,16 @@
 --[[
 @metapackage true
 @description DBManager
-@version 1.0
+@version 1.1
 @author Claudiohbsantos
 @link http://claudiohbsantos.com
-@date 2019 08 26
+@date 2020 05 07
 @about
     DBManager is a tool designed to help organize and maintain Reaper Media Explorer Databases. It can help you import and export databases, add sounds to multiple databases at once and perform basic maintenance tasks such as removing duplicates and redirecting paths to a new location in the event of a library move.
     Uses DBAssistant to make changes - https://github.com/Claudiohbsantos/DBAssistant . The executable will be automatically downloaded upon installation. 
     Depends on JS Reascript API and Lokasenna GUI Library v2.
 @changelog
-    - Feature: Unsaved Warning
-    - mac compatibility fixes
-    - handle fresh reaper installation 
-    - Feature: Convert slashes on export
-    - Feature: Export preview
-    - Include DBAssistant v0.3.6
-    - Menu options to open library and database folders on explorer/finder
-    - Feature: Help Files
-    - Feature: Option to ignore already existing files in directory
+    - Bug: crash when attempting to paste/import shortcuts without a selected db on list
 @provides
     [main] DBManager.lua > DBManager.lua
     [nomain] lua_modules/json.lua > lua_modules/json.lua
@@ -27,7 +19,6 @@
     [nomain] reascript_modules/DBM_GUI.lua > reascript_modules/DBM_GUI.lua
     [nomain] reascript_modules/DBM_actions.lua > reascript_modules/DBM_actions.lua
     Documentation/Help.html > Documentation/Help.html
-    Documentation/images/* > Documentation/images/
     Documentation/configTemplate.json > Documentation/configTemplate.json
     changelog.md > changelog.md
     [windows] dbassistant.exe https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.6/dbassistant.exe
