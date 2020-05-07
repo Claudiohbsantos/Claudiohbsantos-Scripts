@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="eff90deacc5845065ea200a225aad4a70b954b52" name="Claudiohbsantos Scripts">
+<index version="1" commit="4b11437d21080f2fd3531c19dbc6854ada64be76" name="Claudiohbsantos Scripts">
+  <category name="DBManager">
+    <reapack name="Reapack_Header.lua" type="script" desc="DBManager">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 DBManager is a tool designed to help organize and maintain Reaper Media Explorer Databases. It can help you import and export databases, add sounds to multiple databases at once and perform basic maintenance tasks such as removing duplicates and redirecting paths to a new location in the event of a library move. Uses DBAssistant to make changes - https://github.com/Claudiohbsantos/DBAssistant . The executable will be automatically downloaded upon installation. Depends on JS Reascript API and Lokasenna GUI Library v2.\par}
+}
+]]></description>
+        <link rel="website">http://claudiohbsantos.com</link>
+      </metadata>
+      <version name="1.1" author="Claudiohbsantos" time="2020-05-07T15:56:25Z">
+        <changelog><![CDATA[- Bug: crash when attempting to paste/import shortcuts without a selected db on list]]></changelog>
+        <source main="main" file="DBManager.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/DBManager.lua</source>
+        <source file="lua_modules/json.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/lua_modules/json.lua</source>
+        <source file="reascript_modules/DBM_popups.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/reascript_modules/DBM_popups.lua</source>
+        <source file="reascript_modules/DBM_helper.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/reascript_modules/DBM_helper.lua</source>
+        <source file="reascript_modules/DBM_GUI.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/reascript_modules/DBM_GUI.lua</source>
+        <source file="reascript_modules/DBM_actions.lua">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/reascript_modules/DBM_actions.lua</source>
+        <source file="Documentation/Help.html">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/Documentation/Help.html</source>
+        <source file="Documentation/configTemplate.json">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/Documentation/configTemplate.json</source>
+        <source file="changelog.md">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/changelog.md</source>
+        <source platform="windows" file="dbassistant.exe">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.6/dbassistant.exe</source>
+        <source platform="darwin" file="dbassistant">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.6/dbassistant</source>
+        <source file="dbassistant_changelog.md">https://github.com/Claudiohbsantos/DBAssistant/releases/download/v0.3.6/changelog.md</source>
+        <source platform="darwin" file="osx_launchers/osx_add.sh">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/osx_launchers/osx_add.sh</source>
+        <source platform="darwin" file="osx_launchers/osx_deduplicate.sh">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/osx_launchers/osx_deduplicate.sh</source>
+        <source platform="darwin" file="osx_launchers/osx_export.sh">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/osx_launchers/osx_export.sh</source>
+        <source platform="darwin" file="osx_launchers/osx_version.sh">https://github.com/Claudiohbsantos/Claudiohbsantos-Scripts/raw/4b11437d21080f2fd3531c19dbc6854ada64be76/DBManager/osx_launchers/osx_version.sh</source>
+      </version>
+    </reapack>
+  </category>
   <category name="JSFX">
     <reapack name="CS Channel 32 Channel Mixer.jsfx" type="effect" desc="CS Channel 32 Channel Mixer">
       <metadata>
